@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>go 语言杂项 | 罗亭的技术博客</title>
-<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1584660650875">
+<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1584660701945">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://bluegrasses.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="go 语言杂项 | 罗亭的技术博客 - Atom Feed" href="https://bluegrasses.github.io/atom.xml">
@@ -27,7 +27,7 @@ func main() {
       <div class="main-content">
         <div class="site-header">
   <a href="https://bluegrasses.github.io">
-  <img class="avatar" src="https://bluegrasses.github.io/images/avatar.png?v=1584660650875" alt="">
+  <img class="avatar" src="https://bluegrasses.github.io/images/avatar.png?v=1584660701945" alt="">
   </a>
   <h1 class="site-title">
     罗亭的技术博客
@@ -98,8 +98,8 @@ func main() {
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <p>defer panic recover</p>
-<pre><code>func main() {
+                <h2 id="defer-panic-recover">defer panic recover</h2>
+<pre><code class="language-go">func main() {
 	defer func() {
 		err := recover()
 		fmt.Println(&quot;异常信息是:&quot;, err)
@@ -110,7 +110,14 @@ func main() {
 
               </div>
               <div class="toc-container">
-                
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#defer-panic-recover">defer panic recover</a></li>
+</ul>
+</li>
+</ul>
+
               </div>
             </div>
           </article>
