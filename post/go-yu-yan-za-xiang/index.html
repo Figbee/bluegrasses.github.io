@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>go 语言杂项 | 罗亭的技术博客</title>
-<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1584694661923">
+<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1584696267329">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://bluegrasses.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="go 语言杂项 | 罗亭的技术博客 - Atom Feed" href="https://bluegrasses.github.io/atom.xml">
@@ -27,7 +27,7 @@ func main() {
       <div class="main-content">
         <div class="site-header">
   <a href="https://bluegrasses.github.io">
-  <img class="avatar" src="https://bluegrasses.github.io/images/avatar.png?v=1584694661923" alt="">
+  <img class="avatar" src="https://bluegrasses.github.io/images/avatar.png?v=1584696267329" alt="">
   </a>
   <h1 class="site-title">
     罗亭的技术博客
@@ -147,6 +147,32 @@ func main() {
 	fmt.Println(sum)
 }
 </code></pre>
+<h2 id="结构体的使用">结构体的使用</h2>
+<h3 id="method-继承">method 继承</h3>
+<pre><code>type Human struct{
+	name string
+	age int
+	phone string
+}
+type Student struct{
+	Human
+	school string
+}
+type Commpany struct{
+	Human
+	Commpany string
+}
+func (h* Human) SayHi(){
+	fmt.Printf(&quot;i am %s you can call me on %s\n&quot;,h.name,h.phone)
+}
+func main(){
+	mark:=Student{Human{&quot;yxg&quot;,40,&quot;15548551999&quot;},&quot;btsy&quot;}
+	tom:=Commpany{Human{&quot;tom&quot;,20,&quot;13348551950&quot;},&quot;bjyddx&quot;}
+	mark.SayHi()
+	tom.SayHi()
+}
+</code></pre>
+<h3 id="method-重写">method 重写</h3>
 
               </div>
               <div class="toc-container">
@@ -160,6 +186,12 @@ func main() {
 <li><a href="#%E5%87%BD%E6%95%B0%E7%9A%84%E4%BD%BF%E7%94%A8">函数的使用</a>
 <ul>
 <li><a href="#%E5%87%BD%E6%95%B0%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0">函数可变参数</a></li>
+</ul>
+</li>
+<li><a href="#%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E4%BD%BF%E7%94%A8">结构体的使用</a>
+<ul>
+<li><a href="#method-%E7%BB%A7%E6%89%BF">method 继承</a></li>
+<li><a href="#method-%E9%87%8D%E5%86%99">method 重写</a></li>
 </ul>
 </li>
 </ul>
