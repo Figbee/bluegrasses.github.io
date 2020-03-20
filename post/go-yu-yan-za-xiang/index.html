@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>go 语言杂项 | 罗亭的技术博客</title>
-<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1584696267329">
+<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1584707763925">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://bluegrasses.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="go 语言杂项 | 罗亭的技术博客 - Atom Feed" href="https://bluegrasses.github.io/atom.xml">
@@ -27,7 +27,7 @@ func main() {
       <div class="main-content">
         <div class="site-header">
   <a href="https://bluegrasses.github.io">
-  <img class="avatar" src="https://bluegrasses.github.io/images/avatar.png?v=1584696267329" alt="">
+  <img class="avatar" src="https://bluegrasses.github.io/images/avatar.png?v=1584707763925" alt="">
   </a>
   <h1 class="site-title">
     罗亭的技术博客
@@ -87,7 +87,7 @@ func main() {
                 2020-03-19
               </span>
               <span>
-                2 min read
+                3 min read
               </span>
               
                 <a href="https://bluegrasses.github.io/tag/MGq5D4kTr/" class="post-tag">
@@ -149,7 +149,7 @@ func main() {
 </code></pre>
 <h2 id="结构体的使用">结构体的使用</h2>
 <h3 id="method-继承">method 继承</h3>
-<pre><code>type Human struct{
+<pre><code class="language-go">type Human struct{
 	name string
 	age int
 	phone string
@@ -172,7 +172,41 @@ func main(){
 	tom.SayHi()
 }
 </code></pre>
-<h3 id="method-重写">method 重写</h3>
+<h2 id="断言">断言</h2>
+<h3 id="断言方式1">断言方式1</h3>
+<blockquote>
+<p>安全类型断言<br>
+&lt;目标类型的值&gt;，&lt;布尔参数&gt; := &lt;表达式&gt;.( 目标类型 )</p>
+</blockquote>
+<pre><code class="language-go">type Student struct {
+	name string
+	age  int
+	city string
+}
+func main(){
+    var i1 interface{}
+	i1 = Student{}
+    data,ok:=i1.(Student)
+    if ok{
+
+    }
+}
+</code></pre>
+<h3 id="断言方式2">断言方式2</h3>
+<blockquote>
+<p>s.(type)</p>
+</blockquote>
+<pre><code class="language-go">func main(){
+    var i1 interface{}
+	i1 = Student{}
+    switch t := i1.(type) {
+	case Student:
+		fmt.Println(&quot;student 类型&quot;, t)
+	default:
+		fmt.Println(&quot;未知类型&quot;)
+	}
+}
+</code></pre>
 
               </div>
               <div class="toc-container">
@@ -191,7 +225,12 @@ func main(){
 <li><a href="#%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E4%BD%BF%E7%94%A8">结构体的使用</a>
 <ul>
 <li><a href="#method-%E7%BB%A7%E6%89%BF">method 继承</a></li>
-<li><a href="#method-%E9%87%8D%E5%86%99">method 重写</a></li>
+</ul>
+</li>
+<li><a href="#%E6%96%AD%E8%A8%80">断言</a>
+<ul>
+<li><a href="#%E6%96%AD%E8%A8%80%E6%96%B9%E5%BC%8F1">断言方式1</a></li>
+<li><a href="#%E6%96%AD%E8%A8%80%E6%96%B9%E5%BC%8F2">断言方式2</a></li>
 </ul>
 </li>
 </ul>
