@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-03-20T03:40:55.177Z</updated>
+    <updated>2020-03-20T08:57:45.538Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -49,11 +49,21 @@
 }
 </code></pre>
 <h2 id="打印数据类型">打印数据类型</h2>
-<pre><code>	var a = [...]int{0: 1, 3: 3}
+<pre><code class="language-go">	var a = [...]int{0: 1, 3: 3}
 	//使用反射打印数据类型
 	fmt.Println(reflect.TypeOf(a))
 	//使用Printf打印数据类型
 	fmt.Printf(&quot;%T&quot;, a)
+</code></pre>
+<h2 id="函数的使用">函数的使用</h2>
+<h3 id="函数可变参数">函数可变参数</h3>
+<pre><code class="language-go">func getAdd(nums ...int) {
+	sum := 0
+	for i := 0; i &lt; len(nums); i++ {
+		sum += nums[i]
+	}
+	fmt.Println(sum)
+}
 </code></pre>
 ]]></content>
     </entry>
