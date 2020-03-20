@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-03-19T23:32:54.105Z</updated>
+    <updated>2020-03-20T02:26:53.014Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -16,13 +16,26 @@
         <link href="https://bluegrasses.github.io/post/go-yu-yan-za-xiang/">
         </link>
         <updated>2020-03-19T15:03:08.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="defer-panic-recover">defer panic recover</h3>
+        <content type="html"><![CDATA[<h2 id="defer-panic-recover">defer panic recover</h2>
 <pre><code class="language-go">func main() {
 	defer func() {
 		err := recover()
 		fmt.Println(&quot;异常信息是:&quot;, err)
 	}()
 	panic(&quot;it is panic&quot;)
+}
+</code></pre>
+<h2 id="go键盘输入">go键盘输入</h2>
+<p>Scanln和Scanf类似于println和printf</p>
+<pre><code class="language-go">func main() {
+	var x int
+	var y float64
+	fmt.Println(&quot;请输入一个整数，一个浮点类型：&quot;)
+	fmt.Scanln(&amp;x, &amp;y) //读取键盘的输入，通过操作地址，赋值给x和y   阻塞式
+	fmt.Printf(&quot;x的数值：%d，y的数值：%f\n&quot;, x, y)
+
+	fmt.Scanf(&quot;%d,%f&quot;, &amp;x, &amp;y)
+	fmt.Printf(&quot;x:%d,y:%f\n&quot;, x, y)
 }
 </code></pre>
 ]]></content>

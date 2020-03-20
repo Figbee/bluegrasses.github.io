@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>go 语言杂项 | 罗亭的技术博客</title>
-<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1584660769345">
+<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1584671208315">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://bluegrasses.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="go 语言杂项 | 罗亭的技术博客 - Atom Feed" href="https://bluegrasses.github.io/atom.xml">
@@ -27,7 +27,7 @@ func main() {
       <div class="main-content">
         <div class="site-header">
   <a href="https://bluegrasses.github.io">
-  <img class="avatar" src="https://bluegrasses.github.io/images/avatar.png?v=1584660769345" alt="">
+  <img class="avatar" src="https://bluegrasses.github.io/images/avatar.png?v=1584671208315" alt="">
   </a>
   <h1 class="site-title">
     罗亭的技术博客
@@ -98,7 +98,7 @@ func main() {
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <h3 id="defer-panic-recover">defer panic recover</h3>
+                <h2 id="defer-panic-recover">defer panic recover</h2>
 <pre><code class="language-go">func main() {
 	defer func() {
 		err := recover()
@@ -107,17 +107,27 @@ func main() {
 	panic(&quot;it is panic&quot;)
 }
 </code></pre>
+<h2 id="go键盘输入">go键盘输入</h2>
+<p>Scanln和Scanf类似于println和printf</p>
+<pre><code class="language-go">func main() {
+	var x int
+	var y float64
+	fmt.Println(&quot;请输入一个整数，一个浮点类型：&quot;)
+	fmt.Scanln(&amp;x, &amp;y) //读取键盘的输入，通过操作地址，赋值给x和y   阻塞式
+	fmt.Printf(&quot;x的数值：%d，y的数值：%f\n&quot;, x, y)
+
+	fmt.Scanf(&quot;%d,%f&quot;, &amp;x, &amp;y)
+	fmt.Printf(&quot;x:%d,y:%f\n&quot;, x, y)
+}
+</code></pre>
 
               </div>
               <div class="toc-container">
                 <ul class="markdownIt-TOC">
 <li>
 <ul>
-<li>
-<ul>
 <li><a href="#defer-panic-recover">defer panic recover</a></li>
-</ul>
-</li>
+<li><a href="#go%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5">go键盘输入</a></li>
 </ul>
 </li>
 </ul>
