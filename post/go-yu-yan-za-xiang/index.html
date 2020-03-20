@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>go 语言杂项 | 罗亭的技术博客</title>
-<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1584671233664">
+<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1584674822059">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://bluegrasses.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="go 语言杂项 | 罗亭的技术博客 - Atom Feed" href="https://bluegrasses.github.io/atom.xml">
@@ -27,7 +27,7 @@ func main() {
       <div class="main-content">
         <div class="site-header">
   <a href="https://bluegrasses.github.io">
-  <img class="avatar" src="https://bluegrasses.github.io/images/avatar.png?v=1584671233664" alt="">
+  <img class="avatar" src="https://bluegrasses.github.io/images/avatar.png?v=1584674822059" alt="">
   </a>
   <h1 class="site-title">
     罗亭的技术博客
@@ -120,6 +120,16 @@ func main() {
 	fmt.Printf(&quot;x:%d,y:%f\n&quot;, x, y)
 }
 </code></pre>
+<h2 id="缓冲区的输入">缓冲区的输入</h2>
+<pre><code class="language-go">func main() {
+	fmt.Println(&quot;请输入一个字符串:&quot;)
+	//创建一个缓冲区,缓冲区读取的内容是标准输入流
+	reader := bufio.NewReader(os.Stdin)
+	//读取缓冲区,知道遇到\n操作
+	s1, _ := reader.ReadString('\n')
+	fmt.Println(&quot;读到的数据:&quot;, s1)
+}
+</code></pre>
 
               </div>
               <div class="toc-container">
@@ -128,6 +138,7 @@ func main() {
 <ul>
 <li><a href="#defer-panic-recover">defer panic recover</a></li>
 <li><a href="#go%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5">go键盘输入</a></li>
+<li><a href="#%E7%BC%93%E5%86%B2%E5%8C%BA%E7%9A%84%E8%BE%93%E5%85%A5">缓冲区的输入</a></li>
 </ul>
 </li>
 </ul>
