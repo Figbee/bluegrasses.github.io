@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-03-20T12:50:45.032Z</updated>
+    <updated>2020-03-21T08:08:32.660Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -125,6 +125,23 @@ func main(){
 	}
 }
 </code></pre>
+<h2 id="文件操作">文件操作</h2>
+<h3 id="基本操作语法">基本操作语法</h3>
+<ol>
+<li>创建文件夹，如果文件夹存在，创建失败<br>
+os.MkDir() 创建文件夹<br>
+os.MKDirAll() 可以创建多层</li>
+<li>创建文件<br>
+os.Create() 创建文件 采用模式0666任何人都可读写,不可执行</li>
+<li>打开文件<br>
+os.Open(filename)<br>
+os.OpenFile(filename,mode,perm)</li>
+<li>关闭文件:<br>
+file.Close()</li>
+<li>删除文件或目录<br>
+os.Remove() //删除文件和空目录<br>
+os.RemoveAll()//删除所有</li>
+</ol>
 ]]></content>
     </entry>
 </feed>

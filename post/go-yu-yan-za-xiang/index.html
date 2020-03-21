@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>go 语言杂项 | 罗亭的技术博客</title>
-<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1584708641881">
+<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1584778109786">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://bluegrasses.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="go 语言杂项 | 罗亭的技术博客 - Atom Feed" href="https://bluegrasses.github.io/atom.xml">
@@ -27,7 +27,7 @@ func main() {
       <div class="main-content">
         <div class="site-header">
   <a href="https://bluegrasses.github.io">
-  <img class="avatar" src="https://bluegrasses.github.io/images/avatar.png?v=1584708641881" alt="">
+  <img class="avatar" src="https://bluegrasses.github.io/images/avatar.png?v=1584778109786" alt="">
   </a>
   <h1 class="site-title">
     罗亭的技术博客
@@ -207,6 +207,23 @@ func main(){
 	}
 }
 </code></pre>
+<h2 id="文件操作">文件操作</h2>
+<h3 id="基本操作语法">基本操作语法</h3>
+<ol>
+<li>创建文件夹，如果文件夹存在，创建失败<br>
+os.MkDir() 创建文件夹<br>
+os.MKDirAll() 可以创建多层</li>
+<li>创建文件<br>
+os.Create() 创建文件 采用模式0666任何人都可读写,不可执行</li>
+<li>打开文件<br>
+os.Open(filename)<br>
+os.OpenFile(filename,mode,perm)</li>
+<li>关闭文件:<br>
+file.Close()</li>
+<li>删除文件或目录<br>
+os.Remove() //删除文件和空目录<br>
+os.RemoveAll()//删除所有</li>
+</ol>
 
               </div>
               <div class="toc-container">
@@ -231,6 +248,11 @@ func main(){
 <ul>
 <li><a href="#%E6%96%AD%E8%A8%80%E6%96%B9%E5%BC%8F1">断言方式1</a></li>
 <li><a href="#%E6%96%AD%E8%A8%80%E6%96%B9%E5%BC%8F2">断言方式2</a></li>
+</ul>
+</li>
+<li><a href="#%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C">文件操作</a>
+<ul>
+<li><a href="#%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E8%AF%AD%E6%B3%95">基本操作语法</a></li>
 </ul>
 </li>
 </ul>
