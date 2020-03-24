@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-03-21T13:07:18.758Z</updated>
+    <updated>2020-03-24T11:33:13.078Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -10,6 +10,41 @@
     <logo>https://bluegrasses.github.io/images/avatar.png</logo>
     <icon>https://bluegrasses.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 罗亭的技术博客</rights>
+    <entry>
+        <title type="html"><![CDATA[linux虚拟机环境搭建]]></title>
+        <id>https://bluegrasses.github.io/post/linux-xu-ni-ji-huan-jing-da-jian/</id>
+        <link href="https://bluegrasses.github.io/post/linux-xu-ni-ji-huan-jing-da-jian/">
+        </link>
+        <updated>2020-03-24T10:55:43.000Z</updated>
+        <content type="html"><![CDATA[<blockquote>
+<p>基本环境 lubuntu 19 虚拟机virtualbox</p>
+</blockquote>
+<h3 id="首次初始化su密码">首次初始化su密码</h3>
+<p>sudo passwd</p>
+<h3 id="安装virtualbox-增强工具">安装virtualbox 增强工具</h3>
+<ol>
+<li>点击安装 增强工具挂载到lubuntn文件中</li>
+<li>定位到指定位置,然后 ./VBoxLinuxAdditions.run 运行安装程序</li>
+</ol>
+<h3 id="虚拟机和主机互通">虚拟机和主机互通</h3>
+<ol>
+<li>virualbox网络设置为桥接模式</li>
+<li>安装ssh软件<br>
+检查是否安装了SSH<br>
+ps -e|grep ssh<br>
+安装ssh服务器端<br>
+apt install openssh-server<br>
+手工启动<br>
+sudo /etc/init.d/ssh start<br>
+默认端口为22</li>
+</ol>
+<h3 id="设置共享目录">设置共享目录</h3>
+<ol>
+<li>virtualbox 中设置共享文件夹</li>
+<li>好像默认挂载到/media/xxx目录下</li>
+</ol>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[go 通道]]></title>
         <id>https://bluegrasses.github.io/post/go-tong-dao/</id>
