@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-03-31T10:01:28.452Z</updated>
+    <updated>2020-04-08T07:36:21.840Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -40,6 +40,30 @@ docker pull percona/percona-xtradb-cluster<br>
 <h4 id="3-创建数据卷volume">3. 创建数据卷volume</h4>
 <pre><code>docker volume create v1
 </code></pre>
+<h4 id="4-创建pxc容器">4. 创建pxc容器</h4>
+<p>创建第一个容器<br>
+···<br>
+docker run -d -p 3306:3306 // 端口映射<br>
+-v v1:/var/lib/mysql //映射目录到docker容器<br>
+-e MYSQL_ROOT_PASSWORD=abc123456  //设置mysql 参数<br>
+-e CLUSTER_NAME=PXC  //集群名称<br>
+-e XTRABACKUP_PASSWORD=abc123456 --privileged  //设置数据库节点同步的密码<br>
+--name=node1 //节点名称<br>
+--net=net1 --ip 172.18.0.2  //设置网络名称<br>
+pxc //启动的image名称<br>
+···<br>
+创建第二个容器，并加入集群<br>
+···<br>
+docker run -d -p 3307:3306<br>
+-e CLUSSTER_JOIN=node1 //加入的容器名称，这里应该为第一个容器的名称<br>
+-v v2:/var/lib/mysql<br>
+-e MYSQL_ROOT_PASSWORD=abc123456<br>
+-e CLUSTER_NAME=PXC<br>
+-e XTRABACKUP_PASSWORD=abc123456 --privileged<br>
+--name=node2<br>
+--net=net1 --ip 172.18.0.3<br>
+pxc<br>
+···</p>
 ]]></content>
     </entry>
     <entry>

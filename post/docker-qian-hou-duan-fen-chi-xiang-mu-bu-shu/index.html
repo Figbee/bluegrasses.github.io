@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>docker 前后端分离项目部署 | 罗亭的技术博客</title>
-<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1585648886377">
+<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1586331376275">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://bluegrasses.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="docker 前后端分离项目部署 | 罗亭的技术博客 - Atom Feed" href="https://bluegrasses.github.io/atom.xml">
@@ -28,7 +28,7 @@ docker pull percon..." />
       <div class="main-content">
         <div class="site-header">
   <a href="https://bluegrasses.github.io">
-  <img class="avatar" src="https://bluegrasses.github.io/images/avatar.png?v=1585648886377" alt="">
+  <img class="avatar" src="https://bluegrasses.github.io/images/avatar.png?v=1586331376275" alt="">
   </a>
   <h1 class="site-title">
     罗亭的技术博客
@@ -88,7 +88,7 @@ docker pull percon..." />
                 2020-03-31
               </span>
               <span>
-                1 min read
+                2 min read
               </span>
               
             </div>
@@ -119,6 +119,30 @@ docker pull percona/percona-xtradb-cluster<br>
 <h4 id="3-创建数据卷volume">3. 创建数据卷volume</h4>
 <pre><code>docker volume create v1
 </code></pre>
+<h4 id="4-创建pxc容器">4. 创建pxc容器</h4>
+<p>创建第一个容器<br>
+···<br>
+docker run -d -p 3306:3306 // 端口映射<br>
+-v v1:/var/lib/mysql //映射目录到docker容器<br>
+-e MYSQL_ROOT_PASSWORD=abc123456  //设置mysql 参数<br>
+-e CLUSTER_NAME=PXC  //集群名称<br>
+-e XTRABACKUP_PASSWORD=abc123456 --privileged  //设置数据库节点同步的密码<br>
+--name=node1 //节点名称<br>
+--net=net1 --ip 172.18.0.2  //设置网络名称<br>
+pxc //启动的image名称<br>
+···<br>
+创建第二个容器，并加入集群<br>
+···<br>
+docker run -d -p 3307:3306<br>
+-e CLUSSTER_JOIN=node1 //加入的容器名称，这里应该为第一个容器的名称<br>
+-v v2:/var/lib/mysql<br>
+-e MYSQL_ROOT_PASSWORD=abc123456<br>
+-e CLUSTER_NAME=PXC<br>
+-e XTRABACKUP_PASSWORD=abc123456 --privileged<br>
+--name=node2<br>
+--net=net1 --ip 172.18.0.3<br>
+pxc<br>
+···</p>
 
               </div>
               <div class="toc-container">
@@ -132,6 +156,7 @@ docker pull percona/percona-xtradb-cluster<br>
 <li><a href="#1-%E5%AE%89%E8%A3%85-perconapercona-xtradb-cluster">1. 安装 percona/percona-xtradb-cluster</a></li>
 <li><a href="#2-%E9%83%A8%E7%BD%B2%E4%B8%93%E7%94%A8%E7%BD%91%E7%BB%9C">2. 部署专用网络</a></li>
 <li><a href="#3-%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%8D%B7volume">3. 创建数据卷volume</a></li>
+<li><a href="#4-%E5%88%9B%E5%BB%BApxc%E5%AE%B9%E5%99%A8">4. 创建pxc容器</a></li>
 </ul>
 </li>
 </ul>
