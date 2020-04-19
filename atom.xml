@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-04-19T11:45:36.418Z</updated>
+    <updated>2020-04-19T12:13:14.403Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -16,7 +16,7 @@
         <link href="https://bluegrasses.github.io/post/golang-web-bian-cheng/">
         </link>
         <updated>2020-04-19T11:42:00.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="表单处理">表单处理</h2>
+        <content type="html"><![CDATA[<h2 id="1表单处理">1.表单处理</h2>
 <h3 id="数据获取">数据获取</h3>
 <pre><code class="language-go">func root(w http.ResponseWriter, r *http.Request) {
     //1. 使用r.ParseForm()获取数据之后,get post 所有的数据都到了r.Form中
@@ -29,6 +29,12 @@ func main() {
 	http.HandleFunc(&quot;/&quot;, root)
 	http.ListenAndServe(&quot;:9000&quot;, nil)
 }
+</code></pre>
+<h3 id="数据验证">数据验证</h3>
+<pre><code class="language-go">	r.ParseForm()
+	if m, _ := regexp.MatchString(&quot;^[0-9]+$&quot;, r.FormValue(&quot;age&quot;)); !m {
+		fmt.Fprintf(w, &quot;age is no valid&quot;)
+	}
 </code></pre>
 ]]></content>
     </entry>

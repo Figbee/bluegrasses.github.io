@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>golang--web编程 | 罗亭的技术博客</title>
-<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1587296733065">
+<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1587298391741">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://bluegrasses.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="golang--web编程 | 罗亭的技术博客 - Atom Feed" href="https://bluegrasses.github.io/atom.xml">
@@ -11,11 +11,11 @@
 
 
 
-    <meta name="description" content="表单处理
+    <meta name="description" content="1.表单处理
 数据获取
 func root(w http.ResponseWriter, r *http.Request) {
     //1. 使用r.ParseForm()获取数据之后,get post 所有的数据都到了r.Form中
-	r..." />
+..." />
     <meta name="keywords" content="golang" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
@@ -25,7 +25,7 @@ func root(w http.ResponseWriter, r *http.Request) {
       <div class="main-content">
         <div class="site-header">
   <a href="https://bluegrasses.github.io">
-  <img class="avatar" src="https://bluegrasses.github.io/images/avatar.png?v=1587296733065" alt="">
+  <img class="avatar" src="https://bluegrasses.github.io/images/avatar.png?v=1587298391741" alt="">
   </a>
   <h1 class="site-title">
     罗亭的技术博客
@@ -96,7 +96,7 @@ func root(w http.ResponseWriter, r *http.Request) {
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <h2 id="表单处理">表单处理</h2>
+                <h2 id="1表单处理">1.表单处理</h2>
 <h3 id="数据获取">数据获取</h3>
 <pre><code class="language-go">func root(w http.ResponseWriter, r *http.Request) {
     //1. 使用r.ParseForm()获取数据之后,get post 所有的数据都到了r.Form中
@@ -110,15 +110,22 @@ func main() {
 	http.ListenAndServe(&quot;:9000&quot;, nil)
 }
 </code></pre>
+<h3 id="数据验证">数据验证</h3>
+<pre><code class="language-go">	r.ParseForm()
+	if m, _ := regexp.MatchString(&quot;^[0-9]+$&quot;, r.FormValue(&quot;age&quot;)); !m {
+		fmt.Fprintf(w, &quot;age is no valid&quot;)
+	}
+</code></pre>
 
               </div>
               <div class="toc-container">
                 <ul class="markdownIt-TOC">
 <li>
 <ul>
-<li><a href="#%E8%A1%A8%E5%8D%95%E5%A4%84%E7%90%86">表单处理</a>
+<li><a href="#1%E8%A1%A8%E5%8D%95%E5%A4%84%E7%90%86">1.表单处理</a>
 <ul>
 <li><a href="#%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96">数据获取</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E9%AA%8C%E8%AF%81">数据验证</a></li>
 </ul>
 </li>
 </ul>
