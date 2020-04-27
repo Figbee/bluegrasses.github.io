@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-04-27T01:58:17.053Z</updated>
+    <updated>2020-04-27T02:01:57.363Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -87,16 +87,6 @@ docker run -d -p 3307:3306 -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC 
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Kingshard 数据库中间件]]></title>
-        <id>https://bluegrasses.github.io/post/kingshard-shu-ju-ku-zhong-jian-jian/</id>
-        <link href="https://bluegrasses.github.io/post/kingshard-shu-ju-ku-zhong-jian-jian/">
-        </link>
-        <updated>2020-03-24T13:46:12.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="基础理论">基础理论</h2>
-<p>##kingshard使用</p>
-]]></content>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[linux虚拟机环境搭建]]></title>
         <id>https://bluegrasses.github.io/post/linux-xu-ni-ji-huan-jing-da-jian/</id>
         <link href="https://bluegrasses.github.io/post/linux-xu-ni-ji-huan-jing-da-jian/">
@@ -141,7 +131,7 @@ sudo apt-get install nodejs-legacy</p>
         <link href="https://bluegrasses.github.io/post/go-yu-yan-za-xiang/">
         </link>
         <updated>2020-03-19T15:03:08.000Z</updated>
-        <content type="html"><![CDATA[<p>##基础运算符</p>
+        <content type="html"><![CDATA[<h2 id="基础运算符">基础运算符</h2>
 <h3 id="和-区别">*和&amp; 区别</h3>
 <p>&amp; 是取地址符号 , 即取得某个变量的地址 , 如 ; &amp;a<br>
 *是指针运算符 , 可以表示一个变量是指针类型 , 也可以表示一个指针变量所指向的存储单元 , 也就是这个地址所存储的值 .</p>
