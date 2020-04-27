@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-04-27T02:02:40.795Z</updated>
+    <updated>2020-04-27T02:08:28.706Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -126,7 +126,7 @@ sudo apt-get install nodejs-legacy</p>
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[go 语言杂项]]></title>
+        <title type="html"><![CDATA[[go 语言] 杂项]]></title>
         <id>https://bluegrasses.github.io/post/go-yu-yan-za-xiang/</id>
         <link href="https://bluegrasses.github.io/post/go-yu-yan-za-xiang/">
         </link>
