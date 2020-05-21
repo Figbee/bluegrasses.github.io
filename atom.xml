@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-05-21T07:52:26.322Z</updated>
+    <updated>2020-05-21T07:55:13.031Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -97,14 +97,15 @@ fmt.Println(&quot;Sort by age:&quot;, people)
 fmt.Println(&quot;sorted:&quot;, sort.SliceIsSorted(people, func(i, j int) bool {
     return people[i].Age &gt; people[j].Age
 }))
-sort.Search使用
-	a := []int{2, 3, 4, 200, 100, 21, 234, 56}
-  x := 21
-  sort.Slice(a, func(i, j int) bool {
-  	return a[i] &lt; a[i]
-  })
-  index := sort.Search(len(a), func(i int) bool { return a[i] &gt;= x })
-  fmt.Println(index)
+</code></pre>
+<h3 id="sortsearch使用">sort.Search使用</h3>
+<pre><code class="language-go">a := []int{2, 3, 4, 200, 100, 21, 234, 56}
+x := 21
+sort.Slice(a, func(i, j int) bool {
+return a[i] &lt; a[i]
+})
+index := sort.Search(len(a), func(i int) bool { return a[i] &gt;= x })
+fmt.Println(index)
 </code></pre>
 ]]></content>
     </entry>
