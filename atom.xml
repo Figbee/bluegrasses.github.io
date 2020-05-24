@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-05-24T00:20:18.323Z</updated>
+    <updated>2020-05-24T02:06:45.405Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -10,6 +10,54 @@
     <logo>https://bluegrasses.github.io/images/avatar.png</logo>
     <icon>https://bluegrasses.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 罗亭的技术博客</rights>
+    <entry>
+        <title type="html"><![CDATA[[go]标准库-os详解]]></title>
+        <id>https://bluegrasses.github.io/post/gobiao-zhun-ku-os-xiang-jie/</id>
+        <link href="https://bluegrasses.github.io/post/gobiao-zhun-ku-os-xiang-jie/">
+        </link>
+        <updated>2020-05-24T00:27:52.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="文件相关操作">文件相关操作</h2>
+<h3 id="os-文件操作">os 文件操作</h3>
+<p>Create 新建<br>
+Remove 删除<br>
+Open 打开<br>
+OpenFile 打开文件<br>
+<code>OpenFile的使用</code></p>
+<pre><code class="language-go">//创建并打开
+os.OpenFile(&quot;file.txt&quot;, os.O_CREATE|os.O_RDWR, 0755)
+//追加并打开
+os.OpenFile(&quot;file.txt&quot;, os.O_APPEND|os.O_RDWR, 0777)
+</code></pre>
+<p>Stat 返回FileInfo对象</p>
+<pre><code>os.Stat(&quot;file&quot;)
+</code></pre>
+<h3 id="file-文件操作">file 文件操作</h3>
+<p>Read 读取文件内容<br>
+ReadAt 读取指定偏移的文件内容<br>
+ReadDir 好像只能读取一层</p>
+<pre><code class="language-go">//返回一个文件类型切片
+fi, err := f.Readdir(0)
+</code></pre>
+<p>Seek 跳转文件指针</p>
+<pre><code class="language-go">//第一个参数为偏移量,可以为正负数, 第二个参数为偏移基准. 0位从开始,1表示从当前位置,2表示从末尾
+file.Seek(7,1)
+</code></pre>
+<p>Trucate 文件截取<br>
+Sync 内容从内存中提交到硬盘<br>
+Write 文件写入<br>
+WriteString 文件以字符串形式写入<br>
+Stat 返回FileInfo对象</p>
+<pre><code class="language-go">file.Stat()
+</code></pre>
+<h3 id="fileinfo">fileInfo</h3>
+<p>Name 文件名<br>
+Size 文件大小</p>
+<ul>
+<li>FileMode struct<br>
+fileInfo.Mode().IsDir()</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[[go] 标准库 数据、时间、数学函数]]></title>
         <id>https://bluegrasses.github.io/post/go-biao-zhun-ku-shu-ju-shi-jian-shu-xue-han-shu/</id>
