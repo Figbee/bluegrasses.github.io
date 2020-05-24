@@ -2,24 +2,24 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>docker 前后端分离项目部署 | 罗亭的技术博客</title>
+<title>[go] fmt格式化 | 罗亭的技术博客</title>
 <link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1590308715102">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://bluegrasses.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="docker 前后端分离项目部署 | 罗亭的技术博客 - Atom Feed" href="https://bluegrasses.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="[go] fmt格式化 | 罗亭的技术博客 - Atom Feed" href="https://bluegrasses.github.io/atom.xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
-    <meta name="description" content="docker Mysql 集群
-部署集群环境
-
-基础环境 percona/percona-xtradb-cluster
-
-1. 安装 percona/percona-xtradb-cluster
-···
-docker pull percon..." />
-    <meta name="keywords" content="" />
+    <meta name="description" content="常用占位符
+普通占位符
+%v 相应值的默认格式。 在打印结构体时，“加号”标记（%+v）会添加字段名
+%#v	相应值的Go语法表示
+%T 相应值的类型的Go语法表示
+%T 相应值的类型的Go语法表示
+布尔占位符
+%t		单词 true 或 ..." />
+    <meta name="keywords" content="golang" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
   </head>
@@ -81,76 +81,74 @@ docker pull percon..." />
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              docker 前后端分离项目部署
+              [go] fmt格式化
             </h2>
             <div class="post-info">
               <span>
-                2020-03-31
+                2020-05-16
               </span>
               <span>
                 2 min read
               </span>
               
+                <a href="https://bluegrasses.github.io/tag/MGq5D4kTr/" class="post-tag">
+                  # golang
+                </a>
+              
             </div>
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <h2 id="docker-mysql-集群">docker Mysql 集群</h2>
-<h3 id="部署集群环境">部署集群环境</h3>
-<blockquote>
-<p>基础环境 percona/percona-xtradb-cluster</p>
-</blockquote>
-<h4 id="1-安装-perconapercona-xtradb-cluster">1. 安装 percona/percona-xtradb-cluster</h4>
-<p>···<br>
-docker pull percona/percona-xtradb-cluster<br>
-···<br>
-重命名tag</p>
-<pre><code>docker tag percona/percona-xtradb-cluster pxc
-</code></pre>
-<p>删除多余的images</p>
-<pre><code>docker rmi percona/percona-xtradb-cluster
-</code></pre>
-<h4 id="2-部署专用网络">2. 部署专用网络</h4>
-<pre><code>docker network create --subnet=172.18.0.0/25 net1
-</code></pre>
-<p>查看专用网络信息</p>
-<pre><code>docker network inspect net1
-</code></pre>
-<h4 id="3-创建数据卷volume">3. 创建数据卷volume</h4>
-<pre><code>docker volume create v1
-</code></pre>
-<h4 id="4-创建pxc容器">4. 创建pxc容器</h4>
-<p>创建第一个容器<br>
-···<br>
-docker run -d -p 3306:3306 // 端口映射<br>
--v v1:/var/lib/mysql //映射目录到docker容器<br>
--e MYSQL_ROOT_PASSWORD=abc123456  //设置mysql 参数<br>
--e CLUSTER_NAME=PXC  //集群名称<br>
--e XTRABACKUP_PASSWORD=abc123456 --privileged  //设置数据库节点同步的密码<br>
---name=node1 //节点名称<br>
---net=net1 --ip 172.18.0.2  //设置网络名称<br>
-pxc //启动的image名称<br>
-···<br>
-创建第二个容器，并加入集群<br>
-···<br>
-docker run -d -p 3307:3306 -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=abc123456 -e CLUSSTER_JOIN=node1 -v  v2:/var/lib/mysql --Privileged --name=node2 --net=net2 --ip 172.18.0.3 pxc<br>
-···</p>
+                <h2 id="常用占位符">常用占位符</h2>
+<h3 id="普通占位符">普通占位符</h3>
+<p>%v 相应值的默认格式。 在打印结构体时，“加号”标记（%+v）会添加字段名<br>
+%#v	相应值的Go语法表示<br>
+%T 相应值的类型的Go语法表示<br>
+%T 相应值的类型的Go语法表示</p>
+<h3 id="布尔占位符">布尔占位符</h3>
+<p>%t		单词 true 或 false。</p>
+<h3 id="整数占位符">整数占位符</h3>
+<p>%b		二进制表示<br>
+%c		相应Unicode码点所表示的字符	<br>
+%d		十进制表示<br>
+%o		八进制表示<br>
+%q		单引号围绕的字符字面值，由Go语法安全地转义<br>
+%x		十六进制表示，字母形式为小写 a-f<br>
+%X		十六进制表示，字母形式为大写 A-F<br>
+%U		Unicode格式：U+1234，等同于 &quot;U+%04X&quot;</p>
+<h3 id="浮点数和复数">浮点数和复数</h3>
+<p>%b		无小数部分的，指数为二的幂的科学计数法<br>
+%e		科学计数法<br>
+%E		科学计数法<br>
+%f		有小数点而无指数<br>
+%g		根据情况选择<br>
+%G		根据情况选择</p>
+<h3 id="字符串与字节切片">字符串与字节切片</h3>
+<p>%s		输出字符串表示<br>
+%q		双引号围绕的字符串<br>
+%x		十六进制，小写字母<br>
+%X		十六进制，大写字母</p>
+<h3 id="指针">指针</h3>
+<p>%p		十六进制表示，前缀 0x</p>
+<h3 id="其他标记">其他标记</h3>
+<ul>
+<li>总打印数值的正负号</li>
+</ul>
 
               </div>
               <div class="toc-container">
                 <ul class="markdownIt-TOC">
 <li>
 <ul>
-<li><a href="#docker-mysql-%E9%9B%86%E7%BE%A4">docker Mysql 集群</a>
+<li><a href="#%E5%B8%B8%E7%94%A8%E5%8D%A0%E4%BD%8D%E7%AC%A6">常用占位符</a>
 <ul>
-<li><a href="#%E9%83%A8%E7%BD%B2%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83">部署集群环境</a>
-<ul>
-<li><a href="#1-%E5%AE%89%E8%A3%85-perconapercona-xtradb-cluster">1. 安装 percona/percona-xtradb-cluster</a></li>
-<li><a href="#2-%E9%83%A8%E7%BD%B2%E4%B8%93%E7%94%A8%E7%BD%91%E7%BB%9C">2. 部署专用网络</a></li>
-<li><a href="#3-%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%8D%B7volume">3. 创建数据卷volume</a></li>
-<li><a href="#4-%E5%88%9B%E5%BB%BApxc%E5%AE%B9%E5%99%A8">4. 创建pxc容器</a></li>
-</ul>
-</li>
+<li><a href="#%E6%99%AE%E9%80%9A%E5%8D%A0%E4%BD%8D%E7%AC%A6">普通占位符</a></li>
+<li><a href="#%E5%B8%83%E5%B0%94%E5%8D%A0%E4%BD%8D%E7%AC%A6">布尔占位符</a></li>
+<li><a href="#%E6%95%B4%E6%95%B0%E5%8D%A0%E4%BD%8D%E7%AC%A6">整数占位符</a></li>
+<li><a href="#%E6%B5%AE%E7%82%B9%E6%95%B0%E5%92%8C%E5%A4%8D%E6%95%B0">浮点数和复数</a></li>
+<li><a href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8E%E5%AD%97%E8%8A%82%E5%88%87%E7%89%87">字符串与字节切片</a></li>
+<li><a href="#%E6%8C%87%E9%92%88">指针</a></li>
+<li><a href="#%E5%85%B6%E4%BB%96%E6%A0%87%E8%AE%B0">其他标记</a></li>
 </ul>
 </li>
 </ul>
@@ -165,9 +163,9 @@ docker run -d -p 3307:3306 -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC 
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://bluegrasses.github.io/post/kingshard-shu-ju-ku-zhong-jian-jian/">
+            <a href="https://bluegrasses.github.io/post/golang-web-bian-cheng-冲突-漫步的猪_Win10/">
               <h3 class="post-title">
-                Kingshard 数据库中间件
+                [go] web编程
               </h3>
             </a>
           </div>

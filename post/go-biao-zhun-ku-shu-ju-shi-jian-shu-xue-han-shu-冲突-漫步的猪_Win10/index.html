@@ -13,8 +13,10 @@
 
     <meta name="description" content="sort 排序算法
 sort()方法
+
 前面已经提到过,对数据集合(包括定义的数据类型的集合)排序需要实现sort.Interface接口的三个方法,集合实现了这三个方法后,即可调用该2包的sort()方法进行排序.
-type Interfa..." />
+
+type Inter..." />
     <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
@@ -81,7 +83,7 @@ type Interfa..." />
             </h2>
             <div class="post-info">
               <span>
-                2020-05-21
+                2020-05-17
               </span>
               <span>
                 3 min read
@@ -91,21 +93,24 @@ type Interfa..." />
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <h1 id="sort-排序算法">sort 排序算法</h1>
-<h2 id="sort方法">sort()方法</h2>
+                <h2 id="sort-排序算法">sort 排序算法</h2>
+<h3 id="sort方法">sort()方法</h3>
+<blockquote>
 <p>前面已经提到过,对数据集合(包括定义的数据类型的集合)排序需要实现sort.Interface接口的三个方法,集合实现了这三个方法后,即可调用该2包的sort()方法进行排序.</p>
+</blockquote>
 <pre><code class="language-go">type Interface interface {
 		// 获取数据集合元素个数
 		Len() int
-		// 如果 i 索引的数据小于 j 索引的数据，
-        //返回 true，且不会调用下面的 Swap()，即数据升序排序。
+		// 如果 i 索引的数据小于 j 索引的数据，返回 true，且不会调用下面的 Swap()，即数据升序排序。
 		Less(i, j int) bool
 		// 交换 i 和 j 索引的两个元素的位置
         Swap(i, j int)
 }
 </code></pre>
-<p>该包还提供了一个方法可以判断数据集合是否已经排好顺序，该方法的内部实现依赖于我们自己实现的 Len() 和 Less() 方法<br>
-例子</p>
+<p>该包还提供了一个方法可以判断数据集合是否已经排好顺序，该方法的内部实现依赖于我们自己实现的 Len() 和 Less() 方法</p>
+<ul>
+<li>例子</li>
+</ul>
 <pre><code class="language-go">// 学生成绩结构体
 type StuScore struct {
     name  string    // 姓名
@@ -141,20 +146,22 @@ func main() {
 	// 判断是否已经排好顺序，将会打印 true
 }
 </code></pre>
-<ul>
-<li>sort.IsSorted() 是否排序过</li>
-<li>Reverse() 反向排序方法</li>
-<li>sort包已经支持的内部数据类型排序<br>
-sort包原生支持[]int、[]float64 和[]string 三种内建数据类型切片的排序操作，即不必我们自己实现相关的 Len()、Less() 和 Swap() 方法。</li>
-</ul>
-<h2 id="interface-排序和查找">[]interface 排序和查找</h2>
-<h3 id="基本函数">基本函数</h3>
+<h3 id="sortissorted-是否排序过">sort.IsSorted()  是否排序过</h3>
+<h3 id="reverse-反向排序方法">Reverse() 反向排序方法</h3>
+<h3 id="sort包已经支持的内部数据类型排序">sort包已经支持的内部数据类型排序</h3>
+<blockquote>
+<p>sort包原生支持[]int、[]float64 和[]string 三种内建数据类型切片的排序操作，即不必我们自己实现相关的 Len()、Less() 和 Swap() 方法。</p>
+</blockquote>
+<h3 id="interface-排序和查找">[]interface 排序和查找</h3>
+<h4 id="基本函数">基本函数</h4>
 <p>sort 包提供了以下函数：</p>
 <p>func Slice(slice interface{}, less func(i, j int) bool)<br>
 func SliceStable(slice interface{}, less func(i, j int) bool)<br>
 func SliceIsSorted(slice interface{}, less func(i, j int) bool) bool<br>
 func Search(n int, f func(int) bool) int</p>
-<h3 id="slice使用案例">slice使用案例</h3>
+<ul>
+<li>slice使用案例</li>
+</ul>
 <pre><code class="language-go">people := []struct {
 	Name string
 	Age  int
@@ -173,27 +180,34 @@ fmt.Println(&quot;sorted:&quot;, sort.SliceIsSorted(people, func(i, j int) bool 
     return people[i].Age &gt; people[j].Age
 }))
 </code></pre>
-<h3 id="sortsearch使用">sort.Search使用</h3>
-<pre><code class="language-go">a := []int{2, 3, 4, 200, 100, 21, 234, 56}
-x := 21
-sort.Slice(a, func(i, j int) bool {
-return a[i] &lt; a[i]
-})
-index := sort.Search(len(a), func(i int) bool { return a[i] &gt;= x })
-fmt.Println(index)
+<ul>
+<li>sort.Search使用<pre><code class="language-go">	a := []int{2, 3, 4, 200, 100, 21, 234, 56}
+  x := 21
+  sort.Slice(a, func(i, j int) bool {
+  	return a[i] &lt; a[i]
+  })
+  index := sort.Search(len(a), func(i int) bool { return a[i] &gt;= x })
+  fmt.Println(index)
 </code></pre>
+</li>
+</ul>
 
               </div>
               <div class="toc-container">
                 <ul class="markdownIt-TOC">
+<li>
+<ul>
 <li><a href="#sort-%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95">sort 排序算法</a>
 <ul>
 <li><a href="#sort%E6%96%B9%E6%B3%95">sort()方法</a></li>
+<li><a href="#sortissorted-%E6%98%AF%E5%90%A6%E6%8E%92%E5%BA%8F%E8%BF%87">sort.IsSorted()  是否排序过</a></li>
+<li><a href="#reverse-%E5%8F%8D%E5%90%91%E6%8E%92%E5%BA%8F%E6%96%B9%E6%B3%95">Reverse() 反向排序方法</a></li>
+<li><a href="#sort%E5%8C%85%E5%B7%B2%E7%BB%8F%E6%94%AF%E6%8C%81%E7%9A%84%E5%86%85%E9%83%A8%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E6%8E%92%E5%BA%8F">sort包已经支持的内部数据类型排序</a></li>
 <li><a href="#interface-%E6%8E%92%E5%BA%8F%E5%92%8C%E6%9F%A5%E6%89%BE">[]interface 排序和查找</a>
 <ul>
 <li><a href="#%E5%9F%BA%E6%9C%AC%E5%87%BD%E6%95%B0">基本函数</a></li>
-<li><a href="#slice%E4%BD%BF%E7%94%A8%E6%A1%88%E4%BE%8B">slice使用案例</a></li>
-<li><a href="#sortsearch%E4%BD%BF%E7%94%A8">sort.Search使用</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -208,7 +222,7 @@ fmt.Println(index)
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://bluegrasses.github.io/post/go-biao-zhun-ku-shu-ru-shu-chu-he-wen-ben/">
+            <a href="https://bluegrasses.github.io/post/go-biao-zhun-ku/">
               <h3 class="post-title">
                 [go] 标准库 输入输出和文本
               </h3>

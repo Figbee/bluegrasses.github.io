@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>[go]标准库-os详解 | 罗亭的技术博客</title>
-<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1590285997462">
+<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1590308715102">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://bluegrasses.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="[go]标准库-os详解 | 罗亭的技术博客 - Atom Feed" href="https://bluegrasses.github.io/atom.xml">
@@ -29,7 +29,7 @@ os.OpenFile(&quot;file.txt&quot;, os.O_CREA..." />
       <div class="main-content">
         <div class="site-header">
   <a href="https://bluegrasses.github.io">
-  <img class="avatar" src="https://bluegrasses.github.io/images/avatar.png?v=1590285997462" alt="">
+  <img class="avatar" src="https://bluegrasses.github.io/images/avatar.png?v=1590308715102" alt="">
   </a>
   <h1 class="site-title">
     罗亭的技术博客
@@ -89,7 +89,7 @@ os.OpenFile(&quot;file.txt&quot;, os.O_CREA..." />
                 2020-05-24
               </span>
               <span>
-                1 min read
+                2 min read
               </span>
               
             </div>
@@ -134,8 +134,43 @@ Stat 返回FileInfo对象</p>
 Size 文件大小</p>
 <ul>
 <li>FileMode struct<br>
-fileInfo.Mode().IsDir()</li>
+<code>fileInfo.Mode().IsDir()</code></li>
 </ul>
+<h2 id="环境相关">环境相关</h2>
+<h3 id="env-检测">env 检测</h3>
+<ul>
+<li>Environ</li>
+</ul>
+<pre><code class="language-go">	vars := os.Environ()
+	for _, env := range vars {
+		fmt.Println(env)
+	}
+</code></pre>
+<ul>
+<li>Expand</li>
+</ul>
+<pre><code class="language-go">path1 := os.Expand(&quot;$PATH&quot;, os.Getenv)
+</code></pre>
+<ul>
+<li>Hostname<pre><code class="language-go"></code></pre>
+</li>
+</ul>
+<p>os.Hostname()</p>
+<pre><code>* 判断错误的IsExist 和isNotExist
+```go
+err := os.Mkdir(&quot;tmp&quot;, os.ModePerm)
+if os.IsExist(err) {
+  ....
+}
+</code></pre>
+<ul>
+<li>IsPermission 是否有权限<pre><code class="language-go"></code></pre>
+</li>
+</ul>
+<p>file, err := os.OpenFile(&quot;file.txt&quot;, os.O_WRONLY, 0644)<br>
+os.IsPermission(err)</p>
+<pre><code>
+</code></pre>
 
               </div>
               <div class="toc-container">
@@ -147,6 +182,11 @@ fileInfo.Mode().IsDir()</li>
 <li><a href="#os-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C">os 文件操作</a></li>
 <li><a href="#file-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C">file 文件操作</a></li>
 <li><a href="#fileinfo">fileInfo</a></li>
+</ul>
+</li>
+<li><a href="#%E7%8E%AF%E5%A2%83%E7%9B%B8%E5%85%B3">环境相关</a>
+<ul>
+<li><a href="#env-%E6%A3%80%E6%B5%8B">env 检测</a></li>
 </ul>
 </li>
 </ul>

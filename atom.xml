@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-05-24T02:08:48.317Z</updated>
+    <updated>2020-05-24T08:25:27.036Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -54,8 +54,43 @@ Stat 返回FileInfo对象</p>
 Size 文件大小</p>
 <ul>
 <li>FileMode struct<br>
-fileInfo.Mode().IsDir()</li>
+<code>fileInfo.Mode().IsDir()</code></li>
 </ul>
+<h2 id="环境相关">环境相关</h2>
+<h3 id="env-检测">env 检测</h3>
+<ul>
+<li>Environ</li>
+</ul>
+<pre><code class="language-go">	vars := os.Environ()
+	for _, env := range vars {
+		fmt.Println(env)
+	}
+</code></pre>
+<ul>
+<li>Expand</li>
+</ul>
+<pre><code class="language-go">path1 := os.Expand(&quot;$PATH&quot;, os.Getenv)
+</code></pre>
+<ul>
+<li>Hostname<pre><code class="language-go"></code></pre>
+</li>
+</ul>
+<p>os.Hostname()</p>
+<pre><code>* 判断错误的IsExist 和isNotExist
+```go
+err := os.Mkdir(&quot;tmp&quot;, os.ModePerm)
+if os.IsExist(err) {
+  ....
+}
+</code></pre>
+<ul>
+<li>IsPermission 是否有权限<pre><code class="language-go"></code></pre>
+</li>
+</ul>
+<p>file, err := os.OpenFile(&quot;file.txt&quot;, os.O_WRONLY, 0644)<br>
+os.IsPermission(err)</p>
+<pre><code>
+</code></pre>
 ]]></content>
     </entry>
     <entry>
@@ -377,6 +412,397 @@ fmt.Println(w1.String())
 ]]></content>
     </entry>
     <entry>
+        <title type="html"><![CDATA[[go] 标准库 数据、时间、数学函数]]></title>
+        <id>https://bluegrasses.github.io/post/go-biao-zhun-ku-shu-ju-shi-jian-shu-xue-han-shu-冲突-漫步的猪_Win10/</id>
+        <link href="https://bluegrasses.github.io/post/go-biao-zhun-ku-shu-ju-shi-jian-shu-xue-han-shu-冲突-漫步的猪_Win10/">
+        </link>
+        <updated>2020-05-17T02:20:42.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="sort-排序算法">sort 排序算法</h2>
+<h3 id="sort方法">sort()方法</h3>
+<blockquote>
+<p>前面已经提到过,对数据集合(包括定义的数据类型的集合)排序需要实现sort.Interface接口的三个方法,集合实现了这三个方法后,即可调用该2包的sort()方法进行排序.</p>
+</blockquote>
+<pre><code class="language-go">type Interface interface {
+		// 获取数据集合元素个数
+		Len() int
+		// 如果 i 索引的数据小于 j 索引的数据，返回 true，且不会调用下面的 Swap()，即数据升序排序。
+		Less(i, j int) bool
+		// 交换 i 和 j 索引的两个元素的位置
+        Swap(i, j int)
+}
+</code></pre>
+<p>该包还提供了一个方法可以判断数据集合是否已经排好顺序，该方法的内部实现依赖于我们自己实现的 Len() 和 Less() 方法</p>
+<ul>
+<li>例子</li>
+</ul>
+<pre><code class="language-go">// 学生成绩结构体
+type StuScore struct {
+    name  string    // 姓名
+    score int   // 成绩
+}
+
+type StuScores []StuScore
+
+//Len()
+func (s StuScores) Len() int {
+	return len(s)
+}
+
+//Less(): 成绩将有低到高排序
+func (s StuScores) Less(i, j int) bool {
+	return s[i].score &lt; s[j].score
+}
+
+//Swap()
+func (s StuScores) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+
+func main() {
+    stus := StuScores{
+                {&quot;alan&quot;, 95},
+                {&quot;hikerell&quot;, 91},
+                {&quot;acmfly&quot;, 96},
+                {&quot;leao&quot;, 90},
+			}		
+    //StuScores 已经实现了 sort.Interface 接口 , 所以可以调用 Sort 函数进行排序
+	sort.Sort(stus)
+	// 判断是否已经排好顺序，将会打印 true
+}
+</code></pre>
+<h3 id="sortissorted-是否排序过">sort.IsSorted()  是否排序过</h3>
+<h3 id="reverse-反向排序方法">Reverse() 反向排序方法</h3>
+<h3 id="sort包已经支持的内部数据类型排序">sort包已经支持的内部数据类型排序</h3>
+<blockquote>
+<p>sort包原生支持[]int、[]float64 和[]string 三种内建数据类型切片的排序操作，即不必我们自己实现相关的 Len()、Less() 和 Swap() 方法。</p>
+</blockquote>
+<h3 id="interface-排序和查找">[]interface 排序和查找</h3>
+<h4 id="基本函数">基本函数</h4>
+<p>sort 包提供了以下函数：</p>
+<p>func Slice(slice interface{}, less func(i, j int) bool)<br>
+func SliceStable(slice interface{}, less func(i, j int) bool)<br>
+func SliceIsSorted(slice interface{}, less func(i, j int) bool) bool<br>
+func Search(n int, f func(int) bool) int</p>
+<ul>
+<li>slice使用案例</li>
+</ul>
+<pre><code class="language-go">people := []struct {
+	Name string
+	Age  int
+}{
+	{&quot;Gopher&quot;, 7},
+	{&quot;Alice&quot;, 55},
+	{&quot;Vera&quot;, 24},
+	{&quot;Bob&quot;, 75},
+}
+//排序
+//j参数其实相当于i+1=j
+sort.Slice(people, func(i, j int) bool { return people[i].Age &lt; people[j].Age }) // 按年龄升序排序
+fmt.Println(&quot;Sort by age:&quot;, people)
+//判断是否按照某种规则排过序
+fmt.Println(&quot;sorted:&quot;, sort.SliceIsSorted(people, func(i, j int) bool {
+    return people[i].Age &gt; people[j].Age
+}))
+</code></pre>
+<ul>
+<li>sort.Search使用<pre><code class="language-go">	a := []int{2, 3, 4, 200, 100, 21, 234, 56}
+  x := 21
+  sort.Slice(a, func(i, j int) bool {
+  	return a[i] &lt; a[i]
+  })
+  index := sort.Search(len(a), func(i int) bool { return a[i] &gt;= x })
+  fmt.Println(index)
+</code></pre>
+</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[go] 标准库 输入输出和文本]]></title>
+        <id>https://bluegrasses.github.io/post/go-biao-zhun-ku/</id>
+        <link href="https://bluegrasses.github.io/post/go-biao-zhun-ku/">
+        </link>
+        <updated>2020-05-16T00:07:09.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="第1章-输入和输出">第1章 输入和输出</h2>
+<h3 id="11-io-基本的io接口">1.1 io 基本的io接口</h3>
+<h4 id="111-reader-接口">1.1.1 Reader 接口</h4>
+<ul>
+<li>Reader 接口的定义如下：<br>
+type Reader interface {<br>
+Read(p []byte) (n int, err error)<br>
+}</li>
+</ul>
+<blockquote>
+<p>Read 将 len(p) 个字节读取到 p 中。它返回读取的字节数 n<br>
+当 Read 在成功读取 n &gt; 0 个字节后遇到一个错误或 EOF (end-of-file)，它会返回读取的字节数</p>
+</blockquote>
+<h4 id="112-write-接口">1.1.2 Write 接口</h4>
+<p>type Writer interface {<br>
+Write(p []byte) (n int, err error)<br>
+}</p>
+<blockquote>
+<p>Write 将 len(p) 个字节从 p 中写入到基本数据流中。它返回从 p 中被写入的字节数 n（0 &lt;= n &lt;= len(p)）以及任何遇到的引起写入提前停止的错误。</p>
+</blockquote>
+<p>os.File 同时实现了 io.Reader 和 io.Writer<br>
+strings.Reader 实现了 io.Reader</p>
+<h4 id="113-readerat-和-writerat-接口">1.1.3 ReaderAt 和 WriterAt 接口</h4>
+<p>ReaderAt 接口的定义如下：</p>
+<p>type ReaderAt interface {<br>
+ReadAt(p []byte, off int64) (n int, err error)<br>
+}</p>
+<blockquote>
+<p>ReadAt 从基本输入源的偏移量 off 处开始，将 len(p) 个字节读取到 p 中。<br>
+若 n = len(p) 个字节从输入源的结尾处由 ReadAt 返回，Read可能返回 err == EOF 或者 err == nil</p>
+</blockquote>
+<h4 id="114-readerfrom-和-writerto-接口">1.1.4 ReaderFrom 和 WriterTo 接口</h4>
+<p>ReaderFrom 的定义如下：</p>
+<pre><code class="language-go">type ReaderFrom interface {
+    ReadFrom(r Reader) (n int64, err error)
+}
+
+WriterTo的定义如下：
+
+type WriterTo interface {
+    WriteTo(w Writer) (n int64, err error)
+}
+</code></pre>
+<h4 id="115-seeker-接口">1.1.5 Seeker 接口</h4>
+<p>接口定义如下：</p>
+<p>type Seeker interface {<br>
+Seek(offset int64, whence int) (ret int64, err error)<br>
+}</p>
+<blockquote>
+<p>Seek 设置下一次 Read 或 Write 的偏移量为 offset，它的解释取决于 whence： 0 表示相对于文件的起始处，1 表示相对于当前的偏移，而 2 表示相对于其结尾处。<br>
+whence 的值，在 io 包中定义了相应的常量，应该使用这些常量</p>
+</blockquote>
+<pre><code class="language-go">const (
+  SeekStart   = 0 // seek relative to the origin of the file
+  SeekCurrent = 1 // seek relative to the current offset
+  SeekEnd     = 2 // seek relative to the end
+)
+</code></pre>
+<h4 id="116-close接口">1.1.6 Close接口</h4>
+<blockquote>
+<p>文件 (os.File)、归档（压缩包）、数据库连接、Socket 等需要手动关闭的资源都实现了 Closer 接口。实际编程中，经常将 Close 方法的调用放在 defer 语句中</p>
+</blockquote>
+<h4 id="117-copy-和-copyn-函数">1.1.7 Copy 和 CopyN 函数</h4>
+<p>func Copy(dst Writer, src Reader) (written int64, err error)</p>
+<blockquote>
+<p>Copy 将 src 复制到 dst，直到在 src 上到达 EOF 或发生错误。它返回复制的字节数 成功的 Copy 返回 err == nil，而非 err == EOF。</p>
+</blockquote>
+<pre><code class="language-go">io.Copy(os.Stdout, strings.NewReader(&quot;Go语言中文网&quot;))
+</code></pre>
+<p>输出结果屏幕显示:Go语言中文网</p>
+<pre><code class="language-go">func main() {
+    //标准输入流 ,直接copy到标准输出流
+	io.Copy(os.Stdout, os.Stdin)
+	fmt.Println(&quot;退出程序&quot;)
+}
+</code></pre>
+<ul>
+<li>CopyN 函数的签名：<br>
+func CopyN(dst Writer, src Reader, n int64) (written int64, err error)</li>
+</ul>
+<h4 id="118-writestring-函数">1.1.8 WriteString 函数</h4>
+<p>这是为了方便写入 string 类型提供的函数，函数签名：</p>
+<p>func WriteString(w Writer, s string) (n int, err error)</p>
+<h4 id="119-multireader-和-multiwriter-函数">1.1.9 MultiReader 和 MultiWriter 函数</h4>
+<p>这两个函数的定义分别是：<br>
+func MultiReader(readers ...Reader) Reader<br>
+func MultiWriter(writers ...Writer) Writer<br>
+它们接收多个 Reader 或 Writer，返回一个 Reader 或 Writer。我们可以猜想到这两个函数就是操作多个 Reader 或 Writer 就像操作一个。</p>
+<h3 id="12-ioutil-方便的io操作函数集">1.2 ioutil — 方便的IO操作函数集</h3>
+<h4 id="121-readall-函数">1.2.1 ReadAll 函数</h4>
+<p>很多时候，我们需要一次性读取 io.Reader 中的数据</p>
+<pre><code class="language-go">func ReadAll(r io.Reader) ([]byte, error)
+</code></pre>
+<h4 id="122-readdir-函数">1.2.2 ReadDir 函数</h4>
+<p>编写程序输出某目录下的所有文件（包括子目录）</p>
+<pre><code class="language-go">fileInfos, err := ioutil.ReadDir(path)
+</code></pre>
+<h4 id="123-readfile-和-writefile-函数">1.2.3 ReadFile 和 WriteFile 函数</h4>
+<ul>
+<li>ReadFile 读取整个文件的内容,  ReadFile 函数的签名如下:<br>
+func ReadFile(filename string) ([]byte, error)</li>
+<li>WriteFile 函数的签名如下：<br>
+func WriteFile(filename string, data []byte, perm os.FileMode) error</li>
+</ul>
+<h3 id="13-bufio-缓存io">1.3 bufio — 缓存IO</h3>
+<p>bufio 包提供了两个实例化bufio.Reader对象的函数: NewReader 和 NewReaderSize</p>
+<h4 id="131-reader-类型和方法">1.3.1 Reader 类型和方法</h4>
+<p>bufio.Reader 结构包装了一个 io.Reader 对象，提供缓存功能，同时实现了 io.Reader 接口</p>
+<h4 id="132-writer-类型和方法">1.3.2 Writer 类型和方法</h4>
+<p>bufio.Writer 结构包装了一个 io.Writer 对象，提供缓存功能，同时实现了 io.Writer 接口。</p>
+<h2 id="第2章-文本">第2章 文本</h2>
+<h3 id="21-strings-字符串操作">2.1 strings -- 字符串操作</h3>
+<h4 id="211-contians-count">2.1.1 Contians, count</h4>
+<pre><code class="language-go">	b := strings.Contains(&quot;hello&quot;, &quot;h&quot;)
+	count := strings.Count(&quot;hello&quot;, &quot;l&quot;)
+</code></pre>
+<h4 id="212-字符分割-split-splitn-splitafter">2.1.2 字符分割 Split, SplitN, SplitAfter</h4>
+<pre><code class="language-go">data := strings.SplitN(&quot;中国,日本,韩国&quot;, &quot;,&quot;, 3)
+</code></pre>
+<h4 id="字符串是否有某个前缀或后缀">字符串是否有某个前缀或后缀</h4>
+<pre><code class="language-go">// s 中是否以 prefix 开始
+func HasPrefix(s, prefix string) bool {
+  return len(s) &gt;= len(prefix) &amp;&amp; s[0:len(prefix)] == prefix
+}
+// s 中是否以 suffix 结尾
+func HasSuffix(s, suffix string) bool {
+  return len(s) &gt;= len(suffix) &amp;&amp; s[len(s)-len(suffix):] == suffix
+}
+</code></pre>
+<h4 id="213-字符串join操作">2.1.3 字符串join操作</h4>
+<pre><code class="language-go">fmt.Println(strings.Join([]string{&quot;name=xxx&quot;, &quot;age=xx&quot;}, &quot;&amp;&quot;))
+</code></pre>
+<h4 id="214-字符串替换-replace">2.1.4 字符串替换 replace</h4>
+<pre><code class="language-go">fmt.Println(strings.ReplaceAll(&quot;我爱php&quot;, &quot;php&quot;, &quot;golang&quot;))
+fmt.Println(strings.Replace(&quot;我爱php,我爱golang&quot;, &quot;爱&quot;, &quot;恨&quot;, 1))
+</code></pre>
+<h4 id="215-大小写转换-tolowertoupper">2.1.5 大小写转换 ToLower,ToUpper</h4>
+<pre><code class="language-go">fmt.Println(strings.ToLower(&quot;I Love China&quot;))
+fmt.Println(strings.ToUpper(&quot;I love China&quot;))
+</code></pre>
+<h4 id="216-标题处理">2.1.6 标题处理</h4>
+<ul>
+<li>Title</li>
+</ul>
+<pre><code class="language-go">func Title(s string) string
+</code></pre>
+<h4 id="217-修剪">2.1.7 修剪</h4>
+<blockquote>
+<p>// 将 s 左侧和右侧中匹配 cutset 中的任一字符的字符去掉<br>
+func Trim(s string, cutset string) string<br>
+// 将 s 左侧的匹配 cutset 中的任一字符的字符去掉<br>
+func TrimLeft(s string, cutset string) string<br>
+// 将 s 右侧的匹配 cutset 中的任一字符的字符去掉<br>
+func TrimRight(s string, cutset string) string<br>
+// 如果 s 的前缀为 prefix 则返回去掉前缀后的 string , 否则 s 没有变化。<br>
+func TrimPrefix(s, prefix string) string<br>
+// 如果 s 的后缀为 suffix 则返回去掉后缀后的 string , 否则 s 没有变化。<br>
+func TrimSuffix(s, suffix string) string<br>
+// 将 s 左侧和右侧的间隔符去掉。常见间隔符包括：'\t', '\n', '\v', '\f', '\r', ' ', U+0085 (NEL)<br>
+func TrimSpace(s string) string<br>
+// 将 s 左侧和右侧的匹配 f 的字符去掉<br>
+func TrimFunc(s string, f func(rune) bool) string<br>
+// 将 s 左侧的匹配 f 的字符去掉<br>
+func TrimLeftFunc(s string, f func(rune) bool) string<br>
+// 将 s 右侧的匹配 f 的字符去掉<br>
+func TrimRightFunc(s string, f func(rune) bool) string</p>
+</blockquote>
+<h3 id="22-bytes">2.2 bytes</h3>
+<blockquote>
+<p>因为字符串可以表示为 []byte，因此，bytes 包定义的函数、方法等和 strings 包很类似</p>
+</blockquote>
+<h4 id="221-reader类型">2.2.1 reader类型</h4>
+<p>type Reader struct {<br>
+s        []byte<br>
+i        int64 // 当前读取下标<br>
+prevRune int   // 前一个字符的下标，也可能 &lt; 0<br>
+}<br>
+bytes 包下的 Reader 类型实现了 io 包下的 Reader, ReaderAt, RuneReader, RuneScanner, ByteReader, ByteScanner, ReadSeeker, Seeker, WriterTo 等多个接口。主要用于 Read 数据。<br>
+我们需要在通过 bytes.NewReader 方法来初始化 bytes.Reader 类型的对象。初始化时传入 []byte 类型的数据。</p>
+<pre><code class="language-go">func NewReader(b []byte) *Reader
+</code></pre>
+<ul>
+<li>例子</li>
+</ul>
+<pre><code class="language-go">	x := []byte(&quot;您好,世界&quot;)
+	r1 := bytes.NewReader(x)
+     content2 := make([]byte, len(x))
+	nums, _ := r1.ReadAt(content2, 0)
+</code></pre>
+<h4 id="222-buffer类型">2.2.2 Buffer类型</h4>
+<h5 id="初始化方法">初始化方法</h5>
+<p>a := bytes.NewBufferString(&quot;Hello World&quot;)<br>
+b := bytes.NewBuffer([]byte(&quot;Hello World&quot;))<br>
+c := bytes.Buffer{}</p>
+<ul>
+<li>例子</li>
+</ul>
+<pre><code class="language-go">//新建字节缓存区,定位,r1写入到缓存区
+w1 := &amp;bytes.Buffer{}
+_, _ = r1.Seek(0, 0)
+_, _ = r1.WriteTo(w1)
+fmt.Println(w1.String())
+</code></pre>
+<h3 id="23-strconv-字符串和基本数据类型之间的转换">2.3 strconv 字符串和基本数据类型之间的转换</h3>
+<h3 id="24-regexp-正则表达式">2.4 regexp 正则表达式</h3>
+<h3 id="25-unicode-编码">2.5 unicode 编码</h3>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[go] fmt格式化]]></title>
+        <id>https://bluegrasses.github.io/post/go-fmt-ge-shi-hua-冲突-漫步的猪_Win10/</id>
+        <link href="https://bluegrasses.github.io/post/go-fmt-ge-shi-hua-冲突-漫步的猪_Win10/">
+        </link>
+        <updated>2020-05-15T23:52:25.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="常用占位符">常用占位符</h2>
+<h3 id="普通占位符">普通占位符</h3>
+<p>%v 相应值的默认格式。 在打印结构体时，“加号”标记（%+v）会添加字段名<br>
+%#v	相应值的Go语法表示<br>
+%T 相应值的类型的Go语法表示<br>
+%T 相应值的类型的Go语法表示</p>
+<h3 id="布尔占位符">布尔占位符</h3>
+<p>%t		单词 true 或 false。</p>
+<h3 id="整数占位符">整数占位符</h3>
+<p>%b		二进制表示<br>
+%c		相应Unicode码点所表示的字符	<br>
+%d		十进制表示<br>
+%o		八进制表示<br>
+%q		单引号围绕的字符字面值，由Go语法安全地转义<br>
+%x		十六进制表示，字母形式为小写 a-f<br>
+%X		十六进制表示，字母形式为大写 A-F<br>
+%U		Unicode格式：U+1234，等同于 &quot;U+%04X&quot;</p>
+<h3 id="浮点数和复数">浮点数和复数</h3>
+<p>%b		无小数部分的，指数为二的幂的科学计数法<br>
+%e		科学计数法<br>
+%E		科学计数法<br>
+%f		有小数点而无指数<br>
+%g		根据情况选择<br>
+%G		根据情况选择</p>
+<h3 id="字符串与字节切片">字符串与字节切片</h3>
+<p>%s		输出字符串表示<br>
+%q		双引号围绕的字符串<br>
+%x		十六进制，小写字母<br>
+%X		十六进制，大写字母</p>
+<h3 id="指针">指针</h3>
+<p>%p		十六进制表示，前缀 0x</p>
+<h3 id="其他标记">其他标记</h3>
+<ul>
+<li>总打印数值的正负号</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[go] web编程]]></title>
+        <id>https://bluegrasses.github.io/post/golang-web-bian-cheng-冲突-漫步的猪_Win10/</id>
+        <link href="https://bluegrasses.github.io/post/golang-web-bian-cheng-冲突-漫步的猪_Win10/">
+        </link>
+        <updated>2020-04-19T11:42:00.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="1表单处理">1.表单处理</h2>
+<h3 id="数据获取">数据获取</h3>
+<pre><code class="language-go">func root(w http.ResponseWriter, r *http.Request) {
+    //1. 使用r.ParseForm()获取数据之后,get post 所有的数据都到了r.Form中
+	r.ParseForm()
+    //2.使用r.FormValue()从r.Form中检索数据
+	fmt.Println(r.FormValue(&quot;name&quot;))
+
+}
+func main() {
+	http.HandleFunc(&quot;/&quot;, root)
+	http.ListenAndServe(&quot;:9000&quot;, nil)
+}
+</code></pre>
+<h3 id="数据验证">数据验证</h3>
+<pre><code class="language-go">	r.ParseForm()
+	if m, _ := regexp.MatchString(&quot;^[0-9]+$&quot;, r.FormValue(&quot;age&quot;)); !m {
+		fmt.Fprintf(w, &quot;age is no valid&quot;)
+	}
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[golang--web编程]]></title>
         <id>https://bluegrasses.github.io/post/golang-web-bian-cheng/</id>
         <link href="https://bluegrasses.github.io/post/golang-web-bian-cheng/">
@@ -406,8 +832,8 @@ func main() {
     </entry>
     <entry>
         <title type="html"><![CDATA[docker 前后端分离项目部署]]></title>
-        <id>https://bluegrasses.github.io/post/docker-qian-hou-duan-fen-chi-xiang-mu-bu-shu/</id>
-        <link href="https://bluegrasses.github.io/post/docker-qian-hou-duan-fen-chi-xiang-mu-bu-shu/">
+        <id>https://bluegrasses.github.io/post/docker-qian-hou-duan-fen-chi-xiang-mu-bu-shu-冲突-漫步的猪_Win10/</id>
+        <link href="https://bluegrasses.github.io/post/docker-qian-hou-duan-fen-chi-xiang-mu-bu-shu-冲突-漫步的猪_Win10/">
         </link>
         <updated>2020-03-31T08:54:38.000Z</updated>
         <content type="html"><![CDATA[<h2 id="docker-mysql-集群">docker Mysql 集群</h2>
@@ -450,186 +876,6 @@ pxc //启动的image名称<br>
 ···<br>
 docker run -d -p 3307:3306 -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=abc123456 -e CLUSSTER_JOIN=node1 -v  v2:/var/lib/mysql --Privileged --name=node2 --net=net2 --ip 172.18.0.3 pxc<br>
 ···</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[linux虚拟机环境搭建]]></title>
-        <id>https://bluegrasses.github.io/post/linux-xu-ni-ji-huan-jing-da-jian/</id>
-        <link href="https://bluegrasses.github.io/post/linux-xu-ni-ji-huan-jing-da-jian/">
-        </link>
-        <updated>2020-03-24T10:55:43.000Z</updated>
-        <content type="html"><![CDATA[<blockquote>
-<p>基本环境 lubuntu 19 虚拟机virtualbox</p>
-</blockquote>
-<h3 id="首次初始化su密码">首次初始化su密码</h3>
-<p>sudo passwd</p>
-<h3 id="安装virtualbox-增强工具">安装virtualbox 增强工具</h3>
-<ol>
-<li>点击安装 增强工具挂载到lubuntn文件中</li>
-<li>定位到指定位置,然后 ./VBoxLinuxAdditions.run 运行安装程序</li>
-</ol>
-<h3 id="虚拟机和主机互通">虚拟机和主机互通</h3>
-<ol>
-<li>virualbox网络设置为桥接模式</li>
-<li>安装ssh软件<br>
-检查是否安装了SSH<br>
-ps -e|grep ssh<br>
-安装ssh服务器端<br>
-apt install openssh-server<br>
-手工启动<br>
-sudo /etc/init.d/ssh start<br>
-默认端口为22</li>
-</ol>
-<h3 id="设置共享目录">设置共享目录</h3>
-<ol>
-<li>virtualbox 中设置共享文件夹</li>
-<li>好像默认挂载到/media/xxx目录下</li>
-</ol>
-<h3 id="tldr工具安装">tldr工具安装</h3>
-<p>sudo apt-get install npm<br>
-sudo npm install -g tldr<br>
-sudo apt-get install nodejs-legacy</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[[go 语言] 杂项]]></title>
-        <id>https://bluegrasses.github.io/post/go-yu-yan-za-xiang/</id>
-        <link href="https://bluegrasses.github.io/post/go-yu-yan-za-xiang/">
-        </link>
-        <updated>2020-03-19T15:03:08.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="基础运算符">基础运算符</h2>
-<h3 id="和-区别">*和&amp; 区别</h3>
-<p>&amp; 是取地址符号 , 即取得某个变量的地址 , 如 ; &amp;a<br>
-*是指针运算符 , 可以表示一个变量是指针类型 , 也可以表示一个指针变量所指向的存储单元 , 也就是这个地址所存储的值 .</p>
-<h2 id="defer-panic-recover">defer panic recover</h2>
-<pre><code class="language-go">func main() {
-	defer func() {
-		err := recover()
-		fmt.Println(&quot;异常信息是:&quot;, err)
-	}()
-	panic(&quot;it is panic&quot;)
-}
-</code></pre>
-<h2 id="go键盘输入">go键盘输入</h2>
-<p>Scanln和Scanf类似于println和printf</p>
-<pre><code class="language-go">func main() {
-	var x int
-	var y float64
-	fmt.Println(&quot;请输入一个整数，一个浮点类型：&quot;)
-	fmt.Scanln(&amp;x, &amp;y) //读取键盘的输入，通过操作地址，赋值给x和y   阻塞式
-	fmt.Printf(&quot;x的数值：%d，y的数值：%f\n&quot;, x, y)
-
-	fmt.Scanf(&quot;%d,%f&quot;, &amp;x, &amp;y)
-	fmt.Printf(&quot;x:%d,y:%f\n&quot;, x, y)
-}
-</code></pre>
-<h2 id="缓冲区的输入">缓冲区的输入</h2>
-<pre><code class="language-go">func main() {
-	fmt.Println(&quot;请输入一个字符串:&quot;)
-	//创建一个缓冲区,缓冲区读取的内容是标准输入流
-	reader := bufio.NewReader(os.Stdin)
-	//读取缓冲区,知道遇到\n操作
-	s1, _ := reader.ReadString('\n')
-	fmt.Println(&quot;读到的数据:&quot;, s1)
-}
-</code></pre>
-<h2 id="打印数据类型">打印数据类型</h2>
-<pre><code class="language-go">	var a = [...]int{0: 1, 3: 3}
-	//使用反射打印数据类型
-	fmt.Println(reflect.TypeOf(a))
-	//使用Printf打印数据类型
-	fmt.Printf(&quot;%T&quot;, a)
-</code></pre>
-<h2 id="函数的使用">函数的使用</h2>
-<h3 id="函数可变参数">函数可变参数</h3>
-<pre><code class="language-go">func getAdd(nums ...int) {
-	sum := 0
-	for i := 0; i &lt; len(nums); i++ {
-		sum += nums[i]
-	}
-	fmt.Println(sum)
-}
-</code></pre>
-<h2 id="结构体的使用">结构体的使用</h2>
-<h3 id="method-继承">method 继承</h3>
-<pre><code class="language-go">type Human struct{
-	name string
-	age int
-	phone string
-}
-type Student struct{
-	Human
-	school string
-}
-type Commpany struct{
-	Human
-	Commpany string
-}
-func (h* Human) SayHi(){
-	fmt.Printf(&quot;i am %s you can call me on %s\n&quot;,h.name,h.phone)
-}
-func main(){
-	mark:=Student{Human{&quot;yxg&quot;,40,&quot;15548551999&quot;},&quot;btsy&quot;}
-	tom:=Commpany{Human{&quot;tom&quot;,20,&quot;13348551950&quot;},&quot;bjyddx&quot;}
-	mark.SayHi()
-	tom.SayHi()
-}
-</code></pre>
-<h2 id="断言">断言</h2>
-<h3 id="断言方式1">断言方式1</h3>
-<blockquote>
-<p>安全类型断言<br>
-&lt;目标类型的值&gt;，&lt;布尔参数&gt; := &lt;表达式&gt;.( 目标类型 )</p>
-</blockquote>
-<pre><code class="language-go">type Student struct {
-	name string
-	age  int
-	city string
-}
-func main(){
-    var i1 interface{}
-	i1 = Student{}
-    data,ok:=i1.(Student)
-    if ok{
-
-    }
-}
-</code></pre>
-<h3 id="断言方式2">断言方式2</h3>
-<blockquote>
-<p>s.(type)</p>
-</blockquote>
-<pre><code class="language-go">func main(){
-    var i1 interface{}
-	i1 = Student{}
-    switch t := i1.(type) {
-	case Student:
-		fmt.Println(&quot;student 类型&quot;, t)
-	default:
-		fmt.Println(&quot;未知类型&quot;)
-	}
-}
-</code></pre>
-<h2 id="文件操作">文件操作</h2>
-<h3 id="基本操作语法">基本操作语法</h3>
-<blockquote>
-<p>file 操作 封装在os 包</p>
-</blockquote>
-<ol>
-<li>创建文件夹，如果文件夹存在，创建失败<br>
-os.MkDir() 创建文件夹<br>
-os.MKDirAll() 可以创建多层</li>
-<li>创建文件<br>
-os.Create() 创建文件 采用模式0666任何人都可读写,不可执行</li>
-<li>打开文件<br>
-os.Open(filename)<br>
-os.OpenFile(filename,mode,perm)</li>
-<li>关闭文件:<br>
-file.Close()</li>
-<li>删除文件或目录<br>
-os.Remove() //删除文件和空目录<br>
-os.RemoveAll()//删除所有</li>
-</ol>
 ]]></content>
     </entry>
 </feed>

@@ -2,24 +2,21 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>docker 前后端分离项目部署 | 罗亭的技术博客</title>
+<title>[go] web编程 | 罗亭的技术博客</title>
 <link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1590308715102">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://bluegrasses.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="docker 前后端分离项目部署 | 罗亭的技术博客 - Atom Feed" href="https://bluegrasses.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="[go] web编程 | 罗亭的技术博客 - Atom Feed" href="https://bluegrasses.github.io/atom.xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
-    <meta name="description" content="docker Mysql 集群
-部署集群环境
-
-基础环境 percona/percona-xtradb-cluster
-
-1. 安装 percona/percona-xtradb-cluster
-···
-docker pull percon..." />
-    <meta name="keywords" content="" />
+    <meta name="description" content="1.表单处理
+数据获取
+func root(w http.ResponseWriter, r *http.Request) {
+    //1. 使用r.ParseForm()获取数据之后,get post 所有的数据都到了r.Form中
+..." />
+    <meta name="keywords" content="golang" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
   </head>
@@ -81,76 +78,54 @@ docker pull percon..." />
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              docker 前后端分离项目部署
+              [go] web编程
             </h2>
             <div class="post-info">
               <span>
-                2020-03-31
+                2020-04-19
               </span>
               <span>
-                2 min read
+                1 min read
               </span>
+              
+                <a href="https://bluegrasses.github.io/tag/MGq5D4kTr/" class="post-tag">
+                  # golang
+                </a>
               
             </div>
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <h2 id="docker-mysql-集群">docker Mysql 集群</h2>
-<h3 id="部署集群环境">部署集群环境</h3>
-<blockquote>
-<p>基础环境 percona/percona-xtradb-cluster</p>
-</blockquote>
-<h4 id="1-安装-perconapercona-xtradb-cluster">1. 安装 percona/percona-xtradb-cluster</h4>
-<p>···<br>
-docker pull percona/percona-xtradb-cluster<br>
-···<br>
-重命名tag</p>
-<pre><code>docker tag percona/percona-xtradb-cluster pxc
+                <h2 id="1表单处理">1.表单处理</h2>
+<h3 id="数据获取">数据获取</h3>
+<pre><code class="language-go">func root(w http.ResponseWriter, r *http.Request) {
+    //1. 使用r.ParseForm()获取数据之后,get post 所有的数据都到了r.Form中
+	r.ParseForm()
+    //2.使用r.FormValue()从r.Form中检索数据
+	fmt.Println(r.FormValue(&quot;name&quot;))
+
+}
+func main() {
+	http.HandleFunc(&quot;/&quot;, root)
+	http.ListenAndServe(&quot;:9000&quot;, nil)
+}
 </code></pre>
-<p>删除多余的images</p>
-<pre><code>docker rmi percona/percona-xtradb-cluster
+<h3 id="数据验证">数据验证</h3>
+<pre><code class="language-go">	r.ParseForm()
+	if m, _ := regexp.MatchString(&quot;^[0-9]+$&quot;, r.FormValue(&quot;age&quot;)); !m {
+		fmt.Fprintf(w, &quot;age is no valid&quot;)
+	}
 </code></pre>
-<h4 id="2-部署专用网络">2. 部署专用网络</h4>
-<pre><code>docker network create --subnet=172.18.0.0/25 net1
-</code></pre>
-<p>查看专用网络信息</p>
-<pre><code>docker network inspect net1
-</code></pre>
-<h4 id="3-创建数据卷volume">3. 创建数据卷volume</h4>
-<pre><code>docker volume create v1
-</code></pre>
-<h4 id="4-创建pxc容器">4. 创建pxc容器</h4>
-<p>创建第一个容器<br>
-···<br>
-docker run -d -p 3306:3306 // 端口映射<br>
--v v1:/var/lib/mysql //映射目录到docker容器<br>
--e MYSQL_ROOT_PASSWORD=abc123456  //设置mysql 参数<br>
--e CLUSTER_NAME=PXC  //集群名称<br>
--e XTRABACKUP_PASSWORD=abc123456 --privileged  //设置数据库节点同步的密码<br>
---name=node1 //节点名称<br>
---net=net1 --ip 172.18.0.2  //设置网络名称<br>
-pxc //启动的image名称<br>
-···<br>
-创建第二个容器，并加入集群<br>
-···<br>
-docker run -d -p 3307:3306 -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=abc123456 -e CLUSSTER_JOIN=node1 -v  v2:/var/lib/mysql --Privileged --name=node2 --net=net2 --ip 172.18.0.3 pxc<br>
-···</p>
 
               </div>
               <div class="toc-container">
                 <ul class="markdownIt-TOC">
 <li>
 <ul>
-<li><a href="#docker-mysql-%E9%9B%86%E7%BE%A4">docker Mysql 集群</a>
+<li><a href="#1%E8%A1%A8%E5%8D%95%E5%A4%84%E7%90%86">1.表单处理</a>
 <ul>
-<li><a href="#%E9%83%A8%E7%BD%B2%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83">部署集群环境</a>
-<ul>
-<li><a href="#1-%E5%AE%89%E8%A3%85-perconapercona-xtradb-cluster">1. 安装 percona/percona-xtradb-cluster</a></li>
-<li><a href="#2-%E9%83%A8%E7%BD%B2%E4%B8%93%E7%94%A8%E7%BD%91%E7%BB%9C">2. 部署专用网络</a></li>
-<li><a href="#3-%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%8D%B7volume">3. 创建数据卷volume</a></li>
-<li><a href="#4-%E5%88%9B%E5%BB%BApxc%E5%AE%B9%E5%99%A8">4. 创建pxc容器</a></li>
-</ul>
-</li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96">数据获取</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E9%AA%8C%E8%AF%81">数据验证</a></li>
 </ul>
 </li>
 </ul>
@@ -165,9 +140,9 @@ docker run -d -p 3307:3306 -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC 
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://bluegrasses.github.io/post/kingshard-shu-ju-ku-zhong-jian-jian/">
+            <a href="https://bluegrasses.github.io/post/golang-web-bian-cheng/">
               <h3 class="post-title">
-                Kingshard 数据库中间件
+                golang--web编程
               </h3>
             </a>
           </div>
