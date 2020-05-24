@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-05-24T08:27:40.691Z</updated>
+    <updated>2020-05-24T08:28:30.018Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -84,15 +84,8 @@ if os.IsExist(err) {
 }
 </code></pre>
 <ul>
-<li>
-<p>IsPermission 是否有权限</p>
-<pre><code class="language-go"></code></pre>
-</li>
+<li>IsPermission 是否有权限</li>
 </ul>
-<p>file, err := os.OpenFile(&quot;file.txt&quot;, os.O_WRONLY, 0644)<br>
-os.IsPermission(err)</p>
-<pre><code>
-</code></pre>
 ]]></content>
     </entry>
     <entry>
