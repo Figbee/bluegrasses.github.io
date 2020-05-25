@@ -2,21 +2,20 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>[go] web编程 | 罗亭的技术博客</title>
+<title>[go] FilePath  | 罗亭的技术博客</title>
 <link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1590409816206">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://bluegrasses.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="[go] web编程 | 罗亭的技术博客 - Atom Feed" href="https://bluegrasses.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="[go] FilePath  | 罗亭的技术博客 - Atom Feed" href="https://bluegrasses.github.io/atom.xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
-    <meta name="description" content="1.表单处理
-数据获取
-func root(w http.ResponseWriter, r *http.Request) {
-    //1. 使用r.ParseForm()获取数据之后,get post 所有的数据都到了r.Form中
-..." />
-    <meta name="keywords" content="golang" />
+    <meta name="description" content="基本操作
+Abs 绝对路径
+absPath := &quot;Z:\\个人区\\golang\\study\\libs\\go.mod&quot;
+absPath, err := filepath.Abs(&quot;./go.mod&qu..." />
+    <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
   </head>
@@ -78,43 +77,66 @@ func root(w http.ResponseWriter, r *http.Request) {
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              [go] web编程
+              [go] FilePath 
             </h2>
             <div class="post-info">
               <span>
-                2020-04-19
+                2020-05-25
               </span>
               <span>
-                1 min read
+                2 min read
               </span>
-              
-                <a href="https://bluegrasses.github.io/tag/MGq5D4kTr/" class="post-tag">
-                  # golang
-                </a>
               
             </div>
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <h2 id="1表单处理">1.表单处理</h2>
-<h3 id="数据获取">数据获取</h3>
-<pre><code class="language-go">func root(w http.ResponseWriter, r *http.Request) {
-    //1. 使用r.ParseForm()获取数据之后,get post 所有的数据都到了r.Form中
-	r.ParseForm()
-    //2.使用r.FormValue()从r.Form中检索数据
-	fmt.Println(r.FormValue(&quot;name&quot;))
-
-}
-func main() {
-	http.HandleFunc(&quot;/&quot;, root)
-	http.ListenAndServe(&quot;:9000&quot;, nil)
-}
+                <h2 id="基本操作">基本操作</h2>
+<h3 id="abs-绝对路径">Abs 绝对路径</h3>
+<pre><code class="language-go">absPath := &quot;Z:\\个人区\\golang\\study\\libs\\go.mod&quot;
+absPath, err := filepath.Abs(&quot;./go.mod&quot;)
 </code></pre>
-<h3 id="数据验证">数据验证</h3>
-<pre><code class="language-go">	r.ParseForm()
-	if m, _ := regexp.MatchString(&quot;^[0-9]+$&quot;, r.FormValue(&quot;age&quot;)); !m {
-		fmt.Fprintf(w, &quot;age is no valid&quot;)
-	}
+<h3 id="rel-相对路径">Rel 相对路径</h3>
+<pre><code class="language-go">absPath := &quot;Z:\\个人区\\golang\\study\\libs\\go.mod&quot;
+relPath, err := filepath.Rel(&quot;Z:\\个人区\\&quot;, absPath)
+</code></pre>
+<h3 id="dir目录-base文件名-ext后缀">Dir(目录) Base(文件名) Ext(后缀)</h3>
+<pre><code class="language-go">dir := filepath.Dir(absPath)
+base := filepath.Base(absPath)
+ext := filepath.Ext(absPath)
+</code></pre>
+<h3 id="split-路径分隔">Split 路径分隔</h3>
+<p>//如果路径中没有路径分隔符，函数返回值 dir 为空字符串，file 等于 path；<br>
+//反之，如果路径中最后一个字符是 /，则 dir 等于 path，file 为空字符串。</p>
+<pre><code class="language-go">filepath.Split(&quot;Z:\\个人区\\golang\\study\\libs\\go.mod&quot;)
+</code></pre>
+<h3 id="clean-路径整理">Clean 路径整理</h3>
+<pre><code class="language-go">	uncleanPath := &quot;/Users/Benjamin/./../../Users/Benjamin/Workspace&quot;
+	cleaned := filepath.Clean(uncleanPath)
+</code></pre>
+<h3 id="glob-路径匹配">Glob 路径匹配</h3>
+<pre><code class="language-go">pattern := &quot;osdemo/*.go&quot;
+filepaths, err := filepath.Glob(pattern)
+</code></pre>
+<h3 id="hasprefix-文件名是否有前缀">hasPrefix 文件名是否有前缀</h3>
+<pre><code class="language-go">result := filepath.HasPrefix(&quot;main.go&quot;, &quot;main&quot;)
+</code></pre>
+<h3 id="match-路径匹配">match 路径匹配</h3>
+<pre><code class="language-go">pattern := &quot;main.*&quot;
+name := &quot;main.go&quot;
+matched, err := filepath.Match(pattern, name)
+</code></pre>
+<ul>
+<li>toSlash 路径替换为反斜杠</li>
+</ul>
+<h3 id="walk-遍历目录">walk 遍历目录</h3>
+<pre><code class="language-go">	currentDir, err := os.Getwd()
+	filepath.Walk(currentDir, walkfn)
+
+func walkfn(path string, fileInfo os.FileInfo, _ error) error {
+	fmt.Println(&quot;string:&quot;, path, &quot;info:&quot;, fileInfo.Name())
+	return nil
+}
 </code></pre>
 
               </div>
@@ -122,10 +144,17 @@ func main() {
                 <ul class="markdownIt-TOC">
 <li>
 <ul>
-<li><a href="#1%E8%A1%A8%E5%8D%95%E5%A4%84%E7%90%86">1.表单处理</a>
+<li><a href="#%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C">基本操作</a>
 <ul>
-<li><a href="#%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96">数据获取</a></li>
-<li><a href="#%E6%95%B0%E6%8D%AE%E9%AA%8C%E8%AF%81">数据验证</a></li>
+<li><a href="#abs-%E7%BB%9D%E5%AF%B9%E8%B7%AF%E5%BE%84">Abs 绝对路径</a></li>
+<li><a href="#rel-%E7%9B%B8%E5%AF%B9%E8%B7%AF%E5%BE%84">Rel 相对路径</a></li>
+<li><a href="#dir%E7%9B%AE%E5%BD%95-base%E6%96%87%E4%BB%B6%E5%90%8D-ext%E5%90%8E%E7%BC%80">Dir(目录) Base(文件名) Ext(后缀)</a></li>
+<li><a href="#split-%E8%B7%AF%E5%BE%84%E5%88%86%E9%9A%94">Split 路径分隔</a></li>
+<li><a href="#clean-%E8%B7%AF%E5%BE%84%E6%95%B4%E7%90%86">Clean 路径整理</a></li>
+<li><a href="#glob-%E8%B7%AF%E5%BE%84%E5%8C%B9%E9%85%8D">Glob 路径匹配</a></li>
+<li><a href="#hasprefix-%E6%96%87%E4%BB%B6%E5%90%8D%E6%98%AF%E5%90%A6%E6%9C%89%E5%89%8D%E7%BC%80">hasPrefix 文件名是否有前缀</a></li>
+<li><a href="#match-%E8%B7%AF%E5%BE%84%E5%8C%B9%E9%85%8D">match 路径匹配</a></li>
+<li><a href="#walk-%E9%81%8D%E5%8E%86%E7%9B%AE%E5%BD%95">walk 遍历目录</a></li>
 </ul>
 </li>
 </ul>
@@ -140,9 +169,9 @@ func main() {
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://bluegrasses.github.io/post/golang-web-bian-cheng/">
+            <a href="https://bluegrasses.github.io/post/gobiao-zhun-ku-os-xiang-jie/">
               <h3 class="post-title">
-                golang--web编程
+                [go]标准库-os详解
               </h3>
             </a>
           </div>
