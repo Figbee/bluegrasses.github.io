@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-05-26T01:48:31.711Z</updated>
+    <updated>2020-05-26T01:56:41.628Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -436,7 +436,7 @@ fmt.Println(w1.String())
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[go | 标注库 fmt 格式化]]></title>
+        <title type="html"><![CDATA[[go]标注库: fmt 格式化]]></title>
         <id>https://bluegrasses.github.io/post/go-fmt-ge-shi-hua/</id>
         <link href="https://bluegrasses.github.io/post/go-fmt-ge-shi-hua/">
         </link>
@@ -477,7 +477,7 @@ fmt.Println(w1.String())
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[go | 标准库 数据、时间、数学函数]]></title>
+        <title type="html"><![CDATA[[go]标准库: 数据、时间、数学函数]]></title>
         <id>https://bluegrasses.github.io/post/go-biao-zhun-ku-shu-ju-shi-jian-shu-xue-han-shu-冲突-漫步的猪_Win10/</id>
         <link href="https://bluegrasses.github.io/post/go-biao-zhun-ku-shu-ju-shi-jian-shu-xue-han-shu-冲突-漫步的猪_Win10/">
         </link>
@@ -583,7 +583,7 @@ fmt.Println(&quot;sorted:&quot;, sort.SliceIsSorted(people, func(i, j int) bool 
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[go | 标准库 输入输出和文本]]></title>
+        <title type="html"><![CDATA[[go]标准库: 输入输出和文本]]></title>
         <id>https://bluegrasses.github.io/post/go-biao-zhun-ku/</id>
         <link href="https://bluegrasses.github.io/post/go-biao-zhun-ku/">
         </link>
@@ -797,7 +797,7 @@ fmt.Println(w1.String())
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[go | fmt格式化]]></title>
+        <title type="html"><![CDATA[[go] fmt格式化]]></title>
         <id>https://bluegrasses.github.io/post/go-fmt-ge-shi-hua-冲突-漫步的猪_Win10/</id>
         <link href="https://bluegrasses.github.io/post/go-fmt-ge-shi-hua-冲突-漫步的猪_Win10/">
         </link>
@@ -868,7 +868,7 @@ func main() {
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[golang--web编程]]></title>
+        <title type="html"><![CDATA[[go]--web编程]]></title>
         <id>https://bluegrasses.github.io/post/golang-web-bian-cheng/</id>
         <link href="https://bluegrasses.github.io/post/golang-web-bian-cheng/">
         </link>
