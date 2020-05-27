@@ -2,19 +2,20 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Kingshard 数据库中间件 | 罗亭的技术博客</title>
+<title>go 标准库 : http | 罗亭的技术博客</title>
 <link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1590547402839">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://bluegrasses.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="Kingshard 数据库中间件 | 罗亭的技术博客 - Atom Feed" href="https://bluegrasses.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="go 标准库 : http | 罗亭的技术博客 - Atom Feed" href="https://bluegrasses.github.io/atom.xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
-    <meta name="description" content="基础理论
-##kingshard使用
-" />
-    <meta name="keywords" content="golang" />
+    <meta name="description" content="##http 包
+do
+client := &amp;http.Client{}
+request, err := http.NewRequest(&quot;GET&quot;, &quot;http://www.hoopchina.com..." />
+    <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
   </head>
@@ -76,33 +77,101 @@
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              Kingshard 数据库中间件
+              go 标准库 : http
             </h2>
             <div class="post-info">
               <span>
-                2020-03-24
+                2020-05-27
               </span>
               <span>
-                1 min read
+                2 min read
               </span>
-              
-                <a href="https://bluegrasses.github.io/tag/MGq5D4kTr/" class="post-tag">
-                  # golang
-                </a>
               
             </div>
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <h2 id="基础理论">基础理论</h2>
-<p>##kingshard使用</p>
+                <p>##http 包</p>
+<h3 id="do">do</h3>
+<pre><code class="language-go">client := &amp;http.Client{}
+request, err := http.NewRequest(&quot;GET&quot;, &quot;http://www.hoopchina.com&quot;, nil)
+resp, err := client.Do(request)
+body, err := ioutil.ReadAll(resp.Body)
+if err := resp.Body.Close(); err != nil {
+    log.Fatalln(err)
+}
+fmt.Println(string(body))
+</code></pre>
+<h3 id="get">get</h3>
+<pre><code class="language-go">	client := http.Client{}
+	resp, err := client.Get(&quot;http://www.baidu.com&quot;)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err := resp.Body.Close(); err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println(string(body))
+
+</code></pre>
+<h3 id="post">post</h3>
+<pre><code class="language-go">	client := &amp;http.Client{}
+	resp, err := client.Post(&quot;http://www.baidu.com&quot;, &quot;text/html&quot;, nil)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err := resp.Body.Close(); err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println(string(body))
+</code></pre>
+<h3 id="postform">postForm</h3>
+<pre><code class="language-go">client := &amp;http.Client{}
+data := url.Values{}
+data.Add(&quot;name&quot;, &quot;beijing&quot;)
+resp, err := client.PostForm(&quot;http://www.baidu.com&quot;, data)
+body, err := ioutil.ReadAll(resp.Body)
+if err := resp.Body.Close(); err != nil {
+    log.Fatalln(err)
+}
+fmt.Println(string(body))
+</code></pre>
+<h3 id="server">server</h3>
+<pre><code class="language-go">// ` 代表不转义
+const html = `&lt;form method=&quot;POST&quot;&gt;
+&lt;input type=&quot;text&quot; name=&quot;name&quot;&gt;
+&lt;input type=&quot;submit&quot; value=&quot;send&quot;&gt;
+&lt;/form&gt;`
+//启动http 活动
+func server() {
+	http.HandleFunc(&quot;/&quot;, GetFormHandler)
+	log.Fatal(http.ListenAndServe(&quot;:9000&quot;, nil))
+}
+
+//GetFormHandler 函数
+func GetFormHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set(&quot;Content-Type&quot;, &quot;text/html&quot;)
+	if r.Method == &quot;POST&quot; {
+		name := r.FormValue(&quot;name&quot;)
+		if name != &quot;&quot; {
+			fmt.Fprintln(w, &quot;REcevied&quot;, name)
+			return
+		}
+	}
+	fmt.Fprintln(w, html)
+}
+</code></pre>
 
               </div>
               <div class="toc-container">
                 <ul class="markdownIt-TOC">
 <li>
 <ul>
-<li><a href="#%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA">基础理论</a></li>
+<li>
+<ul>
+<li><a href="#do">do</a></li>
+<li><a href="#get">get</a></li>
+<li><a href="#post">post</a></li>
+<li><a href="#postform">postForm</a></li>
+<li><a href="#server">server</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -115,9 +184,9 @@
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://bluegrasses.github.io/post/linux-xu-ni-ji-huan-jing-da-jian/">
+            <a href="https://bluegrasses.github.io/post/go-filepath/">
               <h3 class="post-title">
-                linux虚拟机环境搭建
+                go-标准库: FilePath 
               </h3>
             </a>
           </div>
