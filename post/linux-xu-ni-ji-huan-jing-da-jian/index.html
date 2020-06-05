@@ -1,106 +1,52 @@
-<html>
-  <head>
-    <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<!-- 必要参数 -->
+<meta charset="utf-8"/>
 <title>linux虚拟机环境搭建 | 罗亭的技术博客</title>
-<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1591354719549">
-<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
-<link rel="stylesheet" href="https://bluegrasses.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="linux虚拟机环境搭建 | 罗亭的技术博客 - Atom Feed" href="https://bluegrasses.github.io/atom.xml">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+<meta name="keywords" content="关键词"/>
+<meta name="description" content="简述"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable:no"/>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<link rel="shortcut icon" href="favicon.ico">
+<!-- CSS -->
+<link rel="stylesheet" href="https://bluegrasses.github.io/media/css/mdui.min.css">
+<link rel="stylesheet" href="https://bluegrasses.github.io/media/css/modify.css">
+<link rel="stylesheet" href="https://bluegrasses.github.io/media/css/github-gist.min.css">
+<link rel="stylesheet" href="https://bluegrasses.github.io/media/css/railscasts.min.css">
+</head>
+<body id="post" class="mdui-appbar-with-toolbar mdui-theme-primary-blue-grey mdui-theme-accent-blue mdui-theme-layout-dark">
+<header role="banner">
+    <div class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-hide mdui-shadow-0">
+        <div class="mdui-toolbar">
+            <button class="mdui-btn mdui-btn-icon" id="menu" mdui-drawer="{target:'#drawer',overlay:true,swipe:true}"><i class="mdui-icon material-icons">menu</i></button>
+            <a href="https://bluegrasses.github.io" class="mdui-typo-headline">罗亭的技术博客</a>
+            <div class="mdui-toolbar-spacer"></div>
+            <button class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: '深色样式切换', position: 'left'}" id="DarkStyle"><i class="mdui-icon material-icons">brightness_4</i></button>
+        </div>
+    </div>
+</header>
+
+<nav id="drawer" class="mdui-drawer mdui-drawer-full-height mdui-drawer-close">
+    <ul class="mdui-list">
+        <a href="/" class="menu"><li class="mdui-list-item mdui-ripple">首页</li></a>
+        <a href="/archives" class="menu"><li class="mdui-list-item mdui-ripple">归档</li></a>
+        <a href="/tags" class="menu"><li class="mdui-list-item mdui-ripple">标签</li></a>
+        <a href="/post/about" class="menu"><li class="mdui-list-item mdui-ripple">关于</li></a>
+        
+        <a href="https://github.com/CPlayer-CN/gridea-theme-cplayer-material" class="spread"><li class="mdui-list-item mdui-ripple">主题主页</li></a>
+    </ul>
+</nav>
 
 
-
-    <meta name="description" content="
-基本环境 lubuntu 19 虚拟机virtualbox
-
-首次初始化su密码
-sudo passwd
-安装virtualbox 增强工具
-
-点击安装 增强工具挂载到lubuntn文件中
-定位到指定位置,然后 ./VBoxLinuxAd..." />
-    <meta name="keywords" content="linux" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
-    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
-  </head>
-  <body>
-    <div class="main">
-      <div class="main-content">
-        <div class="site-header">
-  <a href="https://bluegrasses.github.io">
-  <img class="avatar" src="https://bluegrasses.github.io/images/avatar.png?v=1591354719549" alt="">
-  </a>
-  <h1 class="site-title">
-    罗亭的技术博客
-  </h1>
-  <p class="site-description">
-    以梦为马, 诗酒趁年华
-  </p>
-  <div class="menu-container">
-    
-      
-        <a href="/" class="menu">
-          首页
-        </a>
-      
-    
-      
-        <a href="/archives" class="menu">
-          归档
-        </a>
-      
-    
-      
-        <a href="/tags" class="menu">
-          标签
-        </a>
-      
-    
-      
-        <a href="/post/about" class="menu">
-          关于
-        </a>
-      
-    
-  </div>
-  <div class="social-container">
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-  </div>
-</div>
-
-        <div class="post-detail">
-          <article class="post">
-            <h2 class="post-title">
-              linux虚拟机环境搭建
-            </h2>
-            <div class="post-info">
-              <span>
-                2020-03-24
-              </span>
-              <span>
-                1 min read
-              </span>
-              
-                <a href="https://bluegrasses.github.io/tag/BBksm1yl_/" class="post-tag">
-                  # linux
-                </a>
-              
-            </div>
-            
-            <div class="post-content-wrapper">
-              <div class="post-content">
-                <blockquote>
+<main class="mdui-container mdui-typo mdui-m-t-2">
+    <section class="mdui-card">
+        
+        <div class="mdui-card-primary">
+            <div class="mdui-card-primary-title">linux虚拟机环境搭建</div>
+            <div class="mdui-card-primary-subtitle">发布于 2020-03-24，包含标签 <a href="https://bluegrasses.github.io/tag/BBksm1yl_/" class="post-tags"># linux</a>。</div>
+        </div>
+        <div class="mdui-card-content"><blockquote>
 <p>基本环境 lubuntu 19 虚拟机virtualbox</p>
 </blockquote>
 <h3 id="首次初始化su密码">首次初始化su密码</h3>
@@ -131,92 +77,39 @@ sudo /etc/init.d/ssh start<br>
 <p>sudo apt-get install npm<br>
 sudo npm install -g tldr<br>
 sudo apt-get install nodejs-legacy</p>
-
-              </div>
-              <div class="toc-container">
-                <ul class="markdownIt-TOC">
-<li>
-<ul>
-<li>
-<ul>
-<li><a href="#%E9%A6%96%E6%AC%A1%E5%88%9D%E5%A7%8B%E5%8C%96su%E5%AF%86%E7%A0%81">首次初始化su密码</a></li>
-<li><a href="#%E5%AE%89%E8%A3%85virtualbox-%E5%A2%9E%E5%BC%BA%E5%B7%A5%E5%85%B7">安装virtualbox 增强工具</a></li>
-<li><a href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%92%8C%E4%B8%BB%E6%9C%BA%E4%BA%92%E9%80%9A">虚拟机和主机互通</a></li>
-<li><a href="#%E8%AE%BE%E7%BD%AE%E5%85%B1%E4%BA%AB%E7%9B%AE%E5%BD%95">设置共享目录</a></li>
-<li><a href="#tldr%E5%B7%A5%E5%85%B7%E5%AE%89%E8%A3%85">tldr工具安装</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-              </div>
-            </div>
-          </article>
+</div>
+        <div class="mdui-card-header">
+            <img class="mdui-card-header-avatar" src="https://bluegrasses.github.io/images/avatar.png">
+            <div class="mdui-card-header-title">罗亭的技术博客</div>
+            <div class="mdui-card-header-subtitle">以梦为马, 诗酒趁年华</div>
         </div>
+    </section>
 
-        
-          <div class="next-post">
-            <div class="next">下一篇</div>
-            <a href="https://bluegrasses.github.io/post/go-yu-yan-za-xiang-冲突-漫步的猪_Win10/">
-              <h3 class="post-title">
-                [go] 语言杂项
-              </h3>
-            </a>
-          </div>
-        
+      
+</main>
 
-        
+<nav class="mdui-container mdui-m-t-2 mdui-m-b-2">
+    <a href="https://bluegrasses.github.io/post/kingshard-shu-ju-ku-zhong-jian-jian/" mdui-tooltip="{content: '上一篇', position: 'right'}"><button class="mdui-btn mdui-btn-icon mdui-btn-dense mdui-color-theme-accent mdui-ripple mdui-m-r-1"><i class="mdui-icon material-icons">arrow_back</i></button>Kingshard 数据库中间件</a>
+    <a href="https://bluegrasses.github.io/post/go-yu-yan-za-xiang-冲突-漫步的猪_Win10/" mdui-tooltip="{content: '下一篇', position: 'left'}" class="mdui-float-right">[go] 语言杂项<button class="mdui-btn mdui-btn-icon mdui-btn-dense mdui-color-theme-accent mdui-ripple mdui-m-l-1"><i class="mdui-icon material-icons">arrow_forward</i></button></a>
+</nav>
 
-        <div class="site-footer">
-  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
-  <a class="rss" href="https://bluegrasses.github.io/atom.xml" target="_blank">
-    <i class="ri-rss-line"></i> RSS
-  </a>
+<div class="mdui-m-t-2 mdui-text-center mdui-typo">
+    Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
 </div>
 
-      </div>
-    </div>
+<script src="https://bluegrasses.github.io/media/js/jquery.min.js"></script>
+<script src="https://bluegrasses.github.io/media/js/mdui.min.js"></script>
+<script src="https://bluegrasses.github.io/media/js/modify.js"></script>
+<script src="https://bluegrasses.github.io/media/js/highlight.min.js"></script>
+<script src="https://bluegrasses.github.io/media/js/lightense.min.js"></script>
+<script>
+// 初始化-高亮代码
+hljs.initHighlightingOnLoad();
+// 初始化-文章图片放大
+window.addEventListener('load', function () {
+    Lightense('#post .mdui-card-content img');
+}, false);
+</script>
 
-    <script>
-      hljs.initHighlightingOnLoad()
-
-      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
-
-      // This should probably be throttled.
-      // Especially because it triggers during smooth scrolling.
-      // https://lodash.com/docs/4.17.10#throttle
-      // You could do like...
-      // window.addEventListener("scroll", () => {
-      //    _.throttle(doThatStuff, 100);
-      // });
-      // Only not doing it here to keep this Pen dependency-free.
-
-      window.addEventListener("scroll", event => {
-        let fromTop = window.scrollY;
-
-        mainNavLinks.forEach((link, index) => {
-          let section = document.getElementById(decodeURI(link.hash).substring(1));
-          let nextSection = null
-          if (mainNavLinks[index + 1]) {
-            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
-          }
-          if (section.offsetTop <= fromTop) {
-            if (nextSection) {
-              if (nextSection.offsetTop > fromTop) {
-                link.classList.add("current");
-              } else {
-                link.classList.remove("current");    
-              }
-            } else {
-              link.classList.add("current");
-            }
-          } else {
-            link.classList.remove("current");
-          }
-        });
-      });
-
-    </script>
-  </body>
+</body>
 </html>
