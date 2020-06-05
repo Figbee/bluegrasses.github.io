@@ -1,13 +1,20 @@
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" >
+
 <title>{go} 标准库之  数据、时间、数学函数 | 罗亭的技术博客</title>
-<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1591355516183">
-<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1591355616039">
 <link rel="stylesheet" href="https://bluegrasses.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="{go} 标准库之  数据、时间、数学函数 | 罗亭的技术博客 - Atom Feed" href="https://bluegrasses.github.io/atom.xml">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
 
 
@@ -18,82 +25,81 @@ sort()方法
 
 type Inter..." />
     <meta name="keywords" content="" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
-    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
   </head>
   <body>
-    <div class="main">
-      <div class="main-content">
-        <div class="site-header">
-  <a href="https://bluegrasses.github.io">
-  <img class="avatar" src="https://bluegrasses.github.io/images/avatar.png?v=1591355516183" alt="">
-  </a>
-  <h1 class="site-title">
-    罗亭的技术博客
-  </h1>
-  <p class="site-description">
-    以梦为马, 诗酒趁年华
-  </p>
-  <div class="menu-container">
-    
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://bluegrasses.github.io">
+        <img src="https://bluegrasses.github.io/images/avatar.png?v=1591355616039" class="site-logo">
+        <h1 class="site-title">罗亭的技术博客</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
       
-        <a href="/" class="menu">
-          首页
-        </a>
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
       
-    
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
       
-        <a href="/archives" class="menu">
-          归档
-        </a>
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
       
-    
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
       
-        <a href="/tags" class="menu">
-          标签
-        </a>
-      
-    
-      
-        <a href="/post/about" class="menu">
-          关于
-        </a>
-      
-    
+    </div>
   </div>
-  <div class="social-container">
-    
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
       
-    
+        
       
-    
+        
       
-    
+        
       
-    
+        
       
-    
+        
+      
+    </div>
+    <div class="site-description">
+      以梦为马, 诗酒趁年华
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://bluegrasses.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
   </div>
 </div>
 
-        <div class="post-detail">
-          <article class="post">
-            <h2 class="post-title">
-              {go} 标准库之  数据、时间、数学函数
-            </h2>
-            <div class="post-info">
-              <span>
-                2020-05-17
-              </span>
-              <span>
-                3 min read
-              </span>
-              
-            </div>
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">{go} 标准库之  数据、时间、数学函数</h2>
+            <div class="post-date">2020-05-17</div>
             
-            <div class="post-content-wrapper">
-              <div class="post-content">
-                <h2 id="sort-排序算法">sort 排序算法</h2>
+            <div class="post-content" v-pre>
+              <h2 id="sort-排序算法">sort 排序算法</h2>
 <h3 id="sort方法">sort()方法</h3>
 <blockquote>
 <p>前面已经提到过,对数据集合(包括定义的数据类型的集合)排序需要实现sort.Interface接口的三个方法,集合实现了这三个方法后,即可调用该2包的sort()方法进行排序.</p>
@@ -192,95 +198,45 @@ fmt.Println(&quot;sorted:&quot;, sort.SliceIsSorted(people, func(i, j int) bool 
 </li>
 </ul>
 
-              </div>
-              <div class="toc-container">
-                <ul class="markdownIt-TOC">
-<li>
-<ul>
-<li><a href="#sort-%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95">sort 排序算法</a>
-<ul>
-<li><a href="#sort%E6%96%B9%E6%B3%95">sort()方法</a></li>
-<li><a href="#sortissorted-%E6%98%AF%E5%90%A6%E6%8E%92%E5%BA%8F%E8%BF%87">sort.IsSorted()  是否排序过</a></li>
-<li><a href="#reverse-%E5%8F%8D%E5%90%91%E6%8E%92%E5%BA%8F%E6%96%B9%E6%B3%95">Reverse() 反向排序方法</a></li>
-<li><a href="#sort%E5%8C%85%E5%B7%B2%E7%BB%8F%E6%94%AF%E6%8C%81%E7%9A%84%E5%86%85%E9%83%A8%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E6%8E%92%E5%BA%8F">sort包已经支持的内部数据类型排序</a></li>
-<li><a href="#interface-%E6%8E%92%E5%BA%8F%E5%92%8C%E6%9F%A5%E6%89%BE">[]interface 排序和查找</a>
-<ul>
-<li><a href="#%E5%9F%BA%E6%9C%AC%E5%87%BD%E6%95%B0">基本函数</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-              </div>
             </div>
-          </article>
-        </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://bluegrasses.github.io/post/go-fmt-ge-shi-hua-冲突-漫步的猪_Win10/">
+                  <h3 class="post-title">
+                    {go}  fmt格式化
+                  </h3>
+                </a>
+              </div>
+            
 
-        
-          <div class="next-post">
-            <div class="next">下一篇</div>
-            <a href="https://bluegrasses.github.io/post/go-fmt-ge-shi-hua-冲突-漫步的猪_Win10/">
-              <h3 class="post-title">
-                {go}  fmt格式化
-              </h3>
-            </a>
+            
+
           </div>
-        
 
-        
-
-        <div class="site-footer">
-  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
-  <a class="rss" href="https://bluegrasses.github.io/atom.xml" target="_blank">
-    <i class="ri-rss-line"></i> RSS
-  </a>
-</div>
-
+        </div>
       </div>
     </div>
 
-    <script>
-      hljs.initHighlightingOnLoad()
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
 
-      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+AOS.init();
 
-      // This should probably be throttled.
-      // Especially because it triggers during smooth scrolling.
-      // https://lodash.com/docs/4.17.10#throttle
-      // You could do like...
-      // window.addEventListener("scroll", () => {
-      //    _.throttle(doThatStuff, 100);
-      // });
-      // Only not doing it here to keep this Pen dependency-free.
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
 
-      window.addEventListener("scroll", event => {
-        let fromTop = window.scrollY;
+</script>
 
-        mainNavLinks.forEach((link, index) => {
-          let section = document.getElementById(decodeURI(link.hash).substring(1));
-          let nextSection = null
-          if (mainNavLinks[index + 1]) {
-            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
-          }
-          if (section.offsetTop <= fromTop) {
-            if (nextSection) {
-              if (nextSection.offsetTop > fromTop) {
-                link.classList.add("current");
-              } else {
-                link.classList.remove("current");    
-              }
-            } else {
-              link.classList.add("current");
-            }
-          } else {
-            link.classList.remove("current");
-          }
-        });
-      });
 
-    </script>
+
+
+
+
   </body>
 </html>
