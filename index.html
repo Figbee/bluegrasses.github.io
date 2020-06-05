@@ -1,241 +1,301 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<!-- 必要参数 -->
-<meta charset="utf-8"/>
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>罗亭的技术博客</title>
-<meta name="keywords" content="关键词"/>
-<meta name="description" content="简述"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable:no"/>
-<meta http-equiv="X-UA-Compatible" content="IE=Edge">
-<link rel="shortcut icon" href="favicon.ico">
-<!-- CSS -->
-<link rel="stylesheet" href="https://bluegrasses.github.io/media/css/mdui.min.css">
-<link rel="stylesheet" href="https://bluegrasses.github.io/media/css/modify.css">
-</head>
-<body id="index" class="mdui-appbar-with-toolbar mdui-theme-primary-blue-grey mdui-theme-accent-blue mdui-theme-layout-dark">
-<header role="banner">
-    <div class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-hide mdui-shadow-0">
-        <div class="mdui-toolbar">
-            <button class="mdui-btn mdui-btn-icon" id="menu" mdui-drawer="{target:'#drawer',overlay:true,swipe:true}"><i class="mdui-icon material-icons">menu</i></button>
-            <a href="https://bluegrasses.github.io" class="mdui-typo-headline">罗亭的技术博客</a>
-            <div class="mdui-toolbar-spacer"></div>
-            <button class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: '深色样式切换', position: 'left'}" id="DarkStyle"><i class="mdui-icon material-icons">brightness_4</i></button>
-        </div>
-    </div>
-</header>
+<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1591355516183">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://bluegrasses.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="罗亭的技术博客 - Atom Feed" href="https://bluegrasses.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
-<nav id="drawer" class="mdui-drawer mdui-drawer-full-height mdui-drawer-close">
-    <ul class="mdui-list">
-        <a href="/" class="menu"><li class="mdui-list-item mdui-ripple">首页</li></a>
-        <a href="/archives" class="menu"><li class="mdui-list-item mdui-ripple">归档</li></a>
-        <a href="/tags" class="menu"><li class="mdui-list-item mdui-ripple">标签</li></a>
-        <a href="/post/about" class="menu"><li class="mdui-list-item mdui-ripple">关于</li></a>
+
+
+    <meta name="description" content="以梦为马, 诗酒趁年华" />
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://bluegrasses.github.io">
+  <img class="avatar" src="https://bluegrasses.github.io/images/avatar.png?v=1591355516183" alt="">
+  </a>
+  <h1 class="site-title">
+    罗亭的技术博客
+  </h1>
+  <p class="site-description">
+    以梦为马, 诗酒趁年华
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+    
+        <div class="post-container">
+  
+    <article class="post">
+      <a href="https://bluegrasses.github.io/post/go-biao-zhun-ku-http/">
+        <h2 class="post-title">{go} 标准库之 http</h2>
+      </a>
+      <div class="post-info">
+        <span>
+          2020-05-27
+        </span>
+        <span>
+          2 min read
+        </span>
         
-        <a href="https://github.com/CPlayer-CN/gridea-theme-cplayer-material" class="spread"><li class="mdui-list-item mdui-ripple">主题主页</li></a>
-    </ul>
-</nav>
-
-
-<main class="mdui-m-a-2 mdui-row-xs-1 mdui-row-sm-2 mdui-row-md-3 mdui-row-xl-4 mdui-typo mdui-m-t-2">
-    
-    <section class="mdui-col mdui-m-b-2">
-        <div class="mdui-card">
-            
-            <div class="mdui-card-primary">
-                <div class="mdui-card-primary-title"><a href="https://bluegrasses.github.io/post/go-biao-zhun-ku-http/">{go} 标准库之 http</a></div>
-                <div class="mdui-card-primary-subtitle">2020-05-27</div>
-            </div>
-            <div class="mdui-card-content">http
-do
-client := &amp;http.Client{}
-request, err := http.NewRequest(&quot;GET&quot;, &quot;http://www.hoopchina.com&quo...</div>
-        </div>
-    </section>
-
-    <section class="mdui-col mdui-m-b-2">
-        <div class="mdui-card">
-            
-            <div class="mdui-card-primary">
-                <div class="mdui-card-primary-title"><a href="https://bluegrasses.github.io/post/go-filepath/">{go} 标准库之 FilePath </a></div>
-                <div class="mdui-card-primary-subtitle">2020-05-25</div>
-            </div>
-            <div class="mdui-card-content">基本操作
-Abs 绝对路径
-absPath := &quot;Z:\\个人区\\golang\\study\\libs\\go.mod&quot;
-absPath, err := filepath.Abs(&quot;./go.mod&qu...</div>
-        </div>
-    </section>
-
-    <section class="mdui-col mdui-m-b-2">
-        <div class="mdui-card">
-            
-            <div class="mdui-card-primary">
-                <div class="mdui-card-primary-title"><a href="https://bluegrasses.github.io/post/gobiao-zhun-ku-os-xiang-jie/">{go} 标准库之 os详解</a></div>
-                <div class="mdui-card-primary-subtitle">2020-05-24</div>
-            </div>
-            <div class="mdui-card-content">文件(文件夹)相关操作
-文件(文件夹)常用操作
-Create 新建文件
-Remove 删除
-RemoveAll 删除
-Mkdir 创建文件夹
-Mkdir 创建文件夹可以递归
-Rename 改名字
-Open 打开
-OpenFile 打开文件
-...</div>
-        </div>
-    </section>
-
-    <section class="mdui-col mdui-m-b-2">
-        <div class="mdui-card">
-            
-            <div class="mdui-card-primary">
-                <div class="mdui-card-primary-title"><a href="https://bluegrasses.github.io/post/go-biao-zhun-ku-shu-ru-shu-chu-he-wen-ben/">{go} 标准库之 输入输出和文本</a></div>
-                <div class="mdui-card-primary-subtitle">2020-05-21</div>
-            </div>
-            <div class="mdui-card-content">第1章 输入和输出
-1.1 io 基本的io接口
-1.1.1 Reader 接口
-Reader 接口的定义如下：
-type Reader interface {
-Read(p []byte) (n int, err error)
-}
-
-Re...</div>
-        </div>
-    </section>
-
-    <section class="mdui-col mdui-m-b-2">
-        <div class="mdui-card">
-            
-            <div class="mdui-card-primary">
-                <div class="mdui-card-primary-title"><a href="https://bluegrasses.github.io/post/go-biao-zhun-ku-shu-ju-shi-jian-shu-xue-han-shu-冲突-漫步的猪_Win10/">{go} 标准库之  数据、时间、数学函数</a></div>
-                <div class="mdui-card-primary-subtitle">2020-05-17</div>
-            </div>
-            <div class="mdui-card-content">sort 排序算法
-sort()方法
-
-前面已经提到过,对数据集合(包括定义的数据类型的集合)排序需要实现sort.Interface接口的三个方法,集合实现了这三个方法后,即可调用该2包的sort()方法进行排序.
-
-type Inter...</div>
-        </div>
-    </section>
-
-    <section class="mdui-col mdui-m-b-2">
-        <div class="mdui-card">
-            
-            <div class="mdui-card-primary">
-                <div class="mdui-card-primary-title"><a href="https://bluegrasses.github.io/post/go-fmt-ge-shi-hua-冲突-漫步的猪_Win10/">{go}  fmt格式化</a></div>
-                <div class="mdui-card-primary-subtitle">2020-05-16</div>
-            </div>
-            <div class="mdui-card-content">常用占位符
-普通占位符
-%v 相应值的默认格式。 在打印结构体时，“加号”标记（%+v）会添加字段名
-%#v	相应值的Go语法表示
-%T 相应值的类型的Go语法表示
-%T 相应值的类型的Go语法表示
-布尔占位符
-%t		单词 true 或 ...</div>
-        </div>
-    </section>
-
-    <section class="mdui-col mdui-m-b-2">
-        <div class="mdui-card">
-            
-            <div class="mdui-card-primary">
-                <div class="mdui-card-primary-title"><a href="https://bluegrasses.github.io/post/golang-web-bian-cheng/">{go} web编程</a></div>
-                <div class="mdui-card-primary-subtitle">2020-04-19</div>
-            </div>
-            <div class="mdui-card-content">1.表单处理
-数据获取
-func root(w http.ResponseWriter, r *http.Request) {
-    //1. 使用r.ParseForm()获取数据之后,get post 所有的数据都到了r.Form中
-...</div>
-        </div>
-    </section>
-
-    <section class="mdui-col mdui-m-b-2">
-        <div class="mdui-card">
-            
-            <div class="mdui-card-primary">
-                <div class="mdui-card-primary-title"><a href="https://bluegrasses.github.io/post/docker-qian-hou-duan-fen-chi-xiang-mu-bu-shu/">docker 前后端分离项目部署</a></div>
-                <div class="mdui-card-primary-subtitle">2020-03-31</div>
-            </div>
-            <div class="mdui-card-content">docker Mysql 集群
-部署集群环境
-
-基础环境 percona/percona-xtradb-cluster
-
-1. 安装 percona/percona-xtradb-cluster
-···
-docker pull percon...</div>
-        </div>
-    </section>
-
-    <section class="mdui-col mdui-m-b-2">
-        <div class="mdui-card">
-            
-            <div class="mdui-card-primary">
-                <div class="mdui-card-primary-title"><a href="https://bluegrasses.github.io/post/kingshard-shu-ju-ku-zhong-jian-jian/">Kingshard 数据库中间件</a></div>
-                <div class="mdui-card-primary-subtitle">2020-03-24</div>
-            </div>
-            <div class="mdui-card-content">基础理论
-##kingshard使用
+      </div>
+      
+      <div class="post-abstract">
+        
+      </div>
+    </article>
+  
+    <article class="post">
+      <a href="https://bluegrasses.github.io/post/go-filepath/">
+        <h2 class="post-title">{go} 标准库之 FilePath </h2>
+      </a>
+      <div class="post-info">
+        <span>
+          2020-05-25
+        </span>
+        <span>
+          2 min read
+        </span>
+        
+      </div>
+      
+      <div class="post-abstract">
+        
+      </div>
+    </article>
+  
+    <article class="post">
+      <a href="https://bluegrasses.github.io/post/gobiao-zhun-ku-os-xiang-jie/">
+        <h2 class="post-title">{go} 标准库之 os详解</h2>
+      </a>
+      <div class="post-info">
+        <span>
+          2020-05-24
+        </span>
+        <span>
+          2 min read
+        </span>
+        
+      </div>
+      
+      <div class="post-abstract">
+        
+      </div>
+    </article>
+  
+    <article class="post">
+      <a href="https://bluegrasses.github.io/post/go-biao-zhun-ku-shu-ru-shu-chu-he-wen-ben/">
+        <h2 class="post-title">{go} 标准库之 输入输出和文本</h2>
+      </a>
+      <div class="post-info">
+        <span>
+          2020-05-21
+        </span>
+        <span>
+          8 min read
+        </span>
+        
+      </div>
+      
+      <div class="post-abstract">
+        
+      </div>
+    </article>
+  
+    <article class="post">
+      <a href="https://bluegrasses.github.io/post/go-biao-zhun-ku-shu-ju-shi-jian-shu-xue-han-shu-冲突-漫步的猪_Win10/">
+        <h2 class="post-title">{go} 标准库之  数据、时间、数学函数</h2>
+      </a>
+      <div class="post-info">
+        <span>
+          2020-05-17
+        </span>
+        <span>
+          3 min read
+        </span>
+        
+      </div>
+      
+      <div class="post-abstract">
+        
+      </div>
+    </article>
+  
+    <article class="post">
+      <a href="https://bluegrasses.github.io/post/go-fmt-ge-shi-hua-冲突-漫步的猪_Win10/">
+        <h2 class="post-title">{go}  fmt格式化</h2>
+      </a>
+      <div class="post-info">
+        <span>
+          2020-05-16
+        </span>
+        <span>
+          2 min read
+        </span>
+        
+          <a href="https://bluegrasses.github.io/tag/MGq5D4kTr/" class="post-tag">
+            # golang
+          </a>
+        
+      </div>
+      
+      <div class="post-abstract">
+        
+      </div>
+    </article>
+  
+    <article class="post">
+      <a href="https://bluegrasses.github.io/post/golang-web-bian-cheng/">
+        <h2 class="post-title">{go} web编程</h2>
+      </a>
+      <div class="post-info">
+        <span>
+          2020-04-19
+        </span>
+        <span>
+          1 min read
+        </span>
+        
+          <a href="https://bluegrasses.github.io/tag/MGq5D4kTr/" class="post-tag">
+            # golang
+          </a>
+        
+      </div>
+      
+      <div class="post-abstract">
+        
+      </div>
+    </article>
+  
+    <article class="post">
+      <a href="https://bluegrasses.github.io/post/docker-qian-hou-duan-fen-chi-xiang-mu-bu-shu/">
+        <h2 class="post-title">docker 前后端分离项目部署</h2>
+      </a>
+      <div class="post-info">
+        <span>
+          2020-03-31
+        </span>
+        <span>
+          2 min read
+        </span>
+        
+      </div>
+      
+      <div class="post-abstract">
+        
+      </div>
+    </article>
+  
+    <article class="post">
+      <a href="https://bluegrasses.github.io/post/kingshard-shu-ju-ku-zhong-jian-jian/">
+        <h2 class="post-title">Kingshard 数据库中间件</h2>
+      </a>
+      <div class="post-info">
+        <span>
+          2020-03-24
+        </span>
+        <span>
+          1 min read
+        </span>
+        
+          <a href="https://bluegrasses.github.io/tag/MGq5D4kTr/" class="post-tag">
+            # golang
+          </a>
+        
+      </div>
+      
+      <div class="post-abstract">
+        
+      </div>
+    </article>
+  
+    <article class="post">
+      <a href="https://bluegrasses.github.io/post/linux-xu-ni-ji-huan-jing-da-jian/">
+        <h2 class="post-title">linux虚拟机环境搭建</h2>
+      </a>
+      <div class="post-info">
+        <span>
+          2020-03-24
+        </span>
+        <span>
+          1 min read
+        </span>
+        
+          <a href="https://bluegrasses.github.io/tag/BBksm1yl_/" class="post-tag">
+            # linux
+          </a>
+        
+      </div>
+      
+      <div class="post-abstract">
+        
+      </div>
+    </article>
+  
 </div>
-        </div>
-    </section>
 
-    <section class="mdui-col mdui-m-b-2">
-        <div class="mdui-card">
-            
-            <div class="mdui-card-primary">
-                <div class="mdui-card-primary-title"><a href="https://bluegrasses.github.io/post/linux-xu-ni-ji-huan-jing-da-jian/">linux虚拟机环境搭建</a></div>
-                <div class="mdui-card-primary-subtitle">2020-03-24</div>
-            </div>
-            <div class="mdui-card-content">
-基本环境 lubuntu 19 虚拟机virtualbox
-
-首次初始化su密码
-sudo passwd
-安装virtualbox 增强工具
-
-点击安装 增强工具挂载到lubuntn文件中
-定位到指定位置,然后 ./VBoxLinuxAd...</div>
-        </div>
-    </section>
-
-</main>
-
-<nav class="mdui-container mdui-m-t-2 mdui-m-b-2">
     
-    <a href="https://bluegrasses.github.io/page/2" mdui-tooltip="{content: '下一页', position: 'left'}" class="mdui-float-right"><button class="mdui-btn mdui-btn-icon mdui-btn-dense mdui-color-theme-accent mdui-ripple mdui-m-l-1"><i class="mdui-icon material-icons">arrow_forward</i></button></a>
-</nav>
-
-<div class="mdui-m-t-2 mdui-text-center mdui-typo">
-    Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+        <div class="pagination-container">
+  
+  
+    <a href="https://bluegrasses.github.io/page/2" class="next-page">下一页</a>
+  
 </div>
 
-<script src="https://bluegrasses.github.io/media/js/jquery.min.js"></script>
-<script src="https://bluegrasses.github.io/media/js/mdui.min.js"></script>
-<script src="https://bluegrasses.github.io/media/js/modify.js"></script>
-<script src="https://bluegrasses.github.io/media/js/masonry.pkgd.min.js"></script>
-<script src="https://bluegrasses.github.io/media/js/imagesloaded.pkgd.min.js"></script>
-<script>
-// 初始化-文章列表页面瀑布流。
-function masonry() {
-    // 初始化 masonry
-    $('.mdui-row-xs-1').masonry({
-        itemSelector: '.mdui-col',
-        horizontalOrder: true
-    });
-}
-masonry()
-$('.mdui-col').imagesLoaded( function() {
-    masonry()
-});
-</script>
+    
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://bluegrasses.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
 
-</body>
+      </div>
+    </div>
+  </body>
 </html>
