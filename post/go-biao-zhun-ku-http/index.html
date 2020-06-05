@@ -90,13 +90,13 @@ if err := resp.Body.Close(); err != nil {
 fmt.Println(string(body))
 </code></pre>
 <h3 id="post">post</h3>
-<pre><code class="language-go">	client := &amp;http.Client{}
-	resp, err := client.Post(&quot;http://www.baidu.com&quot;, &quot;text/html&quot;, nil)
-	body, err := ioutil.ReadAll(resp.Body)
-	if err := resp.Body.Close(); err != nil {
-		log.Fatalln(err)
-	}
-	fmt.Println(string(body))
+<pre><code class="language-go">client := &amp;http.Client{}
+resp, err := client.Post(&quot;http://www.baidu.com&quot;, &quot;text/html&quot;, nil)
+body, err := ioutil.ReadAll(resp.Body)
+if err := resp.Body.Close(); err != nil {
+    log.Fatalln(err)
+}
+fmt.Println(string(body))
 </code></pre>
 <h3 id="postform">postForm</h3>
 <pre><code class="language-go">client := &amp;http.Client{}
