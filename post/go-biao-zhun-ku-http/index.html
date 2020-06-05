@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>{go} 标准库 : http | 罗亭的技术博客</title>
-<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1591354156618">
+<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico?v=1591354254340">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://bluegrasses.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="{go} 标准库 : http | 罗亭的技术博客 - Atom Feed" href="https://bluegrasses.github.io/atom.xml">
@@ -11,10 +11,11 @@
 
 
 
-    <meta name="description" content="##http 包
+    <meta name="description" content="http 包
 do
+```go
 client := &amp;http.Client{}
-request, err := http.NewRequest(&quot;GET&quot;, &quot;http://www.hoopchina.com..." />
+request, err := http.NewRequest(&quot;GET&quot;, &quot;http://www.hoopchina..." />
     <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
@@ -24,7 +25,7 @@ request, err := http.NewRequest(&quot;GET&quot;, &quot;http://www.hoopchina.com.
       <div class="main-content">
         <div class="site-header">
   <a href="https://bluegrasses.github.io">
-  <img class="avatar" src="https://bluegrasses.github.io/images/avatar.png?v=1591354156618" alt="">
+  <img class="avatar" src="https://bluegrasses.github.io/images/avatar.png?v=1591354254340" alt="">
   </a>
   <h1 class="site-title">
     罗亭的技术博客
@@ -91,9 +92,10 @@ request, err := http.NewRequest(&quot;GET&quot;, &quot;http://www.hoopchina.com.
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <p>##http 包</p>
+                <h2 id="http-包">http 包</h2>
 <h3 id="do">do</h3>
-<pre><code class="language-go">client := &amp;http.Client{}
+<pre><code>```go
+client := &amp;http.Client{}
 request, err := http.NewRequest(&quot;GET&quot;, &quot;http://www.hoopchina.com&quot;, nil)
 resp, err := client.Do(request)
 body, err := ioutil.ReadAll(resp.Body)
@@ -101,6 +103,7 @@ if err := resp.Body.Close(); err != nil {
     log.Fatalln(err)
 }
 fmt.Println(string(body))
+```
 </code></pre>
 <h3 id="get">get</h3>
 <pre><code class="language-go">	client := http.Client{}
@@ -163,7 +166,7 @@ func GetFormHandler(w http.ResponseWriter, r *http.Request) {
                 <ul class="markdownIt-TOC">
 <li>
 <ul>
-<li>
+<li><a href="#http-%E5%8C%85">http 包</a>
 <ul>
 <li><a href="#do">do</a></li>
 <li><a href="#get">get</a></li>
