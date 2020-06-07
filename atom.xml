@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-06-05T12:01:38.458Z</updated>
+    <updated>2020-06-07T03:48:36.057Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -10,6 +10,50 @@
     <logo>https://bluegrasses.github.io/images/avatar.png</logo>
     <icon>https://bluegrasses.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 罗亭的技术博客</rights>
+    <entry>
+        <title type="html"><![CDATA[{go} 使用vscode进行断点调试]]></title>
+        <id>https://bluegrasses.github.io/post/go-shi-yong-vscode-jin-xing-duan-dian-diao-shi/</id>
+        <link href="https://bluegrasses.github.io/post/go-shi-yong-vscode-jin-xing-duan-dian-diao-shi/">
+        </link>
+        <updated>2020-06-07T03:42:52.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="环境部署">环境部署</h2>
+<h3 id="安装delv">安装delv</h3>
+<p><code>go get -u github.com/go-delve/delve/cmd/dlv</code></p>
+<h3 id="设置参数">设置参数</h3>
+<p><code>vscode-&gt;运行-&gt;打开配置</code></p>
+<pre><code class="language-json">{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    &quot;version&quot;: &quot;0.2.0&quot;,
+    &quot;configurations&quot;: [
+ 
+        {
+            &quot;name&quot;: &quot;Launch&quot;,
+            &quot;type&quot;: &quot;go&quot;,
+            &quot;request&quot;: &quot;launch&quot;,
+            &quot;mode&quot;: &quot;debug&quot;,
+            &quot;host&quot;: &quot;127.0.0.1&quot;,
+            &quot;port&quot;: 2345,
+            &quot;program&quot;: &quot;${fileDirname}&quot;,
+            &quot;env&quot;: {},
+            &quot;args&quot;: [],
+            &quot;showLog&quot;: true
+        }
+    ]
+}
+</code></pre>
+<h2 id="使用">使用</h2>
+<figure data-type="image" tabindex="1"><img src="https://bluegrasses.github.io/post-images/1591501640237.png" alt="" loading="lazy"></figure>
+<h3 id="常用调试快捷键">常用调试快捷键</h3>
+<p>继续 / 暂停 F5<br>
+跳过 F10<br>
+进入 F11<br>
+退出 Shift+F11<br>
+重新开始 unassigned<br>
+停止调试 Shift+F5</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[{go} 标准库之 http]]></title>
         <id>https://bluegrasses.github.io/post/go-biao-zhun-ku-http/</id>
@@ -642,45 +686,6 @@ docker run -d -p 3307:3306 -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC 
         <updated>2020-03-24T13:46:12.000Z</updated>
         <content type="html"><![CDATA[<h2 id="基础理论">基础理论</h2>
 <p>##kingshard使用</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[linux虚拟机环境搭建]]></title>
-        <id>https://bluegrasses.github.io/post/linux-xu-ni-ji-huan-jing-da-jian/</id>
-        <link href="https://bluegrasses.github.io/post/linux-xu-ni-ji-huan-jing-da-jian/">
-        </link>
-        <updated>2020-03-24T10:55:43.000Z</updated>
-        <content type="html"><![CDATA[<blockquote>
-<p>基本环境 lubuntu 19 虚拟机virtualbox</p>
-</blockquote>
-<h3 id="首次初始化su密码">首次初始化su密码</h3>
-<p>sudo passwd</p>
-<h3 id="安装virtualbox-增强工具">安装virtualbox 增强工具</h3>
-<ol>
-<li>点击安装 增强工具挂载到lubuntn文件中</li>
-<li>定位到指定位置,然后 ./VBoxLinuxAdditions.run 运行安装程序</li>
-</ol>
-<h3 id="虚拟机和主机互通">虚拟机和主机互通</h3>
-<ol>
-<li>virualbox网络设置为桥接模式</li>
-<li>安装ssh软件<br>
-检查是否安装了SSH<br>
-ps -e|grep ssh<br>
-安装ssh服务器端<br>
-apt install openssh-server<br>
-手工启动<br>
-sudo /etc/init.d/ssh start<br>
-默认端口为22</li>
-</ol>
-<h3 id="设置共享目录">设置共享目录</h3>
-<ol>
-<li>virtualbox 中设置共享文件夹</li>
-<li>好像默认挂载到/media/xxx目录下</li>
-</ol>
-<h3 id="tldr工具安装">tldr工具安装</h3>
-<p>sudo apt-get install npm<br>
-sudo npm install -g tldr<br>
-sudo apt-get install nodejs-legacy</p>
 ]]></content>
     </entry>
 </feed>
