@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-06-07T03:48:36.057Z</updated>
+    <updated>2020-06-07T03:49:49.403Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -16,7 +16,7 @@
         <link href="https://bluegrasses.github.io/post/go-shi-yong-vscode-jin-xing-duan-dian-diao-shi/">
         </link>
         <updated>2020-06-07T03:42:52.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="环境部署">环境部署</h2>
+        <content type="html"><![CDATA[<h2 id="一-环境部署">一 . 环境部署</h2>
 <h3 id="安装delv">安装delv</h3>
 <p><code>go get -u github.com/go-delve/delve/cmd/dlv</code></p>
 <h3 id="设置参数">设置参数</h3>
@@ -43,7 +43,7 @@
     ]
 }
 </code></pre>
-<h2 id="使用">使用</h2>
+<h2 id="二-使用">二 . 使用</h2>
 <figure data-type="image" tabindex="1"><img src="https://bluegrasses.github.io/post-images/1591501640237.png" alt="" loading="lazy"></figure>
 <h3 id="常用调试快捷键">常用调试快捷键</h3>
 <p>继续 / 暂停 F5<br>
