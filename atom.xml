@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-06-21T10:39:26.074Z</updated>
+    <updated>2020-06-21T10:50:43.743Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -26,9 +26,13 @@
 <h3 id="测试方法">测试方法</h3>
 <ol>
 <li>测试单个文件<br>
-go test -v  func_test.go func.go</li>
+go test -v  func_test.go func.go<br>
+//或者<br>
+go test -v -run func.go</li>
 <li>测试单个方法<br>
-go test -v -test.run TestAdd</li>
+go test -v -test.run TestAdd<br>
+//或者<br>
+go test -v -run TestAdd</li>
 </ol>
 ]]></content>
     </entry>
