@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-06-21T10:37:16.077Z</updated>
+    <updated>2020-06-21T10:38:20.717Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -10,6 +10,28 @@
     <logo>https://bluegrasses.github.io/images/avatar.png</logo>
     <icon>https://bluegrasses.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 罗亭的技术博客</rights>
+    <entry>
+        <title type="html"><![CDATA[{go} 测试用例]]></title>
+        <id>https://bluegrasses.github.io/post/go-ce-shi-yong-li/</id>
+        <link href="https://bluegrasses.github.io/post/go-ce-shi-yong-li/">
+        </link>
+        <updated>2020-06-21T10:33:04.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="一-单元测试">一. 单元测试</h2>
+<h3 id="格式要求">格式要求</h3>
+<ol>
+<li>文件名必须是*_test.go的类型，*代表要测试的文件名</li>
+<li>函数名必须以Test开头如：TestXxx或Test_xxx</li>
+<li>测试函数TestXxx(<em>testing.T)的参数是</em>testing.T</li>
+</ol>
+<h3 id="测试方法">测试方法</h3>
+<ol>
+<li>测试单个文件<br>
+go test -v  func_test.go func.go</li>
+<li>测试单个方法<br>
+go test -v -test.run TestAdd</li>
+</ol>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[{go} 使用vscode进行断点调试]]></title>
         <id>https://bluegrasses.github.io/post/go-shi-yong-vscode-jin-xing-duan-dian-diao-shi/</id>
@@ -681,16 +703,6 @@ pxc //启动的image名称<br>
 ···<br>
 docker run -d -p 3307:3306 -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=abc123456 -e CLUSSTER_JOIN=node1 -v  v2:/var/lib/mysql --Privileged --name=node2 --net=net2 --ip 172.18.0.3 pxc<br>
 ···</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Kingshard 数据库中间件]]></title>
-        <id>https://bluegrasses.github.io/post/kingshard-shu-ju-ku-zhong-jian-jian/</id>
-        <link href="https://bluegrasses.github.io/post/kingshard-shu-ju-ku-zhong-jian-jian/">
-        </link>
-        <updated>2020-03-24T13:46:12.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="基础理论">基础理论</h2>
-<p>##kingshard使用</p>
 ]]></content>
     </entry>
 </feed>

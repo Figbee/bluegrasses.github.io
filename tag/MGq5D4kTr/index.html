@@ -58,6 +58,34 @@
         
   <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
     
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://bluegrasses.github.io/post/go-ce-shi-yong-li/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          {go} 测试用例
+        </a>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2020-06-21</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        一. 单元测试
+格式要求
+
+文件名必须是*_test.go的类型，*代表要测试的文件名
+函数名必须以Test开头如：TestXxx或Test_xxx
+测试函数TestXxx(testing.T)的参数是testing.T
+
+测试方法
+
+测试...
+      </div>
+      <a href="https://bluegrasses.github.io/post/go-ce-shi-yong-li/" class="btn">
+        Read more
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
       <i class="ri-star-line text-orange-200 absolute text-2xl left-0 ml-1 rotate-90"></i>
     
     <div class="flex-1 order-2 md:order-1">
@@ -278,35 +306,20 @@ func root(w http.ResponseWriter, r *http.Request) {
     </div>
     
   </div>
-
-  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
-    
-    <div class="flex-1 order-2 md:order-1">
-      <h2 class="text-2xl font-semibold mb-4">
-        <a href="https://bluegrasses.github.io/post/go-yu-yan-za-xiang-冲突-漫步的猪_Win10/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
-          [go] 语言杂项
-        </a>
-      </h2>
-      <div class="mb-4 text-xs text-gray-500">2020-03-19</div>
-      <div class="mb-4 text-gray-500 dark:text-gray-300">
-        defer panic recover
-func main() {
-	defer func() {
-		err := recover()
-		fmt.Println(&quot;异常信息是:&quot;, err)
-	}()
-	panic(...
-      </div>
-      <a href="https://bluegrasses.github.io/post/go-yu-yan-za-xiang-冲突-漫步的猪_Win10/" class="btn">
-        Read more
-      </a>
-    </div>
-    
-  </div>
   
       </div>
 
       
+  <div class="my-4 flex justify-between px-4 md:px-0">
+    
+    
+      <a href="https://bluegrasses.github.io/tag/MGq5D4kTr/page/2" class="btn btn-white">
+        下一页
+        <i class="ri-arrow-right-line ml-4"></i>
+      </a>
+    
+  </div>
+
       <footer class="py-12 text-center px-4 md:px-0" v-pre>
   Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
 </footer>
