@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-07-02T09:33:34.007Z</updated>
+    <updated>2020-08-10T09:30:27.961Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -10,6 +10,16 @@
     <logo>https://bluegrasses.github.io/images/avatar.png</logo>
     <icon>https://bluegrasses.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 罗亭的技术博客</rights>
+    <entry>
+        <title type="html"><![CDATA[Go&Rpc编程基础]]></title>
+        <id>https://bluegrasses.github.io/post/goandrpc-bian-cheng-ji-chu/</id>
+        <link href="https://bluegrasses.github.io/post/goandrpc-bian-cheng-ji-chu/">
+        </link>
+        <updated>2020-08-10T09:22:23.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="一-rpc-概述">一、RPC 概述</h2>
+<p>RPC（Remote Procedure Call，远程过程调用）是一种通过网络请求从远程服务器调用服务，而不需要了解底层网络细节的应用程序通信协议。RPC（Remote Procedure Call，远程过程调用）是一种通过网络请求从远程服务器调用服务，而不需要了解底层网络细节的应用程序通信协议。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[{go} 测试用例]]></title>
         <id>https://bluegrasses.github.io/post/go-ce-shi-yong-li/</id>
@@ -659,54 +669,6 @@ func main() {
 		fmt.Fprintf(w, &quot;age is no valid&quot;)
 	}
 </code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[docker 前后端分离项目部署]]></title>
-        <id>https://bluegrasses.github.io/post/docker-qian-hou-duan-fen-chi-xiang-mu-bu-shu/</id>
-        <link href="https://bluegrasses.github.io/post/docker-qian-hou-duan-fen-chi-xiang-mu-bu-shu/">
-        </link>
-        <updated>2020-03-31T08:54:38.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="docker-mysql-集群">docker Mysql 集群</h2>
-<h3 id="部署集群环境">部署集群环境</h3>
-<blockquote>
-<p>基础环境 percona/percona-xtradb-cluster</p>
-</blockquote>
-<h4 id="1-安装-perconapercona-xtradb-cluster">1. 安装 percona/percona-xtradb-cluster</h4>
-<p>···<br>
-docker pull percona/percona-xtradb-cluster<br>
-···<br>
-重命名tag</p>
-<pre><code>docker tag percona/percona-xtradb-cluster pxc
-</code></pre>
-<p>删除多余的images</p>
-<pre><code>docker rmi percona/percona-xtradb-cluster
-</code></pre>
-<h4 id="2-部署专用网络">2. 部署专用网络</h4>
-<pre><code>docker network create --subnet=172.18.0.0/25 net1
-</code></pre>
-<p>查看专用网络信息</p>
-<pre><code>docker network inspect net1
-</code></pre>
-<h4 id="3-创建数据卷volume">3. 创建数据卷volume</h4>
-<pre><code>docker volume create v1
-</code></pre>
-<h4 id="4-创建pxc容器">4. 创建pxc容器</h4>
-<p>创建第一个容器<br>
-···<br>
-docker run -d -p 3306:3306 // 端口映射<br>
--v v1:/var/lib/mysql //映射目录到docker容器<br>
--e MYSQL_ROOT_PASSWORD=abc123456  //设置mysql 参数<br>
--e CLUSTER_NAME=PXC  //集群名称<br>
--e XTRABACKUP_PASSWORD=abc123456 --privileged  //设置数据库节点同步的密码<br>
---name=node1 //节点名称<br>
---net=net1 --ip 172.18.0.2  //设置网络名称<br>
-pxc //启动的image名称<br>
-···<br>
-创建第二个容器，并加入集群<br>
-···<br>
-docker run -d -p 3307:3306 -e MYSQL_ROOT_PASSWORD=abc123456 -e CLUSTER_NAME=PXC -e XTRABACKUP_PASSWORD=abc123456 -e CLUSSTER_JOIN=node1 -v  v2:/var/lib/mysql --Privileged --name=node2 --net=net2 --ip 172.18.0.3 pxc<br>
-···</p>
 ]]></content>
     </entry>
 </feed>
