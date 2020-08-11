@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-08-10T09:30:27.961Z</updated>
+    <updated>2020-08-11T08:58:59.875Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -17,7 +17,9 @@
         </link>
         <updated>2020-08-10T09:22:23.000Z</updated>
         <content type="html"><![CDATA[<h2 id="一-rpc-概述">一、RPC 概述</h2>
+<blockquote>
 <p>RPC（Remote Procedure Call，远程过程调用）是一种通过网络请求从远程服务器调用服务，而不需要了解底层网络细节的应用程序通信协议。RPC（Remote Procedure Call，远程过程调用）是一种通过网络请求从远程服务器调用服务，而不需要了解底层网络细节的应用程序通信协议。</p>
+</blockquote>
 ]]></content>
     </entry>
     <entry>
