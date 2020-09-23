@@ -92,6 +92,7 @@ func (s *Stack) Push(data int) {
 func (s *Stack) Pop() int {
 	l := len(s.items) - 1
 	popData := s.items[l]
+    //切片左包含,右不包含
 	s.items = s.items[:l]
 	return popData
 }
