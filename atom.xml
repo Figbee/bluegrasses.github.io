@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-08-12T01:37:00.553Z</updated>
+    <updated>2020-09-23T13:02:21.984Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -11,15 +11,118 @@
     <icon>https://bluegrasses.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 罗亭的技术博客</rights>
     <entry>
-        <title type="html"><![CDATA[Go&Rpc编程基础]]></title>
-        <id>https://bluegrasses.github.io/post/goandrpc-bian-cheng-ji-chu/</id>
-        <link href="https://bluegrasses.github.io/post/goandrpc-bian-cheng-ji-chu/">
+        <title type="html"><![CDATA[{go} 数据结构和算法-基础篇]]></title>
+        <id>https://bluegrasses.github.io/post/go-shu-ju-jie-gou-he-suan-fa-ji-chu-pian/</id>
+        <link href="https://bluegrasses.github.io/post/go-shu-ju-jie-gou-he-suan-fa-ji-chu-pian/">
         </link>
-        <updated>2020-08-10T09:22:23.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="一-rpc-概述">一、RPC 概述</h2>
-<blockquote>
-<p>RPC（Remote Procedure Call，远程过程调用）是一种通过网络请求从远程服务器调用服务，而不需要了解底层网络细节的应用程序通信协议。RPC（Remote Procedure Call，远程过程调用）是一种通过网络请求从远程服务器调用服务，而不需要了解底层网络细节的应用程序通信协议。</p>
-</blockquote>
+        <updated>2020-09-23T12:56:06.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="数据结构">数据结构</h2>
+<h3 id="栈-stack">栈 stack</h3>
+<pre><code class="language-go">type Stack struct {
+	items []int
+}
+//入栈
+func (s *Stack) Push(data int) {
+	s.items = append(s.items, data)
+}
+//出栈
+func (s *Stack) Pop() int {
+	l := len(s.items) - 1
+	popData := s.items[l]
+	s.items = s.items[:l]
+	return popData
+}
+
+func main() {
+	myStack := Stack{}
+	myStack.Push(1)
+	myStack.Push(2)
+	myStack.Push(3)
+	myStack.Pop()
+	fmt.Println(myStack)
+}
+</code></pre>
+<h3 id="队列queue">队列queue</h3>
+<pre><code class="language-go">type Queue struct {
+	items []int
+}
+//入队
+func (q *Queue) EnQueen(i int) {
+	q.items = append(q.items, i)
+}
+//出队
+func (q *Queue) DeQueen() int {
+	UnQueen := q.items[0]
+	q.items = q.items[1:]
+	return UnQueen
+}
+
+func main() {
+	myQueen := Queue{}
+	myQueen.EnQueen(1)
+	myQueen.EnQueen(2)
+	myQueen.EnQueen(3)
+	myQueen.DeQueen()
+	fmt.Println(myQueen)
+}
+</code></pre>
+<h3 id="二叉树">二叉树</h3>
+<pre><code class="language-go">var count int
+
+type Node struct {
+	Key      int
+	LeftSon  *Node
+	RightSon *Node
+}
+
+//Insert tree中插入值
+func (n *Node) Insert(i int) {
+	//i&gt;节点值放到右侧,右侧如果没有节点直接放入,有的话递归进行
+	if n.Key &lt; i {
+		if n.RightSon == nil {
+			n.RightSon = &amp;Node{Key: i}
+		} else {
+			n.RightSon.Insert(i)
+		}
+	} else if n.Key &gt; i {
+		if n.LeftSon == nil {
+			n.LeftSon = &amp;Node{Key: i}
+		} else {
+			n.LeftSon.Insert(i)
+		}
+	}
+}
+
+//Search 如果值正常返回true
+func (n *Node) Search(i int) bool {
+	count++
+	//如果节点到底都没找到,返回false
+    if n == nil {
+		return false
+	}
+    //如果大于到右侧寻找,如果小于到左侧寻找,否则返回真(true),递归调用时注意return
+	if n.Key &lt; i {
+		return n.RightSon.Search(i)
+	} else if n.Key &gt; i {
+		return n.LeftSon.Search(i)
+	}
+	return true
+}
+
+func main() {
+	myNode := &amp;Node{Key: 100}
+	myNode.Insert(50)
+	myNode.Insert(150)
+	myNode.Insert(203)
+	myNode.Insert(19)
+	myNode.Insert(76)
+	myNode.Insert(71)
+	myNode.Insert(82)
+
+	fmt.Println(myNode.Search(76))
+	fmt.Println(count)
+}
+</code></pre>
 ]]></content>
     </entry>
     <entry>
