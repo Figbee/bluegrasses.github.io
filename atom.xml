@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-09-23T13:06:01.488Z</updated>
+    <updated>2020-09-25T13:22:05.336Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -123,6 +123,130 @@ func main() {
 	fmt.Println(myNode.Search(76))
 	fmt.Println(count)
 }
+</code></pre>
+<h3 id="trie-字典">trie (字典)</h3>
+<figure data-type="image" tabindex="1"><img src="https://bluegrasses.github.io/post-images/1601039837814.png" alt="" loading="lazy"></figure>
+<pre><code class="language-go">const size = 26
+
+type Node struct {
+	children [size]*Node
+	//单词末尾 加isEnd标记
+	isEnd bool
+}
+
+type Trie struct {
+	root *Node
+}
+
+//InitTrie 初始化字典
+func InitTrie() *Trie {
+	result := &amp;Trie{root: &amp;Node{}}
+	return result
+}
+
+//Insert will take in a word and add it to the trie
+func (t *Trie) Insert(w string) {
+	wordLength := len(w)
+	currentNode := t.root
+	for i := 0; i &lt; wordLength; i++ {
+		charIndex := w[i] - 'a'
+		if currentNode.children[charIndex] == nil {
+			currentNode.children[charIndex] = &amp;Node{}
+		}
+		currentNode = currentNode.children[charIndex]
+	}
+	currentNode.isEnd = true
+}
+
+//Search 查询 tries
+func (t *Trie) Search(w string) bool {
+	wordLength := len(w)
+	currentNode := t.root
+	for i := 0; i &lt; wordLength; i++ {
+		charIndex := w[i] - 'a'
+		if currentNode.children[charIndex] == nil {
+			return false
+		}
+		currentNode = currentNode.children[charIndex]
+	}
+	if currentNode.isEnd == true {
+		return true
+	}
+	return false
+}
+
+func main() {
+	myTrie := InitTrie()
+	myTrie.Insert(&quot;hello&quot;)
+	fmt.Println(myTrie.Search(&quot;hello&quot;))
+}
+</code></pre>
+<h3 id="linked-链表">linked 链表</h3>
+<figure data-type="image" tabindex="2"><img src="https://bluegrasses.github.io/post-images/1601040093784.png" alt="" loading="lazy"></figure>
+<pre><code class="language-go">type node struct {
+	data int
+	next *node
+}
+
+type linkedList struct {
+	head   *node
+	length int
+}
+
+//prepend 头部添加一个节点
+func (l *linkedList) prepend(n *node) {
+	second := l.head
+	l.head = n
+	l.head.next = second
+	l.length++
+}
+
+//打印列表
+func (l linkedList) printLinked() {
+	current := l.head
+	for i := 0; i &lt; l.length; i++ {
+		fmt.Println(current.data)
+		current = current.next
+	}
+}
+
+//deleteWithValue 删除link制定数值
+func (l *linkedList) deleteWithValue(i int) {
+	//空link情况
+	if l.length == 0 {
+		return
+	}
+	//删除首节点情况
+	if l.head.data == i {
+		l.head = l.head.next
+		l.length--
+		return
+	}
+	current := l.head
+	for current.next.data != i {
+		current = current.next
+		//没有匹配值的情况
+		if current.next == nil {
+			return
+		}
+	}
+	current.next = current.next.next
+	l.length--
+}
+
+func main() {
+	node1 := &amp;node{data: 48}
+	node2 := &amp;node{data: 16}
+	node3 := &amp;node{data: 32}
+	myLink := linkedList{}
+	myLink.prepend(node1)
+	myLink.prepend(node2)
+	myLink.prepend(node3)
+	myLink.printLinked()
+	myLink.deleteWithValue(16)
+	myLink.printLinked()
+}
+
 </code></pre>
 ]]></content>
     </entry>
