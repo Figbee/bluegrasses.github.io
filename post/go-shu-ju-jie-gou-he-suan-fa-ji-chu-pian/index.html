@@ -191,6 +191,7 @@ func main() {
 <figure data-type="image" tabindex="1"><img src="https://bluegrasses.github.io/post-images/1601039837814.png" alt="" loading="lazy"></figure>
 <pre><code class="language-go">const size = 26
 
+//定义一个单元
 type Node struct {
 	children [size]*Node
 	//单词末尾 加isEnd标记
@@ -246,7 +247,8 @@ func main() {
 </code></pre>
 <h3 id="linked-链表">linked 链表</h3>
 <figure data-type="image" tabindex="2"><img src="https://bluegrasses.github.io/post-images/1601040093784.png" alt="" loading="lazy"></figure>
-<pre><code class="language-go">type node struct {
+<pre><code class="language-go">//定义一个单元
+type node struct {
 	data int
 	next *node
 }
