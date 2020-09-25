@@ -202,13 +202,13 @@ type Trie struct {
 	root *Node
 }
 
-//InitTrie 初始化字典
+//InitTrie 初始化字典,复杂的初始化建议设立一个初始函数
 func InitTrie() *Trie {
 	result := &amp;Trie{root: &amp;Node{}}
 	return result
 }
 
-//Insert will take in a word and add it to the trie
+//Insert 插入trie
 func (t *Trie) Insert(w string) {
 	wordLength := len(w)
 	currentNode := t.root
