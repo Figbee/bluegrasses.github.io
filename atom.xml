@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-09-26T08:08:47.839Z</updated>
+    <updated>2020-10-10T10:21:41.738Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -10,6 +10,129 @@
     <logo>https://bluegrasses.github.io/images/avatar.png</logo>
     <icon>https://bluegrasses.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 罗亭的技术博客</rights>
+    <entry>
+        <title type="html"><![CDATA[# cobra]]></title>
+        <id>https://bluegrasses.github.io/post/cobra/</id>
+        <link href="https://bluegrasses.github.io/post/cobra/">
+        </link>
+        <updated>2020-10-10T10:19:55.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="部署和安装">部署和安装</h2>
+<h3 id="安装与导入">安装与导入</h3>
+<ul>
+<li>安装</li>
+</ul>
+<pre><code class="language-go">go get -u github.com/spf13/cobra
+</code></pre>
+<ul>
+<li>导入</li>
+</ul>
+<pre><code class="language-go">import &quot;github.com/spf13/cobra&quot;
+</code></pre>
+<h4 id="使用cobra生成器">使用cobra生成器</h4>
+<p>windows系统下使用：</p>
+<pre><code class="language-go">go get github.com/spf13/cobra/cobra
+</code></pre>
+<p>或者在文件夹<code>github.com/spf13/cobra/cobra</code>下使用<code>go install</code>在<code>$GOPATH/bin</code>路径下生成<code>cobra.exe</code>可执行命令。</p>
+<blockquote>
+<p>windows 需要把bin目录加入到环境变量中, 重启生效</p>
+</blockquote>
+<h3 id="使用入门">使用入门</h3>
+<h4 id="脚手架方式初始化">脚手架方式初始化</h4>
+<pre><code class="language-go">//cli 为gomodule的包名
+cobra init  --pkg-name=cli
+</code></pre>
+<h4 id="添加子命令">添加子命令</h4>
+<ul>
+<li>脚手架添加子命令</li>
+</ul>
+<pre><code>cobra add version
+</code></pre>
+<ul>
+<li>代码实现</li>
+</ul>
+<pre><code class="language-go">//version.go
+func init(){
+    //rootCmd为根节点
+	rootCmd.AddCommand(versionCmd)
+}
+
+&gt; go run main.go version
+</code></pre>
+<h4 id="添加二级子命令">添加二级子命令</h4>
+<pre><code class="language-go">//help.go help 为version 的二级命令
+var helpCmd=&amp;cobra.Comand{}
+func init(){
+	versionCmd.AddCommand(helpCmd)
+}
+
+&gt; go run main.go version help
+</code></pre>
+<h4 id="使用flags参数">使用Flags(参数)</h4>
+<p><code>Flags提供了修饰符来控制动作命令的操作</code></p>
+<ul>
+<li>
+<p>Persistent Flags：全局性flag, 可用于它所分配的命令以及该命令下的每个命令。在根上分配标志作为全局flag。</p>
+</li>
+<li>
+<p>Local Flags：局部性flag,在本args分配一个标志，该标志仅适用于该特定命令。</p>
+</li>
+<li>
+<p>Required flags：必选flag，flag默认是可选的。如果希望命令在未设置flag时报告错误，请将其标记为required。</p>
+</li>
+</ul>
+<pre><code class="language-go">//version.go
+var versionCmd = &amp;cobra.Command{
+	Use:   &quot;version&quot;,
+	Short: &quot;A brief description of your command&quot;,
+	Long: `A longer description`,
+	Run: func(cmd *cobra.Command, args []string) {
+        //获取参数值
+		str, _ := cmd.Flags().GetString(&quot;gfoo&quot;)
+		fmt.Printf(&quot;the param vale is %s\n&quot;, str)
+		fmt.Println(&quot;version  1.0.0 for cli&quot;)
+	},
+}
+func init() {
+	rootCmd.AddCommand(versionCmd)
+	//定义Flags 提供了修饰符来控制动作命令的操作,StringP支持简写
+	versionCmd.PersistentFlags().String(&quot;gfoo&quot;, &quot;gfoo&quot;, &quot;A help for global_foo&quot;)
+	versionCmd.Flags().StringP(&quot;lfoo&quot;, &quot;f&quot;, &quot;&quot;, &quot;a help for local_foo&quot;)
+    
+}
+</code></pre>
+<h5 id="获取参数值的其他方法">获取参数值的其他方法</h5>
+<pre><code class="language-go">var str string
+var wordCmd = &amp;cobra.Command{
+	Use:   &quot;version&quot;,
+	Short: &quot;A brief description of your command&quot;,
+	Long: `A longer description`,
+	Run: func(cmd *cobra.Command, args []string) {
+		//业务逻辑
+	},
+}
+func init() {
+	rootCmd.AddCommand(versionCmd)
+	//直接将参数值读取到一个提前申明的变量中
+	wordCmd.Flags().StringVarP(&amp;str, &quot;str&quot;, &quot;s&quot;, &quot;&quot;, &quot;请输入单词内容&quot;)
+    
+}
+</code></pre>
+<h4 id="args参数约束和检查">Args参数约束和检查</h4>
+<pre><code class="language-go">//version.go Run:下面
+	Args: func(cmd *cobra.Command, args []string) error {
+		if len(args) &lt; 1 {
+			return errors.New(&quot;requires at least one arg&quot;)
+		}
+		return nil
+	},
+//上面代码可以简写为
+	Args: cobra.MinimumNArgs(1),
+//version 命令不加参数会报错
+&gt; go run main.go version 
+</code></pre>
+<h4 id="help">help</h4>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[{go} 数据结构和算法-基础篇]]></title>
         <id>https://bluegrasses.github.io/post/go-shu-ju-jie-gou-he-suan-fa-ji-chu-pian/</id>
@@ -982,34 +1105,6 @@ fmt.Println(&quot;sorted:&quot;, sort.SliceIsSorted(people, func(i, j int) bool 
 <ul>
 <li>总打印数值的正负号</li>
 </ul>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[{go} web编程]]></title>
-        <id>https://bluegrasses.github.io/post/golang-web-bian-cheng/</id>
-        <link href="https://bluegrasses.github.io/post/golang-web-bian-cheng/">
-        </link>
-        <updated>2020-04-19T11:42:00.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="1表单处理">1.表单处理</h2>
-<h3 id="数据获取">数据获取</h3>
-<pre><code class="language-go">func root(w http.ResponseWriter, r *http.Request) {
-    //1. 使用r.ParseForm()获取数据之后,get post 所有的数据都到了r.Form中
-	r.ParseForm()
-    //2.使用r.FormValue()从r.Form中检索数据
-	fmt.Println(r.FormValue(&quot;name&quot;))
-
-}
-func main() {
-	http.HandleFunc(&quot;/&quot;, root)
-	http.ListenAndServe(&quot;:9000&quot;, nil)
-}
-</code></pre>
-<h3 id="数据验证">数据验证</h3>
-<pre><code class="language-go">	r.ParseForm()
-	if m, _ := regexp.MatchString(&quot;^[0-9]+$&quot;, r.FormValue(&quot;age&quot;)); !m {
-		fmt.Fprintf(w, &quot;age is no valid&quot;)
-	}
-</code></pre>
 ]]></content>
     </entry>
 </feed>
