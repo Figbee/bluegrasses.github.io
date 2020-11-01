@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-11-01T23:18:14.612Z</updated>
+    <updated>2020-11-01T23:20:21.349Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -522,10 +522,12 @@ auth('api')-&gt;validate($credentials);
 }
 </code></pre>
 <ol start="6">
-<li>注册provide和alias<br>
-<code>config/app.php</code></li>
+<li>注册provide和alias</li>
 </ol>
-<pre><code class="language-php">   'aliases'=&gt;[
+<blockquote>
+<p>config/app.php</p>
+</blockquote>
+<pre><code>   'aliases'=&gt;[
        'JWTAuth'=&gt;'Tymon\JWTAuth\Facades\JWTAuth',
        'JWTFactory'=&gt;'Tymon\JWTAuth\Facades\JWTFactory'
    ]

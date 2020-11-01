@@ -599,10 +599,12 @@ auth('api')-&gt;validate($credentials);
 }
 </code></pre>
 <ol start="6">
-<li>注册provide和alias<br>
-<code>config/app.php</code></li>
+<li>注册provide和alias</li>
 </ol>
-<pre><code class="language-php">   'aliases'=&gt;[
+<blockquote>
+<p>config/app.php</p>
+</blockquote>
+<pre><code>   'aliases'=&gt;[
        'JWTAuth'=&gt;'Tymon\JWTAuth\Facades\JWTAuth',
        'JWTFactory'=&gt;'Tymon\JWTAuth\Facades\JWTFactory'
    ]
