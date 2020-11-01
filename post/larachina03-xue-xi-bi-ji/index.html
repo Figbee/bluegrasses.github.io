@@ -255,17 +255,15 @@ Accept: application/prs.larabbs.v2+json</p>
 </blockquote>
 <h4 id="步骤">步骤</h4>
 <ol>
-<li>
-<p>在transformer中定义方法</p>
-<pre><code>//
-protected $availableIncludes=['user','category'];
-//Topic模型中必须有user()方法
-public function includeUser(Topic $topic){
-    return $this-&gt;item($topic-&gt;user,new UserTransformer());
-}
-</code></pre>
-</li>
+<li>在transformer中定义方法</li>
 </ol>
+<pre><code class="language-php">       //
+       protected $availableIncludes=['user','category'];
+       //Topic模型中必须有user()方法
+       public function includeUser(Topic $topic){
+           return $this-&gt;item($topic-&gt;user,new UserTransformer());
+       }
+</code></pre>
 <h4 id="定义">定义</h4>
 <pre><code class="language-php">class TopicTransformer extends TransformerAbstract
 {
@@ -414,55 +412,55 @@ $oauthUser = $driver-&gt;userFromToken($response['access_token']);
 </li>
 <li>
 <p>用户已经使用过微信登录，则找到数据库中对应的用户，返回 该用户的登录凭证</p>
-<pre><code class="language-php">路由: $api-&gt;post('socials/{social_type}/authorizations', &quot;AuthorizationsController@weiXinLogin&quot;)-&gt;name('api.socials.authorizations.store');
-public function weiXinLogin($type, AuthorizationsRequest $request)
-{
-    if (!in_array($type, ['weixin'])) {
-        return $this-&gt;response-&gt;errorBadRequest();
-    }
-    $driver = \Socialite::driver($type);
-    try {
-        /*如果传递是code*/
-        if ($code = $request-&gt;code) {
-            $response = $driver-&gt;getAccessTokenResponse($code);
-            $token = array_get($response, 'access_token');
-        } else {
-            $token = $request-&gt;access_token;
-            if ($type == 'weixin') {
-                $driver-&gt;setOpenId($request-&gt;openid);
-            }
-        }
-        $oauthUser = $driver-&gt;userFromToken($token);
-    } catch (\Exception $e) {
-        return $this-&gt;response-&gt;errorUnauthorized('参数错误');
-    }
-    /*根据获取的用户信息,去数据库中查找,如果存在则将查询结果返回,否则新建数据并返回*/
-    switch ($type) {
-        case 'weixin':
-            $unionid = $oauthUser-&gt;offsetExists('unionid') ? $oauthUser-&gt;offsetGet('unionid') : null;
-            if ($unionid) {
-                /*如果有unionid则用unionid查询,否则用openid查询*/
-                $user = User::where('weixin_unionid', $unionid)-&gt;first();
-            } else {
-                $user = User::where('weixin_openid', $oauthUser-&gt;getId())-&gt;first();
-            }
-            if (!$user) {
-                $user = User::create([
-                    'name' =&gt; $oauthUser-&gt;getNickname(),
-                    'avatar' =&gt; $oauthUser-&gt;getAvatar(),
-                    'wenxin_opeinid' =&gt; $oauthUser-&gt;getId(),
-                    'weixin_unionid' =&gt; $unionid,
-                ]);
-            }
-            break;
-    }
-    //这里临时先返回id值
-    $token = \Auth::guard('api')-&gt;fromUser($user);
-    return $this-&gt;authResult($token)-&gt;setStatusCode(200);
-}
-</code></pre>
 </li>
 </ol>
+<pre><code class="language-php">   路由: $api-&gt;post('socials/{social_type}/authorizations', &quot;AuthorizationsController@weiXinLogin&quot;)-&gt;name('api.socials.authorizations.store');
+   public function weiXinLogin($type, AuthorizationsRequest $request)
+   {
+       if (!in_array($type, ['weixin'])) {
+           return $this-&gt;response-&gt;errorBadRequest();
+       }
+       $driver = \Socialite::driver($type);
+       try {
+           /*如果传递是code*/
+           if ($code = $request-&gt;code) {
+               $response = $driver-&gt;getAccessTokenResponse($code);
+               $token = array_get($response, 'access_token');
+           } else {
+               $token = $request-&gt;access_token;
+               if ($type == 'weixin') {
+                   $driver-&gt;setOpenId($request-&gt;openid);
+               }
+           }
+           $oauthUser = $driver-&gt;userFromToken($token);
+       } catch (\Exception $e) {
+           return $this-&gt;response-&gt;errorUnauthorized('参数错误');
+       }
+       /*根据获取的用户信息,去数据库中查找,如果存在则将查询结果返回,否则新建数据并返回*/
+       switch ($type) {
+           case 'weixin':
+               $unionid = $oauthUser-&gt;offsetExists('unionid') ? $oauthUser-&gt;offsetGet('unionid') : null;
+               if ($unionid) {
+                   /*如果有unionid则用unionid查询,否则用openid查询*/
+                   $user = User::where('weixin_unionid', $unionid)-&gt;first();
+               } else {
+                   $user = User::where('weixin_openid', $oauthUser-&gt;getId())-&gt;first();
+               }
+               if (!$user) {
+                   $user = User::create([
+                       'name' =&gt; $oauthUser-&gt;getNickname(),
+                       'avatar' =&gt; $oauthUser-&gt;getAvatar(),
+                       'wenxin_opeinid' =&gt; $oauthUser-&gt;getId(),
+                       'weixin_unionid' =&gt; $unionid,
+                   ]);
+               }
+               break;
+       }
+       //这里临时先返回id值
+       $token = \Auth::guard('api')-&gt;fromUser($user);
+       return $this-&gt;authResult($token)-&gt;setStatusCode(200);
+   }
+</code></pre>
 <h4 id="微信的openid和unionid">微信的openid和unionid</h4>
 <p>那么如何来分辨用户是否已存在，就需要一个用户的唯一标识。任何 一个第三方平台，返回的用户信息都会有一个唯一标 识， socialite  已经为我们封装好了，直接使用  $oauthUser&gt;getId()  即可获取，对于微信来说，这个唯一标识叫做 openid .</p>
 <p>如果开发者拥有多个移动应用、网站应用、和公众帐号（包括小程 序），可通过 unionid 来区分用户的唯一性，因为只要是同一个微 信开放平台帐号下的移动应用、网站应用和公众帐号（包括小程 序），用户的 unionid 是唯一的。换句话说，同一用户，对同一个 微信开放平台下的不同应用，unionid 是相同的。</p>
@@ -601,22 +599,22 @@ auth('api')-&gt;validate($credentials);
 }
 </code></pre>
 <ol start="6">
-<li>
-<p>注册provide和alias</p>
-<p><code>config/app.php</code></p>
-<pre><code class="language-php">'aliases'=&gt;[
-    'JWTAuth'=&gt;'Tymon\JWTAuth\Facades\JWTAuth',
-    'JWTFactory'=&gt;'Tymon\JWTAuth\Facades\JWTFactory'
-]
+<li>注册provide和alias<br>
+<code>config/app.php</code></li>
+</ol>
+<pre><code class="language-php">   'aliases'=&gt;[
+       'JWTAuth'=&gt;'Tymon\JWTAuth\Facades\JWTAuth',
+       'JWTFactory'=&gt;'Tymon\JWTAuth\Facades\JWTFactory'
+   ]
 </code></pre>
 <blockquote>
 <p>如果你不适用这两个Facade,你可以使用辅助函数auth()</p>
 </blockquote>
 <p>auth辅助函数与jwt扩展</p>
-</li>
+<ol start="7">
 <li>
-<p>jwt的几种常用操作</p>
-<p>路由</p>
+<p>jwt的几种常用操作<br>
+路由</p>
 <pre><code class="language-php">//登录
 Route::post('login','AuthController@login');
 //注销token
@@ -627,94 +625,94 @@ Route::put('refresh','AuthController@refresh');
 Route::post('me','AuthController@me');
 </code></pre>
 <p>控制器</p>
-<pre><code class="language-php">public function store(AuthRequest $request)
-{
-    //传入两个参数username,password.这里username 可能有是邮箱或者电话,需要判断一下
-    $username = $request-&gt;username;
-    filter_var($username, FILTER_VALIDATE_EMAIL) ? $credentials['email'] = $username : $credentials['phone'] = $username;
-    $credentials['password'] = $request-&gt;password;
-    $token = \Auth::guard('api')-&gt;attempt($credentials);
-    if (!$token) {
-        return $this-&gt;response-&gt;errorUnauthorized('用户名密码不正确');
-    }
-    //这里定义一个通用的返回信息函数
-    return $this-&gt;authResult($token)-&gt;setStatusCode(200);
-}
-
-/**微信oauth 登录
-     * @param $type 路由中的第三方登录类型参数,如weixin
-     * @param AuthorizationsRequest $request
-     */
-public function weiXinLogin($type, AuthorizationsRequest $request)
-{
-    if (!in_array($type, ['weixin'])) {
-        return $this-&gt;response-&gt;errorBadRequest();
-    }
-    $driver = \Socialite::driver($type);
-    try {
-        /*如果传递是code*/
-        if ($code = $request-&gt;code) {
-            $response = $driver-&gt;getAccessTokenResponse($code);
-            $token = array_get($response, 'access_token');
-        } else {
-            $token = $request-&gt;access_token;
-            if ($type == 'weixin') {
-                $driver-&gt;setOpenId($request-&gt;openid);
-            }
-        }
-        $oauthUser = $driver-&gt;userFromToken($token);
-    } catch (\Exception $e) {
-        return $this-&gt;response-&gt;errorUnauthorized('参数错误');
-    }
-    /*根据获取的用户信息,去数据库中查找,如果存在则将查询结果返回,否则新建数据并返回*/
-    switch ($type) {
-        case 'weixin':
-            $unionid = $oauthUser-&gt;offsetExists('unionid') ? $oauthUser-&gt;offsetGet('unionid') : null;
-            if ($unionid) {
-                /*如果有unionid则用unionid查询,否则用openid查询*/
-                $user = User::where('weixin_unionid', $unionid)-&gt;first();
-            } else {
-                $user = User::where('weixin_openid', $oauthUser-&gt;getId())-&gt;first();
-            }
-            if (!$user) {
-                $user = User::create([
-                    'name' =&gt; $oauthUser-&gt;getNickname(),
-                    'avatar' =&gt; $oauthUser-&gt;getAvatar(),
-                    'wenxin_opeinid' =&gt; $oauthUser-&gt;getId(),
-                    'weixin_unionid' =&gt; $unionid,
-                ]);
-            }
-            break;
-    }
-    //这里临时先返回id值
-    $token = \Auth::guard('api')-&gt;fromUser($user);
-    return $this-&gt;authResult($token)-&gt;setStatusCode(200);
-}
-
-public function refresh()
-{
-    $token=\Auth::guard('api')-&gt;refresh();
-    return $this-&gt;authResult($token)-&gt;setStatusCode(200);
-}
-
-public function destroy()
-{
-    \Auth::guard('api')-&gt;logout();
-    //noContent 返回的状态码 204
-    return $this-&gt;response-&gt;noContent();
-}
-
-protected function authResult($token)
-{
-    return $this-&gt;response-&gt;array([
-        'access_token' =&gt; $token,
-        'token_type' =&gt; 'Bearer',
-        'expires_in' =&gt; \Auth::guard('api')-&gt;factory()-&gt;getTTL() * 60
-    ]);
-}
-</code></pre>
 </li>
 </ol>
+<pre><code class="language-php">   public function store(AuthRequest $request)
+   {
+       //传入两个参数username,password.这里username 可能有是邮箱或者电话,需要判断一下
+       $username = $request-&gt;username;
+       filter_var($username, FILTER_VALIDATE_EMAIL) ? $credentials['email'] = $username : $credentials['phone'] = $username;
+       $credentials['password'] = $request-&gt;password;
+       $token = \Auth::guard('api')-&gt;attempt($credentials);
+       if (!$token) {
+           return $this-&gt;response-&gt;errorUnauthorized('用户名密码不正确');
+       }
+       //这里定义一个通用的返回信息函数
+       return $this-&gt;authResult($token)-&gt;setStatusCode(200);
+   }
+   
+   /**微信oauth 登录
+        * @param $type 路由中的第三方登录类型参数,如weixin
+        * @param AuthorizationsRequest $request
+        */
+   public function weiXinLogin($type, AuthorizationsRequest $request)
+   {
+       if (!in_array($type, ['weixin'])) {
+           return $this-&gt;response-&gt;errorBadRequest();
+       }
+       $driver = \Socialite::driver($type);
+       try {
+           /*如果传递是code*/
+           if ($code = $request-&gt;code) {
+               $response = $driver-&gt;getAccessTokenResponse($code);
+               $token = array_get($response, 'access_token');
+           } else {
+               $token = $request-&gt;access_token;
+               if ($type == 'weixin') {
+                   $driver-&gt;setOpenId($request-&gt;openid);
+               }
+           }
+           $oauthUser = $driver-&gt;userFromToken($token);
+       } catch (\Exception $e) {
+           return $this-&gt;response-&gt;errorUnauthorized('参数错误');
+       }
+       /*根据获取的用户信息,去数据库中查找,如果存在则将查询结果返回,否则新建数据并返回*/
+       switch ($type) {
+           case 'weixin':
+               $unionid = $oauthUser-&gt;offsetExists('unionid') ? $oauthUser-&gt;offsetGet('unionid') : null;
+               if ($unionid) {
+                   /*如果有unionid则用unionid查询,否则用openid查询*/
+                   $user = User::where('weixin_unionid', $unionid)-&gt;first();
+               } else {
+                   $user = User::where('weixin_openid', $oauthUser-&gt;getId())-&gt;first();
+               }
+               if (!$user) {
+                   $user = User::create([
+                       'name' =&gt; $oauthUser-&gt;getNickname(),
+                       'avatar' =&gt; $oauthUser-&gt;getAvatar(),
+                       'wenxin_opeinid' =&gt; $oauthUser-&gt;getId(),
+                       'weixin_unionid' =&gt; $unionid,
+                   ]);
+               }
+               break;
+       }
+       //这里临时先返回id值
+       $token = \Auth::guard('api')-&gt;fromUser($user);
+       return $this-&gt;authResult($token)-&gt;setStatusCode(200);
+   }
+   
+   public function refresh()
+   {
+       $token=\Auth::guard('api')-&gt;refresh();
+       return $this-&gt;authResult($token)-&gt;setStatusCode(200);
+   }
+   
+   public function destroy()
+   {
+       \Auth::guard('api')-&gt;logout();
+       //noContent 返回的状态码 204
+       return $this-&gt;response-&gt;noContent();
+   }
+   
+   protected function authResult($token)
+   {
+       return $this-&gt;response-&gt;array([
+           'access_token' =&gt; $token,
+           'token_type' =&gt; 'Bearer',
+           'expires_in' =&gt; \Auth::guard('api')-&gt;factory()-&gt;getTTL() * 60
+       ]);
+   }
+</code></pre>
 <blockquote>
 <p>refresh() token 刷新 destroy 销毁 都需要携带 Authorization:Bear  {token}</p>
 </blockquote>
