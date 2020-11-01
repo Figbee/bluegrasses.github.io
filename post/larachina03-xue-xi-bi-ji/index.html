@@ -614,21 +614,19 @@ auth('api')-&gt;validate($credentials);
 </blockquote>
 <p>auth辅助函数与jwt扩展</p>
 <ol start="7">
-<li>
-<p>jwt的几种常用操作<br>
-路由</p>
-<pre><code class="language-php">//登录
-Route::post('login','AuthController@login');
-//注销token
-Route::delete('logout','AuthController@logout');
-//刷新token
-Route::put('refresh','AuthController@refresh');
-//获取信息
-Route::post('me','AuthController@me');
+<li>jwt的几种常用操作<br>
+路由</li>
+</ol>
+<pre><code>   //登录
+   Route::post('login','AuthController@login');
+   //注销token
+   Route::delete('logout','AuthController@logout');
+   //刷新token
+   Route::put('refresh','AuthController@refresh');
+   //获取信息
+   Route::post('me','AuthController@me');
 </code></pre>
 <p>控制器</p>
-</li>
-</ol>
 <pre><code class="language-php">   public function store(AuthRequest $request)
    {
        //传入两个参数username,password.这里username 可能有是邮箱或者电话,需要判断一下
