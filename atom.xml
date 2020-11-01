@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-11-01T22:11:30.016Z</updated>
+    <updated>2020-11-01T22:11:57.388Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -10,69 +10,6 @@
     <logo>https://bluegrasses.github.io/images/avatar.png</logo>
     <icon>https://bluegrasses.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 罗亭的技术博客</rights>
-    <entry>
-        <title type="html"><![CDATA[Go语言从入门到放弃(结构体常见的tag)]]></title>
-        <id>https://bluegrasses.github.io/post/go-yu-yan-cong-ru-men-dao-fang-qi-jie-gou-ti-chang-jian-de-tag/</id>
-        <link href="https://bluegrasses.github.io/post/go-yu-yan-cong-ru-men-dao-fang-qi-jie-gou-ti-chang-jian-de-tag/">
-        </link>
-        <updated>2020-11-01T22:07:52.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="什么是tag">什么是tag</h2>
-<p>Tag是结构体中某个字段别名, 可以定义多个, 空格分隔</p>
-<pre><code>type Student struct {
-    Name string `ak:&quot;av&quot; bk:&quot;bv&quot; ck:&quot;cv&quot;`
-}
-</code></pre>
-<p>使用空格来区分多个tag,所以格式要尤为注意</p>
-<h2 id="tag的作用">tag的作用</h2>
-<p>tag相当于该字段的一个属性标签, 在Go语言中, 一些包通过tag来做相应的判断</p>
-<p>举个例子, 比如我们有一个结构体</p>
-<pre><code>type Student struct {
-    Name string
-}
-</code></pre>
-<p>然后我们将一个该结构体实例化一个 s1</p>
-<pre><code>s1 := Student{
-        Name: &quot;s1&quot;,
-    }
-</code></pre>
-<p>再将 s1 序列化</p>
-<pre><code>v, err := json.Marshal(s1) // json.Marshal方法,json序列化,返回值和报错信息
-if err != nil { // 不为nil代表报错
-    fmt.Println(err)
-}
-fmt.Println(string(v)) // []byte转string, json
-</code></pre>
-<p>此时 string(v) 为</p>
-<pre><code>{
-  &quot;Name&quot;: &quot;s1&quot;  
-}
-</code></pre>
-<p>因为在 Go 语言中, 结构体字段要想为外部所用就必须首字母大写, 但是如果这个 s1 是返回给前端的, 那每个字段都首字母大写就很怪, 此时我们可以给 Student 加tag解决</p>
-<p>结构体修改为</p>
-<pre><code>type Student struct {
-    Name string`json:&quot;name&quot;`
-}
-</code></pre>
-<p>序列化时, 会自己找到名为 json 的tag, 根据值来进行json后的赋值</p>
-<p>因此 string(v) 为</p>
-<pre><code>{
-  &quot;name&quot;: &quot;s1&quot;  
-}
-</code></pre>
-<h2 id="常用tag记录">常用tag记录</h2>
-<h3 id="json">json</h3>
-<p>json序列化或反序列化时字段的名称</p>
-<h3 id="db">db</h3>
-<p>sqlx模块中对应的数据库字段名</p>
-<h3 id="form">form</h3>
-<p>gin框架中对应的前端的数据字段名</p>
-<h3 id="binding">binding</h3>
-<p>搭配 form 使用, 默认如果没查找到结构体中的某个字段则不报错值为空, binding为 required 代表没找到返回错误给前端</p>
-<p>作者： ChnMig</p>
-<p>出处：https://www.cnblogs.com/chnmig/p/11382390.html</p>
-<p>版权：本作品采用「<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a>」许可协议进行许可。</p>
-]]></content>
-    </entry>
     <entry>
         <title type="html"><![CDATA[[转载] Go语言 结构体常见tag]]></title>
         <id>https://bluegrasses.github.io/post/zhuan-zai-go-yu-yan-jie-gou-ti-chang-jian-tag/</id>
@@ -1082,6 +1019,112 @@ fmt.Println(w1.String())
 <h2 id="23-strconv-字符串和基本数据类型之间的转换">2.3 strconv 字符串和基本数据类型之间的转换</h2>
 <h2 id="24-regexp-正则表达式">2.4 regexp 正则表达式</h2>
 <h2 id="25-unicode-编码">2.5 unicode 编码</h2>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[{go} 标准库之  数据、时间、数学函数]]></title>
+        <id>https://bluegrasses.github.io/post/go-biao-zhun-ku-shu-ju-shi-jian-shu-xue-han-shu-冲突-漫步的猪_Win10/</id>
+        <link href="https://bluegrasses.github.io/post/go-biao-zhun-ku-shu-ju-shi-jian-shu-xue-han-shu-冲突-漫步的猪_Win10/">
+        </link>
+        <updated>2020-05-17T02:20:42.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="sort-排序算法">sort 排序算法</h2>
+<h3 id="sort方法">sort()方法</h3>
+<blockquote>
+<p>前面已经提到过,对数据集合(包括定义的数据类型的集合)排序需要实现sort.Interface接口的三个方法,集合实现了这三个方法后,即可调用该2包的sort()方法进行排序.</p>
+</blockquote>
+<pre><code class="language-go">type Interface interface {
+		// 获取数据集合元素个数
+		Len() int
+		// 如果 i 索引的数据小于 j 索引的数据，返回 true，且不会调用下面的 Swap()，即数据升序排序。
+		Less(i, j int) bool
+		// 交换 i 和 j 索引的两个元素的位置
+        Swap(i, j int)
+}
+</code></pre>
+<p>该包还提供了一个方法可以判断数据集合是否已经排好顺序，该方法的内部实现依赖于我们自己实现的 Len() 和 Less() 方法</p>
+<ul>
+<li>例子</li>
+</ul>
+<pre><code class="language-go">// 学生成绩结构体
+type StuScore struct {
+    name  string    // 姓名
+    score int   // 成绩
+}
+
+type StuScores []StuScore
+
+//Len()
+func (s StuScores) Len() int {
+	return len(s)
+}
+
+//Less(): 成绩将有低到高排序
+func (s StuScores) Less(i, j int) bool {
+	return s[i].score &lt; s[j].score
+}
+
+//Swap()
+func (s StuScores) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+
+func main() {
+    stus := StuScores{
+                {&quot;alan&quot;, 95},
+                {&quot;hikerell&quot;, 91},
+                {&quot;acmfly&quot;, 96},
+                {&quot;leao&quot;, 90},
+			}		
+    //StuScores 已经实现了 sort.Interface 接口 , 所以可以调用 Sort 函数进行排序
+	sort.Sort(stus)
+	// 判断是否已经排好顺序，将会打印 true
+}
+</code></pre>
+<h3 id="sortissorted-是否排序过">sort.IsSorted()  是否排序过</h3>
+<h3 id="reverse-反向排序方法">Reverse() 反向排序方法</h3>
+<h3 id="sort包已经支持的内部数据类型排序">sort包已经支持的内部数据类型排序</h3>
+<blockquote>
+<p>sort包原生支持[]int、[]float64 和[]string 三种内建数据类型切片的排序操作，即不必我们自己实现相关的 Len()、Less() 和 Swap() 方法。</p>
+</blockquote>
+<h3 id="interface-排序和查找">[]interface 排序和查找</h3>
+<h4 id="基本函数">基本函数</h4>
+<p>sort 包提供了以下函数：</p>
+<p>func Slice(slice interface{}, less func(i, j int) bool)<br>
+func SliceStable(slice interface{}, less func(i, j int) bool)<br>
+func SliceIsSorted(slice interface{}, less func(i, j int) bool) bool<br>
+func Search(n int, f func(int) bool) int</p>
+<ul>
+<li>slice使用案例</li>
+</ul>
+<pre><code class="language-go">people := []struct {
+	Name string
+	Age  int
+}{
+	{&quot;Gopher&quot;, 7},
+	{&quot;Alice&quot;, 55},
+	{&quot;Vera&quot;, 24},
+	{&quot;Bob&quot;, 75},
+}
+//排序
+//j参数其实相当于i+1=j
+sort.Slice(people, func(i, j int) bool { return people[i].Age &lt; people[j].Age }) // 按年龄升序排序
+fmt.Println(&quot;Sort by age:&quot;, people)
+//判断是否按照某种规则排过序
+fmt.Println(&quot;sorted:&quot;, sort.SliceIsSorted(people, func(i, j int) bool {
+    return people[i].Age &gt; people[j].Age
+}))
+</code></pre>
+<ul>
+<li>sort.Search使用<pre><code class="language-go">	a := []int{2, 3, 4, 200, 100, 21, 234, 56}
+  x := 21
+  sort.Slice(a, func(i, j int) bool {
+  	return a[i] &lt; a[i]
+  })
+  index := sort.Search(len(a), func(i int) bool { return a[i] &gt;= x })
+  fmt.Println(index)
+</code></pre>
+</li>
+</ul>
 ]]></content>
     </entry>
 </feed>
