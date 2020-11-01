@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-11-01T23:08:09.693Z</updated>
+    <updated>2020-11-01T23:10:53.843Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -10,6 +10,2192 @@
     <logo>https://bluegrasses.github.io/images/avatar.png</logo>
     <icon>https://bluegrasses.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 罗亭的技术博客</rights>
+    <entry>
+        <title type="html"><![CDATA[larachina03学习笔记]]></title>
+        <id>https://bluegrasses.github.io/post/larachina03-xue-xi-bi-ji/</id>
+        <link href="https://bluegrasses.github.io/post/larachina03-xue-xi-bi-ji/">
+        </link>
+        <updated>2020-11-01T23:10:09.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="杂项问题">杂项问题</h2>
+<h3 id="postman-启动空白修复">postman 启动空白修复</h3>
+<blockquote>
+<p>解决方法:</p>
+<p>环境变量-&gt;添加系统变量(添加POSTMAN_DISABLE_GPU = true)</p>
+</blockquote>
+<h3 id="cerbot-部署https">cerbot 部署https</h3>
+<blockquote>
+<p>利用宝塔更方便点</p>
+</blockquote>
+<h3 id="宝塔远程连接数据库">宝塔远程连接数据库</h3>
+<p>1.数据库权限设为所有人或指定ip</p>
+<p>2.宝塔安全中放行3306端口</p>
+<h2 id="restful设计原则">RESTful设计原则</h2>
+<h3 id="常用动词">常用动词</h3>
+<ul>
+<li>
+<p>GET：读取（Read）</p>
+</li>
+<li>
+<p>POST：新建（Create）</p>
+</li>
+<li>
+<p>PUT：更新（Update）</p>
+</li>
+<li>
+<p>PATCH：更新（Update），通常是部分更新</p>
+</li>
+<li>
+<p>DELETE：删除（Delete）</p>
+</li>
+</ul>
+<blockquote>
+<p>根据 HTTP 规范，动词一律大写</p>
+</blockquote>
+<h3 id="版本控制">版本控制</h3>
+<p><strong>两种情况:</strong></p>
+<p>第一种情况</p>
+<p><code>https://api.larabbs.com/v1</code></p>
+<p><code>https://api.larabbs.com/v2</code></p>
+<p>第二种情况</p>
+<p><code>https://api.larabbs.com/ Accept: application/prs.larabbs.v1+json</code></p>
+<p><code>https://api.larabbs.com/ Accept: application/prs.larabbs.v1+json</code></p>
+<h3 id="路由命名">路由命名</h3>
+<p>两个关键词: 复数 命名不要有动词</p>
+<p><code>POST https://api.larabbs.com/topic</code></p>
+<p><code>GET https://api.larabbs.com/topics/1</code></p>
+<p><code>POST https://api.larabbs.com/topics/1/comments</code></p>
+<p><code>DELETE https://api.larabbs.com/topics/1/comments/10</code></p>
+<h3 id="资源过滤">资源过滤</h3>
+<pre><code>?state=closed: 不同状态的资源
+?page=2&amp;per_page=100：访问第几页数据，每页多少条。
+?sortby=name&amp;order=asc：指定返回结果按照哪个属性排序，以及排序顺序
+</code></pre>
+<h3 id="状态码">状态码</h3>
+<p>HTTP状态码就是一个三位数, 分成五个类别</p>
+<table>
+<thead>
+<tr>
+<th>代码</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1xx</td>
+<td>相关信息</td>
+</tr>
+<tr>
+<td>2xx</td>
+<td>操作成功</td>
+</tr>
+<tr>
+<td>3xx</td>
+<td>重定向</td>
+</tr>
+<tr>
+<td>4xx</td>
+<td>客户端错误</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>服务器错误</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>200 表示操作成功,但是不同的方法可以返回更精确的状态码</p>
+</blockquote>
+<pre><code class="language-php">GET: 200 OK
+POST: 201 Created
+PUT: 200 OK
+PATCH: 200 OK
+DELETE: 204 No Content
+</code></pre>
+<pre><code>//2xx
+200 OK - 对成功的 GET、PUT、PATCH 或 DELETE 操作进行
+响应。也可以被用在不创建新资源的 POST 操作上
+201 Created - 对创建新资源的 POST 操作进行响应。应该带
+着指向新资源地址的 Location 头
+202 Accepted - 服务器接受了请求，但是还未处理，响应中应
+该包含相应的指示信息，告诉客户端该去哪里查询关于本次请
+求的信息
+204 No Content - 对不会返回响应体的成功请求进行响应（比
+如 DELETE 请求）
+//3xx
+304 Not Modified - HTTP缓存header生效的时候用
+// 4xx
+400 Bad Request - 请求异常，比如请求中的body无法解析
+401 Unauthorized - 没有进行认证或者认证非法
+403 Forbidden - 服务器已经理解请求，但是拒绝执行它
+404 Not Found - 请求一个不存在的资源
+405 Method Not Allowed - 所请求的 HTTP 方法不允许当前认证用户访问
+410 Gone - 表示当前请求的资源不再可用。当调用老版本 API的时候很有用
+415 Unsupported Media Type - 如果请求中的内容类型是错误的
+422 Unprocessable Entity - 用来表示校验错误
+429 Too Many Requests - 由于请求频次达到上限而被拒绝访问
+//5xx
+5xx 状态码表示服务端错误. 一般来说,API不会向用户透露服务器的详细信息,所以只要两个状态码就够了
+500 Internal Server Error：客户端请求有效，服务器处理时发生了意外。
+503 Service Unavailable：服务器无法处理请求，一般用于网站维护状态。
+</code></pre>
+<h3 id="数据响应格式">数据响应格式</h3>
+<h3 id="调用频率限制">调用频率限制</h3>
+<p>为了防止服务器被攻击，减少服务器压力，需要对接口进行合适的限流控制，需要在响应头信息中加入合适的信息，告知客户端当前的限流情况</p>
+<pre><code>X-RateLimit-Limit :100 最大访问次数
+X-RateLimit-Remaining :93 剩余的访问次数
+X-RateLimit-Reset :1513784506 到该时间点，访问次数会重置
+为 X-RateLimit-Limit
+</code></pre>
+<h3 id="接口关联">接口关联</h3>
+<blockquote>
+<p>做接口的思路与我们做网页应用不同，网站中处理验证码，通常是存入 session，注册的时候验证用户输入的验证码与 session 中的验证码是否相同。但是接口是无状态，相互独立的，处理这种相互关联，有先后调用顺序的接口时，常常是第一个接口返回一个随机的 key，利用这个 key 去调用第二个接口。</p>
+</blockquote>
+<h2 id="dingoapi">dingo/api</h2>
+<p>组件名:<code>dingo/api</code></p>
+<h3 id="常用配置">常用配置</h3>
+<pre><code class="language-php">#有三个配置项  x 本地开发的或私有环境 prs 提供给公司app,单页面等 vnd 对外发布的,开放给所有用户
+API_STANDARDS_TREE=prs
+#项目简称
+APISUBTYPE=larabbs
+#项目前缀或子域名, www.larabbs.com/api
+API_PREFIX=api
+#api.larabbs.com
+API_DOMAIN=api.larabbs.com   
+API_DEBUG=true
+API_VERSION=v1
+#严格模式
+APISTRICT=false
+</code></pre>
+<h4 id="访问不同版本的接口方法">访问不同版本的接口方法</h4>
+<p>访问 v1 版本<br>
+Accept: application/prs.larabbs.v1+json<br>
+访问 v2 版本<br>
+Accept: application/prs.larabbs.v2+json</p>
+<h3 id="api认证">API认证</h3>
+<h3 id="include机制">include机制</h3>
+<blockquote>
+<p>场景: 获取帖子的作者和栏目信息</p>
+</blockquote>
+<h4 id="步骤">步骤</h4>
+<ol>
+<li>
+<p>在transformer中定义方法</p>
+<pre><code>//
+protected $availableIncludes=['user','category'];
+//Topic模型中必须有user()方法
+public function includeUser(Topic $topic){
+    return $this-&gt;item($topic-&gt;user,new UserTransformer());
+}
+</code></pre>
+</li>
+</ol>
+<h4 id="定义">定义</h4>
+<pre><code class="language-php">class TopicTransformer extends TransformerAbstract
+{
+    protected $availableIncludes=['user','category'];
+
+    public function transform(Topic $topic)
+    {
+		.......
+    }
+
+    public function includeUser(Topic $topic){
+        return $this-&gt;item($topic-&gt;user,new UserTransformer());
+    }
+
+    public function includeCategory(Topic $topic){
+        return $this-&gt;item($topic-&gt;category,new CategoryTransformer());
+    }
+}
+</code></pre>
+<h4 id="使用">使用:</h4>
+<figure data-type="image" tabindex="1"><img src="assets%5C1562034971827.png" alt="1562034971827" loading="lazy"></figure>
+<p>调用多个include 将参数写成: xxx.com/api/topics?include=user,category</p>
+<p>遇到复杂的嵌套关系可以手动关闭dingo的预加载</p>
+<p>app(\Dingo\Api\Transformer\Factory::class)-&gt;disableEagerLoading();</p>
+<h4 id="include嵌套">include嵌套</h4>
+<p><code>user.roles</code></p>
+<figure data-type="image" tabindex="2"><img src="assets%5C1562141101676.png" alt="1562141101676" loading="lazy"></figure>
+<h2 id="短信发送">短信发送</h2>
+<p>组件 : <code>overtrue/easy-sms</code></p>
+<h3 id="easy-sms-组件封装">easy-sms 组件封装</h3>
+<h4 id="1创建config文件">1.创建config文件</h4>
+<p>config/easysms.php</p>
+<pre><code class="language-php">return [
+    // HTTP 请求的超时时间（秒）
+    'timeout' =&gt; 5.0,
+    // 默认发送配置
+    'default' =&gt; [
+        // 网关调用策略，默认：顺序调用
+        'strategy' =&gt; \Overtrue\EasySms\Strategies\OrderStrategy::class,
+        // 默认可用的发送网关
+        'gateways' =&gt; [
+            'yunpian'
+        ],
+    ],
+    // 可用的网关配置
+    'gateways' =&gt; [
+        'errorlog' =&gt; [
+            'file' =&gt; '/tmp/easy-sms.log',
+        ],
+        'yunpian' =&gt; [
+            'api_key' =&gt; '04d7a301137c06e0dde555b0216e7cfe',
+        ],
+    ],
+];
+</code></pre>
+<h4 id="2添加服务提供者">2.添加服务提供者</h4>
+<p>app/providers/EasySmsServiceProvider.php</p>
+<pre><code class="language-php">public function boot()
+{
+    $this-&gt;app-&gt;singleton(EasySms::class,function($app){
+        return new EasySms(config('easysms'));
+    });
+    //设置别名
+    $this-&gt;app-&gt;alias(EasySms::class,'easysms');
+}
+</code></pre>
+<blockquote>
+<p>在 config/app.php 的provides函数中注册服务提供者</p>
+</blockquote>
+<h4 id="3发送简单代码">3.发送简单代码</h4>
+<pre><code class="language-php">$sms = app('easysms');
+try{
+$sms-&gt;send(15548551950, [
+//这里必须和短信模板严格匹配
+'content'  =&gt; '【杨晓光】你的验证码是12343。如非本人操作请忽略',
+]);
+}catch (\Overtrue\EasySms\Exceptions\NoGatewayAvailableException $e){
+$message=$e-&gt;getException('yunpian')-&gt;getMessage();
+dd($message);
+}
+</code></pre>
+<h3 id="短信发送涉及知识点">短信发送涉及知识点</h3>
+<blockquote>
+<p>str_pad()</p>
+<p>random_int()</p>
+<p>hash_equals() 字符串比较,防止时序攻击</p>
+</blockquote>
+<h2 id="接口验证码">接口验证码</h2>
+<p>插件名称: <code>gregwar/captcha</code></p>
+<h3 id="简单实用案例">简单实用案例</h3>
+<pre><code class="language-php">//生成验证码
+$builder=new CaptchaBuilder();
+$captcha=$builder-&gt;build();
+//生成图片显示地址
+$captch-&gt;inline();
+//获取图片验证码的值
+$captch-&gt;getPhrase();
+</code></pre>
+<h2 id="oauth登录">OAUTH登录</h2>
+<h3 id="oauth20基础">OAUTH2.0基础</h3>
+<h4 id="授权模式">授权模式</h4>
+<p>参考文章:<a href="https://learnku.com/articles/20082">oaut图解</a></p>
+<ol>
+<li>授权码模式</li>
+<li>简化模式</li>
+<li>密码模式</li>
+<li>客户端模式</li>
+</ol>
+<h3 id="socialite-providers">Socialite Providers</h3>
+<p>插件: <a href="https://socialiteproviders.netlify.com/">Socialite Providers     </a></p>
+<p>插件扩展: https://socialiteproviders.netlify.com/about.html</p>
+<h4 id="登录的两种方式">登录的两种方式</h4>
+<ol>
+<li><strong>客户端保存accessToken</strong></li>
+</ol>
+<pre><code class="language-php">$accessToken = 'ACCESS_TOKEN';
+$openID = 'OPEN_ID';
+$driver = Socialite::driver('weixin');
+$driver-&gt;setOpenId($openID);
+$oauthUser = $driver-&gt;userFromToken($accessToken);
+</code></pre>
+<ol start="2">
+<li><strong>客户端只获取授权码(code)</strong></li>
+</ol>
+<blockquote>
+<p>这种方式是推荐的安全做法, 客户端不保存app_secrect ,获取到code之后交给服务器换取access_token以及取用用户信息.</p>
+</blockquote>
+<p>config/services.php</p>
+<pre><code class="language-php">'weixin' =&gt; [
+    'client_id' =&gt; env('WEIXIN_KEY'),
+    'client_secret' =&gt; env('WEIXIN_SECRET'),
+    'redirect' =&gt; env('WENXIN_REBACK_URL'),
+]
+</code></pre>
+<pre><code class="language-php">$code = 'CODE';
+$driver = Socialite::driver('weixin');
+$response = $driver-&gt;getAccessTokenResponse($code);
+//微信需要传递openid
+$driver-&gt;setOpenId($response['openid']);
+$oauthUser = $driver-&gt;userFromToken($response['access_token']);
+</code></pre>
+<h4 id="oauth注册的两种情况">oauth注册的两种情况</h4>
+<ol>
+<li>
+<p>用户第一次使用微信登录，根据微信的数据，在 项目中创 建一个用户，返回该用户的登录凭证</p>
+</li>
+<li>
+<p>用户已经使用过微信登录，则找到数据库中对应的用户，返回 该用户的登录凭证</p>
+<pre><code class="language-php">路由: $api-&gt;post('socials/{social_type}/authorizations', &quot;AuthorizationsController@weiXinLogin&quot;)-&gt;name('api.socials.authorizations.store');
+public function weiXinLogin($type, AuthorizationsRequest $request)
+{
+    if (!in_array($type, ['weixin'])) {
+        return $this-&gt;response-&gt;errorBadRequest();
+    }
+    $driver = \Socialite::driver($type);
+    try {
+        /*如果传递是code*/
+        if ($code = $request-&gt;code) {
+            $response = $driver-&gt;getAccessTokenResponse($code);
+            $token = array_get($response, 'access_token');
+        } else {
+            $token = $request-&gt;access_token;
+            if ($type == 'weixin') {
+                $driver-&gt;setOpenId($request-&gt;openid);
+            }
+        }
+        $oauthUser = $driver-&gt;userFromToken($token);
+    } catch (\Exception $e) {
+        return $this-&gt;response-&gt;errorUnauthorized('参数错误');
+    }
+    /*根据获取的用户信息,去数据库中查找,如果存在则将查询结果返回,否则新建数据并返回*/
+    switch ($type) {
+        case 'weixin':
+            $unionid = $oauthUser-&gt;offsetExists('unionid') ? $oauthUser-&gt;offsetGet('unionid') : null;
+            if ($unionid) {
+                /*如果有unionid则用unionid查询,否则用openid查询*/
+                $user = User::where('weixin_unionid', $unionid)-&gt;first();
+            } else {
+                $user = User::where('weixin_openid', $oauthUser-&gt;getId())-&gt;first();
+            }
+            if (!$user) {
+                $user = User::create([
+                    'name' =&gt; $oauthUser-&gt;getNickname(),
+                    'avatar' =&gt; $oauthUser-&gt;getAvatar(),
+                    'wenxin_opeinid' =&gt; $oauthUser-&gt;getId(),
+                    'weixin_unionid' =&gt; $unionid,
+                ]);
+            }
+            break;
+    }
+    //这里临时先返回id值
+    $token = \Auth::guard('api')-&gt;fromUser($user);
+    return $this-&gt;authResult($token)-&gt;setStatusCode(200);
+}
+</code></pre>
+</li>
+</ol>
+<h4 id="微信的openid和unionid">微信的openid和unionid</h4>
+<p>那么如何来分辨用户是否已存在，就需要一个用户的唯一标识。任何 一个第三方平台，返回的用户信息都会有一个唯一标 识， socialite  已经为我们封装好了，直接使用  $oauthUser&gt;getId()  即可获取，对于微信来说，这个唯一标识叫做 openid .</p>
+<p>如果开发者拥有多个移动应用、网站应用、和公众帐号（包括小程 序），可通过 unionid 来区分用户的唯一性，因为只要是同一个微 信开放平台帐号下的移动应用、网站应用和公众帐号（包括小程 序），用户的 unionid 是唯一的。换句话说，同一用户，对同一个 微信开放平台下的不同应用，unionid 是相同的。</p>
+<h3 id="采坑记录">采坑记录</h3>
+<h4 id="获取用户信息错误">获取用户信息错误</h4>
+<p>错误提示:</p>
+<p><code>GuzzleHttp/Exception/RequestException with message 'cURL error 60: SSL certificate problem: unable to get local issuer certificate (see http://curl.haxx.se/libcurl/c/libcurl-errors.html)'</code></p>
+<p>问题解决:</p>
+<p>估计和本地的ssl证书有关系,远程的暂未测试</p>
+<pre><code class="language-php">1. Download the latest cacert.pem from https://curl.haxx.se/ca/cacert.pem
+2. Add the following line to php.ini:
+curl.cainfo=&quot;/path/to/downloaded/cacert.pem&quot;
+</code></pre>
+<h2 id="jwt">JWT</h2>
+<h3 id="项目入门">项目入门</h3>
+<p><code>tymondesigns/jwt-auth</code></p>
+<p>项目文档: <a href="https://jwt-auth.readthedocs.io/en/develop/">https://jwt-auth.readthedocs.io/en/develop/</a></p>
+<h3 id="部署和配置">部署和配置</h3>
+<p>配置项jwt.php</p>
+<pre><code class="language-php">//生成的密匙
+'secret' =&gt; env('JWT_SECRET'),
+//token过期时间
+'ttl' =&gt; env('JWT_TTL', 60),
+//刷新过期时间,刷新过期时间一般比token时间长,在刷新过期时间,即使token过期,任然可以获取一个新的token,不需要重新登录                                         
+ 'refresh_ttl' =&gt; env('JWT_REFRESH_TTL', 20160),
+</code></pre>
+<p>配置config/auth.php</p>
+<pre><code class="language-php">guards' =&gt; [ 
+    'api' =&gt; [ 
+        'driver' =&gt; 'jwt', 
+        'provider' =&gt; 'users', 
+    ], 
+],
+</code></pre>
+<p>配置config/api.php</p>
+<pre><code class="language-php">'auth' =&gt; [ 
+    'jwt' =&gt; 'Dingo\Api\Auth\Provider\JWT', 
+], 
+</code></pre>
+<p>配置user模型</p>
+<pre><code class="language-php">class User extends Authenticatable implements JWTSubject 
+ 
+    public function getJWTIdentifier() 
+    { 
+        return $this-&gt;getKey(); 
+    } 
+ 
+    public function getJWTCustomClaims() 
+    { 
+        return [];
+    }
+</code></pre>
+<h3 id="常用方法">常用方法</h3>
+<h4 id="token生成">token生成</h4>
+<pre><code class="language-php">//基于账号密码生成token
+$credentials=request(['email','password']);
+auth('api')-&gt;attempt($credentials);
+//基于用户模型生成token
+$user=User::first();
+auth('api')-&gt;fromUser($user);
+//基于users模型中的主键id
+auth('api')-&gt;tokenById(1);
+</code></pre>
+<h4 id="token解析">token解析</h4>
+<pre><code class="language-php">//把请求发送过来的直接解析到对象
+JWTAuth::parseToken();
+//获取token中的user信息
+auth('api')-&gt;user();
+//获取token,如果token被设置则返回,否则返回false
+auth('api')-&gt;getToken();
+</code></pre>
+<h4 id="token控制">token控制</h4>
+<pre><code class="language-php">//更新token
+$token=auth('api')-&gt;refresh();
+//让一个token无效
+auth('api')-&gt;invalidate();
+//检验token的有效性
+auth('api')-&gt;check();
+
+</code></pre>
+<h4 id="token其他方法">token其他方法</h4>
+<pre><code class="language-php">//设置荷载
+$token=auth('api')-&gt;claims(['foo'=&gt;'bar'])-&gt;attempt($credentials);
+//重写有效时间
+auth('api')-&gt;setTTL(7200)-&gt;attempt($credentials);
+//验证账号是否正确
+auth('api')-&gt;validate($credentials);
+</code></pre>
+<h3 id="使用案例">使用案例</h3>
+<ol>
+<li>composer 安装</li>
+</ol>
+<pre><code class="language-php">composer require tymon/jwt-auth 1.*@rc
+</code></pre>
+<blockquote>
+<p>通过该命令安装的可能为0.5.*版本,执行composer update命令进行升级版本或者直接指定版本号</p>
+</blockquote>
+<ol start="2">
+<li>生成密匙</li>
+</ol>
+<p><code>php artisan jwt:secret</code></p>
+<ol start="3">
+<li>修改config/auth.php</li>
+</ol>
+<pre><code class="language-php">'guards' =&gt; [
+    'api' =&gt; [
+        'driver' =&gt; 'jwt',
+        'provider' =&gt; 'users',
+    ],
+]
+</code></pre>
+<ol start="4">
+<li>修改 config/api.php</li>
+</ol>
+<pre><code class="language-php">'auth' =&gt; [
+    'jwt'=&gt;'Dingo\Api\Auth\Provider\JWT',
+],
+</code></pre>
+<ol start="5">
+<li>修改user.php模型</li>
+</ol>
+<p>让user.php 实现use Tymon\JWTAuth\Contracts\JWTSubject;</p>
+<pre><code class="language-php">class User extends Authenticatable implements JWTSubject
+{
+        //这里返回了User的id
+    public function getJWTIdentifier()
+    {
+        return $this-&gt;getKey();
+    }
+
+    //这里是我们需要额外在jwt中增加的自定义内容
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+}
+</code></pre>
+<ol start="6">
+<li>
+<p>注册provide和alias</p>
+<p><code>config/app.php</code></p>
+<pre><code class="language-php">'aliases'=&gt;[
+    'JWTAuth'=&gt;'Tymon\JWTAuth\Facades\JWTAuth',
+    'JWTFactory'=&gt;'Tymon\JWTAuth\Facades\JWTFactory'
+]
+</code></pre>
+<blockquote>
+<p>如果你不适用这两个Facade,你可以使用辅助函数auth()</p>
+</blockquote>
+<p>auth辅助函数与jwt扩展</p>
+</li>
+<li>
+<p>jwt的几种常用操作</p>
+<p>路由</p>
+<pre><code class="language-php">//登录
+Route::post('login','AuthController@login');
+//注销token
+Route::delete('logout','AuthController@logout');
+//刷新token
+Route::put('refresh','AuthController@refresh');
+//获取信息
+Route::post('me','AuthController@me');
+</code></pre>
+<p>控制器</p>
+<pre><code class="language-php">public function store(AuthRequest $request)
+{
+    //传入两个参数username,password.这里username 可能有是邮箱或者电话,需要判断一下
+    $username = $request-&gt;username;
+    filter_var($username, FILTER_VALIDATE_EMAIL) ? $credentials['email'] = $username : $credentials['phone'] = $username;
+    $credentials['password'] = $request-&gt;password;
+    $token = \Auth::guard('api')-&gt;attempt($credentials);
+    if (!$token) {
+        return $this-&gt;response-&gt;errorUnauthorized('用户名密码不正确');
+    }
+    //这里定义一个通用的返回信息函数
+    return $this-&gt;authResult($token)-&gt;setStatusCode(200);
+}
+
+/**微信oauth 登录
+     * @param $type 路由中的第三方登录类型参数,如weixin
+     * @param AuthorizationsRequest $request
+     */
+public function weiXinLogin($type, AuthorizationsRequest $request)
+{
+    if (!in_array($type, ['weixin'])) {
+        return $this-&gt;response-&gt;errorBadRequest();
+    }
+    $driver = \Socialite::driver($type);
+    try {
+        /*如果传递是code*/
+        if ($code = $request-&gt;code) {
+            $response = $driver-&gt;getAccessTokenResponse($code);
+            $token = array_get($response, 'access_token');
+        } else {
+            $token = $request-&gt;access_token;
+            if ($type == 'weixin') {
+                $driver-&gt;setOpenId($request-&gt;openid);
+            }
+        }
+        $oauthUser = $driver-&gt;userFromToken($token);
+    } catch (\Exception $e) {
+        return $this-&gt;response-&gt;errorUnauthorized('参数错误');
+    }
+    /*根据获取的用户信息,去数据库中查找,如果存在则将查询结果返回,否则新建数据并返回*/
+    switch ($type) {
+        case 'weixin':
+            $unionid = $oauthUser-&gt;offsetExists('unionid') ? $oauthUser-&gt;offsetGet('unionid') : null;
+            if ($unionid) {
+                /*如果有unionid则用unionid查询,否则用openid查询*/
+                $user = User::where('weixin_unionid', $unionid)-&gt;first();
+            } else {
+                $user = User::where('weixin_openid', $oauthUser-&gt;getId())-&gt;first();
+            }
+            if (!$user) {
+                $user = User::create([
+                    'name' =&gt; $oauthUser-&gt;getNickname(),
+                    'avatar' =&gt; $oauthUser-&gt;getAvatar(),
+                    'wenxin_opeinid' =&gt; $oauthUser-&gt;getId(),
+                    'weixin_unionid' =&gt; $unionid,
+                ]);
+            }
+            break;
+    }
+    //这里临时先返回id值
+    $token = \Auth::guard('api')-&gt;fromUser($user);
+    return $this-&gt;authResult($token)-&gt;setStatusCode(200);
+}
+
+public function refresh()
+{
+    $token=\Auth::guard('api')-&gt;refresh();
+    return $this-&gt;authResult($token)-&gt;setStatusCode(200);
+}
+
+public function destroy()
+{
+    \Auth::guard('api')-&gt;logout();
+    //noContent 返回的状态码 204
+    return $this-&gt;response-&gt;noContent();
+}
+
+protected function authResult($token)
+{
+    return $this-&gt;response-&gt;array([
+        'access_token' =&gt; $token,
+        'token_type' =&gt; 'Bearer',
+        'expires_in' =&gt; \Auth::guard('api')-&gt;factory()-&gt;getTTL() * 60
+    ]);
+}
+</code></pre>
+</li>
+</ol>
+<blockquote>
+<p>refresh() token 刷新 destroy 销毁 都需要携带 Authorization:Bear  {token}</p>
+</blockquote>
+<h2 id="transformers">Transformers</h2>
+<blockquote>
+<p>通过转化器, 你可以将对象转化为数组, 并强制转化整型和布尔类型, 包括分页结果和嵌套关联.</p>
+</blockquote>
+<h3 id="fractal">Fractal</h3>
+<p>Dingo API 底层使用 <a href="https://github.com/thephpleague/fractal">Fractal</a> 作为默认的转化层</p>
+<p>Fractal 的意义在原始数据和输出数据中间搞一个墙('barrier'), 这样的话即使内部结构改变了也不会影响到用户</p>
+<h4 id="资源分类">资源分类:</h4>
+<ul>
+<li><code>League\Fractal\Resource\Item</code>：单个资源</li>
+<li><code>League\Fractal\Resource\Collection</code>：资源集合</li>
+</ul>
+<h4 id="简单案例">简单案例</h4>
+<pre><code class="language-php">Route::get('/fractal/resource/collection', function () {
+    $tasks = \App\Task::all();
+    $resource = new \League\Fractal\Resource\Collection($tasks, function (\App\Task $task) {
+        return [
+            'id' =&gt; $task-&gt;id,
+            'text' =&gt; $task-&gt;text,
+            'is_completed' =&gt; $task-&gt;is_completed ? 'yes' : 'no'
+        ];
+    });
+    //Manager,主要管理要将数据格式化为哪一种格式
+    $fractal = new \League\Fractal\Manager();
+    return $fractal-&gt;createData($resource)-&gt;toJson();
+});
+</code></pre>
+<h4 id="三种数据结构">三种数据结构</h4>
+<p><code>ArraySerializer</code>、<code>DataArraySerializer</code>、<code>JsonApiSerializer</code>三种序列化器</p>
+<ol>
+<li><code>ArraySerializer</code></li>
+</ol>
+<pre><code class="language-php">Route::get('/fractal/serializers', function () {
+    $task = \App\Task::findOrFail(1);
+    $resource = new \League\Fractal\Resource\Item($task, function (\App\Task $task) {
+        return [
+            'id' =&gt; $task-&gt;id,
+            'text' =&gt; $task-&gt;text,
+            'is_completed' =&gt; $task-&gt;is_completed ? 'yes' : 'no'
+        ];
+    });
+    $fractal = new \League\Fractal\Manager();
+    $fractal-&gt;setSerializer(new \League\Fractal\Serializer\ArraySerializer());
+    return $fractal-&gt;createData($resource)-&gt;toJson();
+});
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="assets/1558154981808.png" alt="1558154981808" loading="lazy"></figure>
+<ol start="2">
+<li>
+<p><code>DataArraySerializer</code></p>
+<blockquote>
+<p>DataArraySerializer 是Fractal默然的数据输出格式,与ArraySerializer相比,多出了一层data包裹</p>
+</blockquote>
+</li>
+</ol>
+<pre><code class="language-php">$fractal-&gt;setSerializer(new \League\Fractal\Serializer\DataArraySerializer());
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="assets/1558155166061.png" alt="1558155166061" loading="lazy"></figure>
+<ol start="3">
+<li>
+<p><code>JsonApiSerializer</code></p>
+<pre><code class="language-php">$fractal-&gt;setSerializer(new \League\Fractal\Serializer\JsonApiSerializer());
+</code></pre>
+<figure data-type="image" tabindex="5"><img src="assets/1558155367779.png" alt="1558155367779" loading="lazy"></figure>
+</li>
+</ol>
+<h4 id="转换器">转换器</h4>
+<blockquote>
+<p>转化器类必须继承自 <code>League\Fractal\TransformerAbstract</code> 基类，并且至少实现 <code>transform()</code> 方法。我们在代码任务项目中创建一个保存在 <code>app/Transformers</code> 目录下的转化器类 <code>TaskTransformer</code>，并初始化代码如下</p>
+</blockquote>
+<pre><code class="language-php">&lt;?php
+namespace App\Transformers;
+use App\Task;
+use League\Fractal\TransformerAbstract;
+
+class TaskTransformer extends TransformerAbstract
+{
+    public function transform(Task $task)
+    {
+        return [
+            'id' =&gt; $task-&gt;id,
+            'text' =&gt; $task-&gt;text,
+            //需要注意一些敏感信息,如用户手机,微信的union_id等,我们可以使用另外的字段返回
+            'phone'=&gt;$task-&gt;phone?true:false,
+            'completed' =&gt; $task-&gt;is_completed ? 'yes' : 'no',
+            'link' =&gt; route('tasks.show', ['id' =&gt; $task-&gt;id])
+        ];
+    }
+}
+</code></pre>
+<p>这样一来，我们就可以改写之前的资源转化代码如下：</p>
+<pre><code class="language-php">// 获取单个资源
+$task = \App\Task::findOrFail(1);
+$resource = new \League\Fractal\Resource\Item($task, new \App\Transformers\TaskTransformer());
+
+// 获取资源集合
+$tasks = \App\Task::all();
+$resources = new \League\Fractal\Resource\Collection($tasks, new \App\Transformers\TaskTransformer());
+</code></pre>
+<p><strong>关联模型数据</strong></p>
+<p>除此之外，我们还可以在模型字段之外，引入额外的数据，比如关联模型：</p>
+<pre><code>&lt;?php
+
+namespace App\Transformers;
+
+use App\Task;
+use League\Fractal\TransformerAbstract;
+
+class TaskTransformer extends TransformerAbstract
+{
+    protected $availableIncludes = ['user'];
+
+    public function transform(Task $task)
+    {
+        return [
+            'id' =&gt; $task-&gt;id,
+            'text' =&gt; $task-&gt;text,
+            'completed' =&gt; $task-&gt;is_completed ? 'yes' : 'no',
+            'link' =&gt; route('tasks.show', ['id' =&gt; $task-&gt;id])
+        ];
+    }
+
+    public function includeUser(Task $task)
+    {
+        $user = $task-&gt;user;
+        return $this-&gt;item($user, new UserTransformer());
+    }
+}
+</code></pre>
+<p>由于在上述代码中引入了新的转化器类 <code>UserTransformer</code>，所以需要创建它：</p>
+<pre><code>&lt;?php
+
+namespace App\Transformers;
+
+use App\User;
+use League\Fractal\TransformerAbstract;
+
+class UserTransformer extends TransformerAbstract
+{
+    public function transform(User $user)
+    {
+        return [
+            'id' =&gt; $user-&gt;id,
+            'name' =&gt; $user-&gt;name
+        ];
+    }
+}
+</code></pre>
+<p>然后修改返回响应数据代码如下，通过 <code>parseIncludes</code> 方法引入要包含的额外字段：</p>
+<pre><code>return $fractal-&gt;parseIncludes('user')-&gt;createData($resource)-&gt;toJson();
+</code></pre>
+<p>这样一来，就可以在返回的响应数据中看到 <code>user</code> 字段了：</p>
+<figure data-type="image" tabindex="6"><img src="assets/546fc78b6e238ab7558082109660f566.jpg" alt="img" loading="lazy"></figure>
+<h3 id="数据格式切换组件">数据格式切换组件</h3>
+<h4 id="名称-liyu001989dingo-serializer-switch">名称: <a href="https://github.com/liyu001989">liyu001989</a>/<strong>dingo-serializer-switch</strong></h4>
+<blockquote>
+<p>参考一下该组件,做laravel的扩展组件</p>
+</blockquote>
+<h4 id="使用-2">使用</h4>
+<pre><code class="language-php">//routes/api.php
+$api-&gt;version('v1',['middleware'=&gt;'serialize:array'])
+</code></pre>
+<h2 id="http基础">HTTP基础</h2>
+<h3 id="http-提交数据的两种方式">http 提交数据的两种方式</h3>
+<p>application/x-www-form-urlencoded(默认值)<br>
+multipart/form-data</p>
+<p>需要明确的是，只有当 POST 配合  multipart/form-data  时才能正<br>
+确传输文件。</p>
+<h2 id="帖子数据">帖子数据</h2>
+<h3 id="修改话题">修改话题</h3>
+<pre><code class="language-php">//修改话题
+$api-&gt;patch('topics/{topic}','TopicsController@update')-&gt;name('api.topics.update');
+</code></pre>
+<blockquote>
+<p>这里需要注意的是由于路由交给DingoApi来处理了,所以调至路由模型绑定出了问题.所以模型绑定的中间件没有注册上,需要手动增加bindings中间件</p>
+</blockquote>
+<pre><code class="language-php">$api-&gt;version('v1', [
+    'namespace' =&gt; 'App\Http\Controllers\Api',
+    //这里增加bindings
+    'middleware' =&gt; ['serializer:array','bindings']
+])
+</code></pre>
+<h4 id="dingoapi手动处理异常">dingoApi手动处理异常</h4>
+<pre><code class="language-php">//app/Providers/AppServiceProvider.php
+</code></pre>
+<pre><code class="language-php">public function register()
+{
+    \API::error(function (\Illuminate\Auth\Access\AuthorizationException $exception) {
+        abort(403, $exception-&gt;getMessage());
+    });
+    \API::error(function  (\Symfony\Component\HttpKernel\Exception\NotFoundHttpException  $exception)  {
+        throw  new  \Symfony\Component\HttpKernel\Exception\HttpException(404,  '404 Not Found');
+    });
+}
+</code></pre>
+<h3 id="日志查询组件">日志查询组件</h3>
+<p><code>laravel-query-logger</code></p>
+<h4 id="安装">安装</h4>
+<pre><code class="language-php">composer require overtrue/laravel-query-logger --dev
+</code></pre>
+<blockquote>
+<p>只有当APP_DEBUG为true 时才能使用</p>
+</blockquote>
+<h2 id="消息接口">消息接口</h2>
+<h2 id="本地化">本地化</h2>
+<h3 id="思路1">思路1:</h3>
+<p>增加自定义code码</p>
+<pre><code class="language-php">use Symfony\Component\HttpKernel\Exception\HttpException;
+
+class Controller extends BaseController
+{
+    //引入dingo的部分方法
+    use Helpers;
+	//自定义异常处理
+    public function errorResponse($statusCode,$message=null,$code=0)
+    {
+        throw new HttpException($statusCode,$message,null,[],$code);
+    }
+}
+</code></pre>
+<h3 id="思路2">思路2:</h3>
+<blockquote>
+<p>利用HTTP的Accept-language 头信息</p>
+<p>Accept-Language zh-CN	简体中文</p>
+<p>Accept-Language en 英文</p>
+</blockquote>
+<h4 id="步骤-2">步骤:</h4>
+<ol>
+<li><strong>创建编辑中间件changeLocale</strong></li>
+</ol>
+<pre><code class="language-php">class ChangeLocale
+{
+    public function handle($request, Closure $next)
+    {
+        $language=$request-&gt;header('accept-language');
+        if($language){
+            \App::setLocale($language);
+        }
+        return $next($request);
+    }
+}
+</code></pre>
+<ol start="2">
+<li>
+<p><strong>注册中间件</strong></p>
+<p><code>app/Http/Kernel.php</code></p>
+</li>
+</ol>
+<pre><code class="language-php">'change-locale'=&gt;\App\Http\Middleware\ChangeLocale::class,
+</code></pre>
+<ol start="3">
+<li><strong>路由设置中间件</strong></li>
+</ol>
+<pre><code class="language-php">$api-&gt;version('v1', [
+    'namespace' =&gt; 'App\Http\Controllers\Api',
+    'middleware' =&gt; ['serializer:array','bindings','change-locale']
+]
+</code></pre>
+<ol start="4">
+<li>使用案例</li>
+</ol>
+<pre><code class="language-php">if (!$token = \Auth::guard('api')-&gt;attempt($credentials)) {
+	return $this-&gt;response-&gt;errorUnauthorized(trans('auth.failed'));
+}
+</code></pre>
+<h2 id="api测试和文档">API测试和文档</h2>
+<h3 id="phpunit-测试">phpunit 测试</h3>
+<h4 id="windows下安装">windows下安装</h4>
+<blockquote>
+<p>虽然laravel框架内置了phpunit,但是不能使用,直接在项目中输入phpunit 会显示 command not found</p>
+</blockquote>
+<ol>
+<li>
+<p>删除vendor 文件夹,然后重新composer update</p>
+</li>
+<li>
+<p>输入以下命令引入phpunit包</p>
+<pre><code class="language-php">$ composer global require phpunit/phpunit
+</code></pre>
+<p><code>omposer global remove phpunit/phpunit</code> phpunit包的删除命令</p>
+</li>
+<li>
+<p>配置环境变量</p>
+<p>phpunit命令的存放目录: D:\wamp64\www\question_bank\vendor\bin</p>
+</li>
+</ol>
+<h4 id="单元测试">单元测试</h4>
+<ol>
+<li>创建测试文件</li>
+</ol>
+<pre><code class="language-php">php artisan make:test TopicApiTest
+</code></pre>
+<p>该命令会在tests/Feature目录中创建TopicApiTest.php文件</p>
+<ol start="2">
+<li>测试发布话题</li>
+</ol>
+<pre><code class="language-php">       //setUp方法在测试开始前执行,先创建一个用户
+   public function setUp(): void
+       {
+           parent::setUp(); // TODO: Change the autogenerated stub
+           $this-&gt;user = factory(User::class)-&gt;create();
+       }
+   
+       public function testStoreTopic()
+       {
+           $data = ['category_id' =&gt; 1, 'body' =&gt; 'test body', 'title' =&gt; 'test title'];
+           $token=\Auth::guard('api')-&gt;fromUser($this-&gt;user);
+           //$this-&gt;json可以方便的模拟各种http请求,第一个参数:请求的方法,第二个参数:请求地址,第三个参数:请求参数,第四个参数:请求header,利用withHeaders方法也可以
+           $response=$this-&gt;withHeaders(['Authorization'=&gt;'Bearer'.$token])-&gt;json('POST','/api/topics',$data);
+   
+           $assertData = [
+               'category_id' =&gt; 1,
+               'user_id' =&gt; $this-&gt;user-&gt;id,
+               'title' =&gt; 'test title',
+               'body' =&gt; clean('test body', 'user_topic_body')
+           ];
+           //通过assertStatus,断言响应结果为201，通过assertJsonFragment,断言响应结果包含assertData数据。
+           $response-&gt;assertStatus(201)-&gt;assertJsonFragment($assertData);
+       }
+</code></pre>
+<ol start="3">
+<li>
+<p>执行测试</p>
+<pre><code class="language-php">$ phpunit
+</code></pre>
+</li>
+</ol>
+<h3 id="第三方黑盒测试-postman">第三方黑盒测试 [postman]</h3>
+<ol>
+<li>
+<p>导出导入collections和环境变量</p>
+</li>
+<li>
+<p>编写测试用例</p>
+</li>
+</ol>
+<figure data-type="image" tabindex="7"><img src="E:%5CNutCloud%5C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5Claravel%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5Cassets%5C1562227821519.png" alt="1562227821519" loading="lazy"></figure>
+<ol start="3">
+<li>批量测试</li>
+</ol>
+<h3 id="api-文档">api 文档</h3>
+<p><a href="https://apizza.net/">https://apizza.net</a></p>
+<h2 id="passport使用">passport使用</h2>
+<h3 id="安装和设置">安装和设置</h3>
+<p>1.composer 安装</p>
+<pre><code class="language-php">composer require laravel/passport
+</code></pre>
+<p>2.生成数据表<br>
+<code>migrate</code></p>
+<ol start="3">
+<li>创建加密秘匙</li>
+</ol>
+<pre><code class="language-php">php artisan passport:keys
+</code></pre>
+<ol start="4">
+<li>创建客户端</li>
+</ol>
+<pre><code class="language-php">php artisan passport:client --password --name='larabbs-ios'
+</code></pre>
+<h3 id="passport调试">passport调试</h3>
+<h4 id="1注册路由">1.注册路由</h4>
+<p>app/Providers/AuthServiceProvider.php</p>
+<pre><code class="language-php">    public function boot()
+    {
+        //Passport的路由
+        Passport::routes();
+        //access_token过期时间
+        Passport::tokensExpireIn(Carbon::now()-&gt;addDays(15));
+        //refreshTokens 刷星过期时间
+        Passport::refreshTokensExpireIn(Carbon::now()-&gt;addDays(30));
+</code></pre>
+<h4 id="2-获取访问令牌">2. 获取访问令牌</h4>
+<p><img src="assets/20190705164343875_11189.png" alt="" loading="lazy"><br>
+<strong>参数列表</strong><br>
+grant_type —— 密码模式固定为    password  ；<br>
+client_id —— 通过    passport:client   创建的客户端  id  ；<br>
+client_secret —— 通过    passport:client   创建的客户端  secret  ；<br>
+username —— 登录的用户名，数据库中任意用户邮箱；<br>
+password —— 用户密码；<br>
+scope —— 作用域，可填写    *   或者为空；<br>
+<strong>获取的信息</strong><br>
+token_type —— 令牌类型；<br>
+expires_in—— 多长时间后过期；<br>
+access_token —— 访问令牌；<br>
+refresh_token —— 刷新令牌；<br>
+<img src="assets/20190705164603055_29633.png" alt="" width="593" loading="lazy"></p>
+<h4 id="获取登录用户信息">获取登录用户信息</h4>
+<p>1.修改user模型 添加  Laravel\Passport\HasApiTokens   Trait<br>
+2.修改auth配置,将api guard的driver由jwt 修改为passport<br>
+3.增加一个PassportDingoProvider,因为DingoApi没有做passport的适配.</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[larachina02 学习笔记]]></title>
+        <id>https://bluegrasses.github.io/post/larachina02-xue-xi-bi-ji/</id>
+        <link href="https://bluegrasses.github.io/post/larachina02-xue-xi-bi-ji/">
+        </link>
+        <updated>2020-11-01T23:08:30.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="汇总知识">汇总知识</h2>
+<h3 id="模型关联括号">模型关联括号</h3>
+<p>模型关联什么时候加括号，什么时候不加括号 ?</p>
+<blockquote>
+<p>加括号是关系, 不加是对象或者对象集合</p>
+</blockquote>
+<h2 id="第二章-舞台布置">第二章: 舞台布置</h2>
+<h3 id="字体图标">字体图标</h3>
+<p><a href="https://www.npmjs.com/package/@fortawesome/fontawesome-free">@fortawesome/fontawesome-free</a></p>
+<h4 id="载入样式">载入样式</h4>
+<p>resources/sass/app.scss</p>
+<pre><code class="language-php">// Fontawesome
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';
+</code></pre>
+<h2 id="第三章-用户中心">第三章: 用户中心</h2>
+<h3 id="guest使用">@guest使用</h3>
+<pre><code class="language-html">@guest
+&lt;li&gt;登录&lt;/li&gt;
+&lt;li&gt;注册&lt;/li&gt;
+@else
+个人中心
+编辑资料
+@endguest
+</code></pre>
+<h3 id="验证码">验证码</h3>
+<p><code>mewebstudio/captcha</code></p>
+<blockquote>
+<p>In Windows, you'll need to include the GD2 DLL <code>php_gd2.dll</code> in php.ini. And you also need include <code>php_fileinfo.dll</code>and <code>php_mbstring.dll</code> to fit the requirements of <code>mews/captcha</code>'s dependencies.</p>
+</blockquote>
+<p>基本使用</p>
+<pre><code class="language-html">&lt;img src=&quot;{{captcha_src('flat')}}&quot;&gt;
+</code></pre>
+<h3 id="邮箱验证">邮箱验证</h3>
+<ol>
+<li>修改user模型</li>
+</ol>
+<pre><code class="language-php">use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
+use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
+class User extends Authenticatable implements MustVerifyEmailContract
+{
+	use Notifiable, MustVerifyEmailTrait;
+</code></pre>
+<ol start="2">
+<li>
+<p>强制用户认证</p>
+<p>(1) 建立中间件</p>
+</li>
+</ol>
+<pre><code class="language-php">// app\Http\Middleware\EnsureEmailIsVerified.php
+class EnsureEmailIsVerified
+{
+    public function handle($request, Closure $next)
+    {
+        // 三个判断：
+        // 1. 如果用户已经登录
+        // 2. 并且还未认证 Email
+        // 3. 并且访问的不是 email 验证相关 URL 或者退出的 URL。
+
+        if($request-&gt;user()&amp;&amp;!$request-&gt;user()-&gt;hasVerifiedEmail()&amp;&amp;!$request-&gt;is('email/*','logout')){
+            //判断是不是json响应
+            return  $request-&gt;expectsJson()?abort(403,'Your email address is not verified.'):redirect()-&gt;route('verification.notice');
+        }
+        return $next($request);
+    }
+}
+</code></pre>
+<p>(2) 注册中间件</p>
+<pre><code class="language-php">// app/Http/Kernel.php
+    protected $middlewareGroups = [
+    'web' =&gt; [
+        \App\Http\Middleware\EncryptCookies::class,
+        \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+        \Illuminate\Session\Middleware\StartSession::class,
+        //注意需要在startSession中间件之后
+        \App\Http\Middleware\EnsureEmailIsVerified::class, 
+</code></pre>
+<h3 id="事件和监听器基本流程">事件和监听器基本流程</h3>
+<blockquote>
+<p>应用场景:邮箱认证后的消息提示</p>
+</blockquote>
+<h4 id="存放目录">存放目录</h4>
+<p>事件类存放在app/Events</p>
+<p>事件类的监听器存放在app/Listeners中.</p>
+<h4 id="注册事件和监听器">注册事件和监听器</h4>
+<p><code>EventServiceProvider</code></p>
+<pre><code class="language-php">protect $listen=[
+  'App\Events\OrderShipped' =&gt; [
+          'App\Listeners\SendShipmentNotification',
+      ],
+]
+</code></pre>
+<h4 id="生成事件监听器">生成事件&amp;监听器</h4>
+<pre><code class="language-php">php artisan event:generate
+</code></pre>
+<h4 id="定义事件和监听器">定义事件和监听器</h4>
+<p><code>定义事件</code></p>
+<pre><code class="language-php">namespace App\Events;
+use App\Order;
+use Illuminate\Queue\SerializesModels;
+class OrderShipped
+{
+    use SerializesModels;
+    public $order;
+    public function __construct(Order $order)
+    {
+        $this-&gt;order = $order;
+    }
+}
+</code></pre>
+<p><code>定义监听器</code></p>
+<pre><code class="language-php">namespace App\Listeners;
+use App\Events\OrderShipped;
+class SendShipmentNotification
+{
+    public function __construct()
+    {
+    }
+    /**
+     * 处理事件。
+     * @param  \App\Events\OrderShipped  $event
+     * @return void
+     */
+    public function handle(OrderShipped $event)
+    {
+        // 使用 $event-&gt;order 来访问 order …
+    }
+}
+</code></pre>
+<h4 id="分发事件">分发事件</h4>
+<pre><code class="language-php">class OrderController extends Controller
+{
+    /**
+     * 将传递过来的订单发货。
+     * @param  int  $orderId
+     * @return Response
+     */
+    public function ship($orderId)
+    {
+        $order = Order::findOrFail($orderId);
+        // 订单发货逻辑…
+        event(new OrderShipped($order));
+    }
+}
+</code></pre>
+<h3 id="密码重置提示">密码重置提示</h3>
+<p>涉及知识点 , trait方法重写</p>
+<h2 id="第四章-用户中心">第四章: 用户中心</h2>
+<h3 id="unique-验证规则">unique 验证规则</h3>
+<blockquote>
+<p>场景: 用户在编辑自身资料时, 如未修改唯一字段email, 提交时会报错email已存在. 需要在unique判断时排除自身</p>
+</blockquote>
+<pre><code class="language-php">//unique 第一个参数表名 第二参数字段名 第三个参数排除的数据
+'email'=&gt;'requried|unique:users,eamil,'.\Auth::id()
+</code></pre>
+<h3 id="中文显示友好时间戳">中文显示友好时间戳</h3>
+<p>基本操作</p>
+<pre><code class="language-php">$user-&gt;created_at-&gt;diffForHumans()
+</code></pre>
+<blockquote>
+<p>Carbon 是 php知名的时间和日期扩展,laravel 将其默认集成到框架中.diffForHumans()就是carbon对象提供的方法,默认情况下是英文的.</p>
+</blockquote>
+<p>修改为中文</p>
+<pre><code class="language-php">app/Providers/AppServiceProvider.php
+public function boot(){	
+    \Carbon\Carbon::setLocale('zh');
+}
+</code></pre>
+<h3 id="头像上传">头像上传</h3>
+<h4 id="图片验证规则">图片验证规则</h4>
+<pre><code class="language-php">'avatar'=&gt;'mimes:jpeg,bmp,png,gif|dimensions:min_width=208,min_heigth=208'
+</code></pre>
+<h4 id="裁剪图片">裁剪图片</h4>
+<p>用户有时候会上传分辨率较大的图片,图片太大会拖慢页面的加载速度,所以接下来我们将对此进行优化.</p>
+<p>插件名称: Intervention/image</p>
+<p>https://github.com/Intervention/image</p>
+<h3 id="个人资料编辑存在的问题">个人资料编辑存在的问题</h3>
+<h4 id="1-游客限制">1. 游客限制</h4>
+<p>解决方法: 中间件</p>
+<pre><code class="language-php">public function __construct(){
+    $this-&gt;middleware('auth');
+}
+</code></pre>
+<h4 id="2修改别人的资料平行权限">2.修改别人的资料(平行权限)</h4>
+<p>解决方法: 策略</p>
+<p>(1) 生成策略,编写规则</p>
+<p>(2) 注册策略</p>
+<p>(3) 使用策略授权动作</p>
+<h2 id="第五章-帖子列表">第五章 帖子列表</h2>
+<p>建立模型同时建立数据迁移文件 -m 参数</p>
+<pre><code class="language-php">php artisan make:model Models/Category -m
+</code></pre>
+<h3 id="初始化数据">初始化数据</h3>
+<blockquote>
+<p>用数据迁移来解决初始化数据,而不是使用模型工厂factory</p>
+<p>用数据迁移来初始化数据</p>
+<p>用模型工厂来生成测试数据</p>
+</blockquote>
+<p>解决方法: 数据迁移</p>
+<p>我们定义的命名规范为seed_ (数据库名称) _data</p>
+<pre><code class="language-php">php artisan make:migration seed_categories_data
+</code></pre>
+<p>数据迁移文件</p>
+<pre><code class="language-php">public function up()
+{
+    $categories = [
+        [
+            'name' =&gt; '分享',
+            'description' =&gt; '分享创造,分享发现',
+        ],
+        [
+            'name' =&gt; '教程',
+            'description' =&gt; '开发技巧,推荐扩展包等',
+        ]
+    ];
+    //
+    DB::table('categories')-&gt;insert($categories);
+}
+
+public function down()
+{
+    //
+    DB::table('categories')-&gt;truncate();
+}
+</code></pre>
+<h3 id="代码生成器">代码生成器</h3>
+<p>laravel 项目开发规范</p>
+<p>https://learnku.com/docs/laravel-specification/5.5</p>
+<p>插件名称: <code>summerblue/generator</code></p>
+<h4 id="使用案例">使用案例</h4>
+<pre><code class="language-php">//schema 后面的参数是数据库的字段描述
+php artisan make:scaffold Topic --schema=&quot;name:string:index,description:text:nullable,subscriber_count:integer:unsigned:default(0)&quot;
+</code></pre>
+<h4 id="生成的代码">生成的代码</h4>
+<ol>
+<li>生成数据库迁移文件</li>
+<li>创建数据工厂文件 TopicFactory.php</li>
+<li>创建数据填充文件 TopicTableSeeder.php</li>
+<li>创建模型基类文件和数据模型 Model.php Topic.php</li>
+<li>创建控制 TopicsController.php</li>
+<li>创建表单请求的基类文件 Request.php 并创建TopicRequest.php验证类</li>
+<li>创建模型时间监控器,并在AppServiceProvider中注册 TopicObserver</li>
+<li>创建授权策略基类 Policy.php 同时创建话题授权类TopicPolicy.php，并在AuthServiceProvider 中注册</li>
+<li>在web.php中更新路由, 新增Topics资源路由</li>
+<li>新建符合资源控制器的三个话题视图文件,并存放于resources/views/topics 目录;</li>
+<li>执行数据库迁移命令 artisan migrate</li>
+<li>执行composer dump-autoload 来生成classmap</li>
+</ol>
+<h3 id="git-使用案例">git 使用案例</h3>
+<pre><code class="language-php">//撤销所有文件修改操作
+git checkout .
+//删除文件,删除add还是commit,不确定?
+//-f 强制清理文件的设置 -d 连文件夹也删除
+git clean -f -d
+</code></pre>
+<h3 id="数据填充">数据填充</h3>
+<blockquote>
+<p>Faker 假数据生成库</p>
+<p>fzaninotto/faker</p>
+</blockquote>
+<p>生成laravel 的时间戳</p>
+<p>'create_at'=&gt;<span class='katex-error' title='ParseError: KaTeX parse error: Double superscript at position 15: faker-&gt;data.&#039; &#039;̲.'>faker-&gt;data.&#039; &#039;.</span>faker-&gt;time;</p>
+<h4 id="数据填充的基本流程">数据填充的基本流程</h4>
+<ol>
+<li>
+<p>数据模型 Topic.php</p>
+</li>
+<li>
+<p>数据工厂 database/factories/UserFactory.php</p>
+</li>
+<li>
+<p>数据填充 database/seeds/UsersTableSeeder.php</p>
+</li>
+<li>
+<p>注册数据填充 database/seeds/DatabaseSeeder.php</p>
+</li>
+</ol>
+<p>使用案例:</p>
+<ol>
+<li>建立模型工厂</li>
+</ol>
+<pre><code class="language-php">// 1. UserFactory.php
+$factory-&gt;define(App\Models\User::class, function (Faker $faker) {
+    $data_time=$faker-&gt;date.' '.$faker-&gt;time;
+    return [
+        'name' =&gt; $faker-&gt;name,
+        'email' =&gt; $faker-&gt;unique()-&gt;safeEmail,
+        'email_verified_at' =&gt; now(),
+        'password' =&gt; bcrypt('welcome'), // secret
+        'remember_token' =&gt; str_random(10),
+        'userinfo'=&gt;$faker-&gt;sentence(),
+        'created_at'=&gt;$data_time,
+        'updated_at'=&gt;$data_time,
+    ];
+}); 
+</code></pre>
+<ol start="2">
+<li>建立seeder</li>
+</ol>
+<pre><code class="language-php">// 2. UsersTableSeeder.php
+    public function run()
+    {
+        //获取faker实例
+        $faker=app(Faker\Generator::class);
+        $avatars=[
+'https://iocaffcdn.phphub.org/uploads/images/201710/14/1/xAuDMxteQy.png',
+'https://iocaffcdn.phphub.org/uploads/images/201710/14/1/ZqM7iaP4CR.png',
+'https://iocaffcdn.phphub.org/uploads/images/201710/14/1/NDnzMutoxX.png',
+        ];
+        //生成数据集合 times为生成数量 make生成
+        $users=factory(\App\Models\User::class)-&gt;times(10)-&gt;make()-&gt;each(function($user,$index) use($faker,$avatars){
+            //从头像中随机取出一个并赋值
+            $user-&gt;avatar=$faker-&gt;randomElement($avatars);
+        });
+        //让隐藏字段可见, 并将数据集合转换为数值
+        $user_array=$users-&gt;makeVisible(['password','remember_token'])-&gt;toArray();
+        //插入到数据库中
+        \App\Models\User::insert($user_array);
+
+        //单独更新第一个用户的数据
+        $user=\App\Models\User::find(1);
+        $user-&gt;name='admin';
+        $user-&gt;email='admin@126.com';
+        $user-&gt;avatar='https://iocaffcdn.phphub.org/uploads/images/201710/14/1/ZqM7iaP4CR.png';
+        $user-&gt;save();
+    }
+</code></pre>
+<ol start="3">
+<li>在DatabaseSeeder中注册seeder</li>
+</ol>
+<pre><code class="language-php">// DatabaseSeeder.php
+use Illuminate\Database\Seeder;
+class DatabaseSeeder extends Seeder
+{
+    public function run()
+    {
+        $this-&gt;call(UsersTableSeeder::class);
+    }
+}
+</code></pre>
+<ol start="4">
+<li>
+<p>执行填充</p>
+<pre><code class="language-php">php artisan migrate:refresh --seed
+</code></pre>
+</li>
+</ol>
+<h3 id="懒加载">懒加载</h3>
+<p>解决n+1 的问题</p>
+<pre><code class="language-php">// n+1 产生的场景
+&lt;ul class=&quot;media-list&quot;&gt;
+@foreach($topics as $topic)
+{{$topic-&gt;user-&gt;name}}
+{{$topic-&gt;category-&gt;name}}
+@endforeach
+&lt;/ul&gt;
+
+ 解决:
+//with 懒加载 in语句
+$topics=Topic::with('user','category')-&gt;paginate();
+执行sql 语句:
+select * form `user` where `user`.`id` in (1,2,4,5,6);
+
+</code></pre>
+<h3 id="标题模板三元表达式">标题模板三元表达式</h3>
+<pre><code class="language-php">@section('title', isset($category)?$category-&gt;name:'话题列表')
+</code></pre>
+<h3 id="导航栏-active-类设置">导航栏 active 类设置</h3>
+<h4 id="插件名称">插件名称</h4>
+<p><code>letrunghieu/active</code></p>
+<pre><code class="language-php">composer require &quot;hieu-le/active:~3.5&quot;
+</code></pre>
+<h4 id="基础语法">基础语法</h4>
+<ol>
+<li>if_route() - 判断当前对应的路由是否是指定的路由；</li>
+<li>if_route_param() - 判断当前的 url 有无指定的路由参数。</li>
+<li>if_query() - 判断指定的 GET 变量是否符合设置的值；</li>
+<li>if_uri() - 判断当前的 url 是否满足指定的 url；</li>
+<li>if_route_pattern() - 判断当前的路由是否包含指定的字符；</li>
+<li>if_uri_pattern() - 判断当前的 url 是否含有指定的字符；</li>
+</ol>
+<h4 id="使用案例-2">使用案例</h4>
+<p>案例1 :</p>
+<pre><code class="language-php+html">/**设置 激活类
+ * @param $routerName 路由名称
+ * @param $param 地址栏参数
+ * @param $param_id 参数值(id)
+ * @return string 成功返回类名active,否则为''.
+ */
+function set_active_class($routerName,$param,$param_id)
+{
+    return active_class((if_route($routerName)&amp;&amp;if_route_param($param,$param_id)));
+}
+
+使用:
+&lt;li class=&quot;nav-item {{active_class(if_route('topics.index'))}}&quot;&gt;
+    &lt;a class=&quot;nav-link&quot; href=&quot;{{route('topics.index')}}&quot;&gt;话题 &lt;span class=&quot;sr-only&quot;&gt;(current)&lt;/span&gt;&lt;/a&gt;
+&lt;/li&gt;
+&lt;li class=&quot;nav-item {{set_active_class('categories.show','category',1)}}&quot;&gt;
+    &lt;a class=&quot;nav-link&quot; href=&quot;{{route('categories.show',1)}}&quot;&gt;分享&lt;/a&gt;
+&lt;/li&gt;
+</code></pre>
+<p>案例2 :</p>
+<pre><code class="language-html">//if_query 判断参数order是否值为recent
+&lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link {{active_class(!if_query('order','recent'))}}&quot; href=&quot;{{Request::url()}}?order=default&quot;&gt;最后回复&lt;/a&gt;&lt;/li&gt;
+
+&lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link {{active_class(if_query('order','recent'))}}&quot; href=&quot;{{Request::url()}}?order=recent&quot;&gt;最新发布&lt;/a&gt;&lt;/li&gt;
+
+
+</code></pre>
+<h3 id="模板include变量分配">模板include变量分配</h3>
+<blockquote>
+<p>场景: 用户中心的文章列表</p>
+</blockquote>
+<pre><code class="language-html">@include('user._topics',['topics'=&gt;$user-&gt;topics()-&gt;recent()-&gt;paginate(5)])
+</code></pre>
+<h2 id="第六章-帖子curd">第六章 帖子CURD</h2>
+<h3 id="模型观察器处理摘要">模型观察器处理摘要</h3>
+<h4 id="eloquent-事件">Eloquent 事件</h4>
+<table>
+<thead>
+<tr>
+<th>事件</th>
+<th>触发时机</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>creating</td>
+<td>当一个新模型被初次保存将会触发</td>
+</tr>
+<tr>
+<td>created</td>
+<td>当一个新模型被初次保存将会触发</td>
+</tr>
+<tr>
+<td>updated</td>
+<td>如果一个模型已经存在于数据库且调用了save方法</td>
+</tr>
+<tr>
+<td>updating</td>
+<td>如果一个模型已经存在于数据库且调用了save方法</td>
+</tr>
+<tr>
+<td>saving</td>
+<td>保存到数据库后触发（插入/更新之后，无论插入还是更新都会触发）</td>
+</tr>
+<tr>
+<td>saved</td>
+<td>保存到数据库后触发（插入/更新之后，无论插入还是更新都会触发）</td>
+</tr>
+</tbody>
+</table>
+<h4 id="应用场景">应用场景</h4>
+<blockquote>
+<p>摘要根据文章内容自动生成</p>
+</blockquote>
+<pre><code class="language-php">//观察器
+class TopicObserver
+{
+
+    public function saving(Topic $topic)
+    {
+        $topic-&gt;excerpt=make_excerpt($topic-&gt;body);
+    }
+}
+
+//helpers.php 函数
+/**
+ * 生成摘要函数
+ * @param $value  生成摘要的值
+ * @param int $length  生成摘要的长度
+ * @return string
+ */
+function make_excerpt($value,$length=200)
+{
+    $excerpt=trim(preg_replace('/\r\n|\r|\n+/','',strip_tags($value)));
+    return str_limit($excerpt,$length);
+}
+
+/*注册观察器
+app/Providers/EventServiceProvider.php
+*/
+public function boot()
+{
+    parent::boot();
+    Topic::observe(TopicObserver::class);
+}
+</code></pre>
+<h3 id="simditor-编辑器">Simditor 编辑器</h3>
+<h4 id="安装">安装</h4>
+<p>下载simditor压缩包</p>
+<p>将下载的 simditor.css 放置于 resources/editor/css 文件夹，将 hotkeys.js , odule.js ,simditor.js , uploader.js 四个文件放置于 resources/editor/js 文件夹中</p>
+<pre><code class="language-php">//复制目录到public目录
+mix.js('resources/js/app.js', 'public/js')
+.sass('resources/sass/app.scss', 'public/css')
+.copyDirectory('resources/editor/js', 'public/js')
+.copyDirectory('resources/editor/css', 'public/css')
+</code></pre>
+<h4 id="加载">加载</h4>
+<pre><code class="language-javascript">@section('styles')
+ &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;{{ asset('css/simditor.css') }}&quot;&gt;
+@endsection
+
+@section('scripts')
+ &lt;script type=&quot;text/javascript&quot; src=&quot;{{ asset('js/module.js') }}&quot;&gt;&lt;/script&gt;
+ &lt;script type=&quot;text/javascript&quot; src=&quot;{{ asset('js/hotkeys.js') }}&quot;&gt;&lt;/script&gt;
+ &lt;script type=&quot;text/javascript&quot; src=&quot;{{ asset('js/uploader.js') }}&quot;&gt;&lt;/script&gt;
+ &lt;script type=&quot;text/javascript&quot; src=&quot;{{ asset('js/simditor.js') }}&quot;&gt;&lt;/script&gt;
+ &lt;script&gt;
+ $(document).ready(function() {
+ var editor = new Simditor({
+     //#editor为textarea 的id值
+ textarea: $('#editor'),
+ });
+ });
+ &lt;/script&gt;
+@endsection
+</code></pre>
+<h4 id="图片上传">图片上传</h4>
+<pre><code class="language-JavaScript">//前台配置    
+&lt;script&gt;
+        $(document).ready(function () {
+            var editor = new Simditor({
+                textarea: $('#editor'),
+                upload: {
+                    url: '{{route('topics.upload_image')}}',
+                    params: {_token: '{{csrf_token()}}'},
+                    //服务器获取图片的键值
+                    fileKey: 'upload_file',
+                    //最多只能同时上传3张图片
+                    connectionCount: 3,
+                    leaveConfirm: '文件上传中,关闭此页面将取消上传'
+                },
+				//是否允许粘贴
+                pasteImage:true,
+            });
+        });
+    &lt;/script&gt;
+</code></pre>
+<h3 id="xss-安全漏洞">xss 安全漏洞</h3>
+<p>HTMLPurifier</p>
+<p>HTMLPurifier for Laravel(<a href="https://github.com/mewebstudio">mewebstudio</a>/Purifier)</p>
+<p>插件名称 : mewebstudio/Purifier</p>
+<p>插件地址 : https://github.com/mewebstudio/Purifier</p>
+<h4 id="安装-2">安装</h4>
+<pre><code class="language-php">composer require mews/purifier
+</code></pre>
+<p>发布配置文件</p>
+<pre><code class="language-php">php artisan vendor:publish --provider=&quot;Mews\Purifier\PurifierServiceProvider&quot;
+</code></pre>
+<h4 id="配置">配置</h4>
+<pre><code class="language-php">'user_topic_body' =&gt; [
+    'HTML.Doctype' =&gt; 'XHTML 1.0 Transitional',
+    'HTML.Allowed' =&gt; 'div,b,strong,i,em,u,a[href|title],ul,ol,li,p[style],br,span[style],img[width|height|alt|src]',
+    'CSS.AllowedProperties' =&gt; 'font,font-size,font-weight,font-style,font-family,text-decoration,padding-left,color,background-color,text-align',
+    'AutoFormat.AutoParagraph' =&gt; true,
+    'AutoFormat.RemoveEmpty' =&gt; true,
+],
+</code></pre>
+<h4 id="使用">使用</h4>
+<pre><code class="language-php">//user_topic_body 是上面配置项设置的键名
+$topic-&gt;body=clean($topic-&gt;body,'user_topic_body');
+</code></pre>
+<h4 id="xss-注入测试">xss 注入测试</h4>
+<blockquote>
+<p>富文本器可以对部分安全进行转义,但是提交内容并不一定通过浏览器进行, 下面是通过谷歌浏览器控制台进行的一个简单的注入案例</p>
+</blockquote>
+<p>在谷歌浏览器控制台 console中键入下面代码:</p>
+<p>//注意网址 token需要替换成自己的</p>
+<p><strong>token 如何查看:</strong></p>
+<p>查看网页源代码:</p>
+<figure data-type="image" tabindex="1"><img src="assets/1553565430564.png" alt="1553565430564" loading="lazy"></figure>
+<pre><code class="language-php">fetch(&quot;http://larachina02.com/topics&quot;, {&quot;headers&quot;:{&quot;content-type&quot;:&quot;application/x-www-form-urlencoded&quot;,&quot;upgrade-insecure-requests&quot;:&quot;1&quot;},&quot;body&quot;:&quot;_token=RiqfIdepmYfymLBuvh5dEJxQI1vO3vrgGYdCb2gv&amp;title=dangerous%20content+&amp;category_id=2&amp;body=%3Cscript%3Ealert%28%27%E5%AD%98%E5%9C%A8%20XSS%20%E5%AE%89%E5%85%A8%E5%A8%81%E8%83%81%EF%BC%81%27%29%3C%2Fscript%3E&quot;,&quot;method&quot;:&quot;POST&quot;,&quot;mode&quot;:&quot;cors&quot;});
+</code></pre>
+<p>上面代码会自动插入一片注入文章,点开该文章会有弹窗</p>
+<h3 id="seo-友好的url">seo 友好的url</h3>
+<blockquote>
+<p>释义的 URL 有助于搜索引擎优化（SEO），本章节我们将开发自动生成 SEO 友好 URL 的功能。当用户提交发布话题的<br>
+表单时，程序将调用 接口将话题标题翻译为英文，并储存于字段 slug 中。显示时候将 Slug 在 URL 中体现<br>
+出来，假如话题标题为『Slug 翻译测试』的 URL 是：</p>
+<p>http://larabbs.com/topics/119</p>
+<p>加入 Slug 后 SEO 友好的链接为</p>
+<p>http://larabbs.com/topics/119/slug-translation-test</p>
+</blockquote>
+<h4 id="安装的插件">安装的插件</h4>
+<p><code>guzzlehttp/Guzzle</code></p>
+<p>Guzzle库是一套强大的 PHP HTTP 请求套件，我们使用 Guzzle 的 HTTP 客户端来请求 接口。</p>
+<p><code>overtrue\PinYin</code></p>
+<p>PinYin是安正超开发的，基于cc-cedict 词典的中文转拼音工具，是一套优质的汉字转拼音解决方案。我们使用<br>
+PinYin 来作为翻译的后备计划，当百度翻译 API 不可用时，程序会自动使用 PinYin 汉字转拼音方案来生成 Slug。</p>
+<h4 id="注册百度翻译开放平台">注册百度翻译开放平台</h4>
+<p>http://api.fanyi.baidu.com/api/trans/product/index</p>
+<h4 id="翻译调用">翻译调用</h4>
+<pre><code class="language-php">class TopicObserver
+{
+
+    public function saving(Topic $topic)
+    {
+        //入库时自动过滤
+        $topic-&gt;body=clean($topic-&gt;body,'user_topic_body');
+        //自动生成摘录
+        $topic-&gt;excerpt=make_excerpt($topic-&gt;body);
+        //seo 如slug字段无内容,即使使用翻译器对title进行翻译
+        if(!$topic-&gt;slug){
+            $topic-&gt;slug=app(SlugTranslateHandler::class)-&gt;translate($topic-&gt;title);
+        }
+    }
+}
+</code></pre>
+<h3 id="laravel队列">laravel队列</h3>
+<h4 id="队列步骤">队列步骤</h4>
+<ol>
+<li>配置队列安装驱动包</li>
+<li>生成失败任务表</li>
+<li>生成任务类</li>
+<li>编辑任务类业务</li>
+<li>任务分发</li>
+<li>启动队列监控</li>
+</ol>
+<p><code>详细步骤</code></p>
+<p>1.配置队列</p>
+<blockquote>
+<p>在使用之前必须安装redis软件</p>
+</blockquote>
+<p>安装redis队列驱动包</p>
+<pre><code class="language-php">composer require &quot;predis/predis&quot;
+</code></pre>
+<p>.env</p>
+<pre><code class="language-php">QUEUE_CONNECTION=redis
+</code></pre>
+<pre><code class="language-php">//redis配置
+REDIS_HOST=127.0.0.1
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+</code></pre>
+<p>2.生成对列表</p>
+<p>失败任务</p>
+<p>有时候队列中的任务会失败。Laravel 内置了一个方便的方式来指定任务重试的最大次数。当任务超出这个重试次数后，它就会被插入到 failed_jobs 数据表里面。</p>
+<pre><code class="language-php">//生成failed_jobs表
+php artisan queue:failed-table
+</code></pre>
+<p>3.生成任务类</p>
+<pre><code class="language-php">php artisan make:job TranslateSlug
+</code></pre>
+<p>4.修改任务类</p>
+<blockquote>
+<p>该类实现了 Illuminate\Contracts\Queue\ShouldQueue 接口，该接口表明 Laravel 应该将该任务添加到后台的任务队<br>
+列中，而不是同步执行。</p>
+<p>引入了 SerializesModels trait，Eloquent 模型会被优雅的序列化和反序列化。</p>
+<p>handle 方法会在队列任务执行时被调用。</p>
+<p>任务中要避免使用 Eloquent 模型接口调用，如： create() ,<br>
+update() , save() 等操作。否则会陷入调用死循环--模型监控器分发任务，任务触发模型监控器，模型监控器再次分发任务，任务再次触发模型监控器.... 死循环。在这种情况下，使用 DB 类直接对数据库进行操作即可。</p>
+</blockquote>
+<p>5.任务分发</p>
+<pre><code class="language-php">dispatch(new xxxjob($topic));
+</code></pre>
+<p>6.启动队列系统</p>
+<p>php artisan queue:listen</p>
+<h4 id="队列监控-horizon">队列监控 Horizon</h4>
+<pre><code class="language-php">composer require laravel/horizon
+</code></pre>
+<blockquote>
+<p>需要ext-pcntl 支持</p>
+</blockquote>
+<p><code>php artisan vendor:publish --provider=&quot;Laravel\Horizon\HorizonServiceProvide&quot;</code></p>
+<h4 id="线上部署须知">线上部署须知</h4>
+<ol>
+<li>使用 Supervisor 进程工具进行管理，配置和使用请参照文档进行配置；</li>
+<li>每一次部署代码时，需 artisan horizon:terminate 然后再 artisan horizon 重新加载代码。</li>
+</ol>
+<h2 id="第七章-帖子回复">第七章 帖子回复</h2>
+<h3 id="tabs页面处理">tabs页面处理</h3>
+<blockquote>
+<p>基于 letrunghieu/active 插件</p>
+</blockquote>
+<h4 id="1active-类控制">1.active 类控制</h4>
+<pre><code class="language-html">//href 传递一个tab参数,用于标志某个tabs
+&lt;li class=&quot;nav-item&quot;&gt;
+    &lt;a class=&quot;nav-link  bg-transparent {{active_class(if_query('tab',null))}}&quot; href=&quot;{{route('users.show',$user-&gt;id)}}&quot;&gt;Ta的话题&lt;/a&gt;
+&lt;/li&gt;
+&lt;li class=&quot;nav-item&quot;&gt;
+    &lt;a class=&quot;nav-link {{active_class(if_query('tab','replies'))}}&quot; href=&quot;{{route('users.show',[$user-&gt;id,'tab'=&gt;'replies'])}}&quot;&gt;Ta的回复&lt;/a&gt;
+&lt;/li&gt;
+</code></pre>
+<h4 id="2页面载入配置">2.页面载入配置</h4>
+<pre><code class="language-php">@if(if_query('tab','replies'))
+    {{--显示用户评论页--}}
+    @include('ucenter.user._replies',['replies'=&gt;$user-&gt;reply()-&gt;with('topic')-&gt;recent()-&gt;paginate(5)])
+@else
+    {{--显示用户文章页--}}
+    @include('ucenter.user._topics',['topics'=&gt;$user-&gt;topics()-&gt;recent()-&gt;paginate(5)])
+@endif
+</code></pre>
+<h3 id="回复话题">回复话题</h3>
+<pre><code class="language-html">//视条件加载子模板
+@includeWhen($boolen,'view.name',['some'=&gt;'data'])
+</code></pre>
+<p>回复话题 ,回复数的增加 ReplyObserver 观察器</p>
+<blockquote>
+<p>比较严谨的做法是创建成功后计算本话题下评论总数, 然后在对其reply_count字段进行赋值。</p>
+</blockquote>
+<pre><code class="language-php">class ReplyObserver
+{
+     public function created(Reply $reply)
+     {
+         $reply-&gt;topic-&gt;reply_count = $reply-&gt;topic-&gt;replies-&gt;count();
+         $reply-&gt;topic-&gt;save();
+     }
+}
+</code></pre>
+<h3 id="laravel-消息通知">laravel 消息通知</h3>
+<h4 id="数据库通知知识">数据库通知知识</h4>
+<ul>
+<li>
+<p>访问通知</p>
+<p><code>$user-&gt;notifications</code></p>
+</li>
+<li>
+<p>访问未读通知</p>
+<p><code>$user-&gt;unreadNotifications</code></p>
+</li>
+<li>
+<p>标记通知为已读</p>
+<p><code>$user-&gt;markAsRead()</code></p>
+</li>
+<li>
+<p>通知删除</p>
+<p><code>$user-&gt;notifications()-&gt;delete();</code></p>
+</li>
+<li>
+<p>获取data数据(json)</p>
+<p><code>$notification-&gt;data['user_id']</code></p>
+</li>
+</ul>
+<h4 id="通知频道">通知频道 :</h4>
+<p>通知传播的途径, laravel自带的有数据库、邮件、短信以及slack</p>
+<h4 id="数据库通知频道">数据库通知频道</h4>
+<ol>
+<li>
+<p>创建表格</p>
+<pre><code class="language-php">php artisan notifications:table
+
+php artisan migrate
+</code></pre>
+</li>
+</ol>
+<p>我们还需要在users表里新增notification_count字段,用来追踪用户有多少未读通知,如果未读通知大于零的话,就在显示提醒</p>
+<pre><code class="language-php">php artisan make:migration add_notification_count_to_users_table --table=users
+</code></pre>
+<ol start="2">
+<li>
+<p>生成通知类</p>
+<pre><code class="language-php">php artisan make:notification RepliedNotice
+</code></pre>
+<pre><code class="language-php">&lt;?php
+namespace App\Notifications;
+use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Notification;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
+use App\Models\Reply;
+class RepliedNotice extends Notification
+{
+ use Queueable;
+ public $reply;
+ public function __construct(Reply $reply)
+ {
+ 	// 注入回复实体，方便 toDatabase 方法中的使用
+ 	$this-&gt;reply = $reply;
+ }
+ public function via($notifiable)
+ {
+ 	// 开启通知的频道
+	 return ['database'];
+ }
+ public function toDatabase($notifiable)
+ {
+     $topic = $this-&gt;reply-&gt;topic;
+     $link = $topic-&gt;link(['#reply' . $this-&gt;reply-&gt;id]);
+     // 存入数据库里的数据
+     return [
+         'reply_id' =&gt; $this-&gt;reply-&gt;id,
+         'reply_content' =&gt; $this-&gt;reply-&gt;content,
+         'user_id' =&gt; $this-&gt;reply-&gt;user-&gt;id,
+         'user_name' =&gt; $this-&gt;reply-&gt;user-&gt;name,
+         'user_avatar' =&gt; $this-&gt;reply-&gt;user-&gt;avatar,
+         'topic_link' =&gt; $link,
+         'topic_id' =&gt; $topic-&gt;id,
+         'topic_title' =&gt; $topic-&gt;title,
+     ];
+ }
+}
+</code></pre>
+<blockquote>
+<p>每个通知类都有个 via() 方法，它决定了通知在哪个频道上发送。我们写上 database 数据库来作为通知频道。<br>
+因为使用数据库通知频道，我们需要定义 toDatabase() 。这个方法接收 $notifiable 实例参数并返回一个普通的<br>
+PHP 数组。这个返回的数组将被转成 JSON 格式并存储到通知数据表的 data 字段中。</p>
+</blockquote>
+</li>
+<li>
+<p>通知执行流程</p>
+</li>
+</ol>
+<figure data-type="image" tabindex="2"><img src="assets/1552309644161.png" alt="1552309644161" loading="lazy"></figure>
+<ol start="4">
+<li>通知阅读流程</li>
+</ol>
+<figure data-type="image" tabindex="3"><img src="assets/1552477894134.png" alt="1552477894134" loading="lazy"></figure>
+<h4 id="邮件通知">邮件通知</h4>
+<p>// app\Notifications\RepiedNotice.php 通知类</p>
+<pre><code class="language-php">Class RepiedNotice extends Notification
+{
+    public function __construct(Repied $reply)
+    {
+        $this-&gt;reply=$reply;
+    }
+    
+    public function via($notifiable)
+    {
+        return ['databse','mail'];
+    }
+    
+    public function toMail($notifiable)
+    {
+        $url=$this-&gt;reply-&gt;topic-link(['#reply',$this-&gt;reply-&gt;id]);
+        return (new MailMessage)-&gt;subject('邮件标题')-&gt;line('你的话题有新回复')-&gt;action('查看回复',$url);
+    }
+}
+</code></pre>
+<h4 id="消息邮件加入队列">消息邮件加入队列</h4>
+<p>我们可以通过对通知类添加 ShouldQueue 接口和 Queueable trait 把通知加入队列。它们两个在使用<br>
+make:notification 命令来生成通知文件时就已经被导入，我们只需添加到通知类接口即可。</p>
+<p>修改 TopicReplied.php 文件，将以下这一行：</p>
+<pre><code class="language-php">class TopicReplied extends Notification
+</code></pre>
+<p>改为：</p>
+<pre><code class="language-php">class TopicReplied extends Notification implements ShouldQueue
+</code></pre>
+<p>Laravel 会检测 ShouldQueue 接口并自动将通知的发送放入队列中，所以我们不需要做其他修改。</p>
+<h2 id="第八章-用户权限">第八章 用户权限</h2>
+<h3 id="权限扩展包permission">权限扩展包permission</h3>
+<p><code>spatie/laravel-permission</code></p>
+<h4 id="使用规范">使用规范</h4>
+<p>user模型加载HasRoles trait</p>
+<pre><code class="language-php">use Spatie\Permission\Traits\HasRoles;
+class User extends Authenticatable implements MustVerifyEmailContract
+{
+ use HasRoles;
+}
+</code></pre>
+<p>权限定义规范我们统一只用_分割法</p>
+<table>
+<thead>
+<tr>
+<th>权限</th>
+<th>命名</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>内容管理</td>
+<td>manage_contents</td>
+<td></td>
+</tr>
+<tr>
+<td>用户管理</td>
+<td>manage_users</td>
+<td></td>
+</tr>
+<tr>
+<td>站点设置</td>
+<td>edit_settings</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="站点权限部署">站点权限部署</h4>
+<p><strong>策略过滤器</strong></p>
+<blockquote>
+<p>代码生成器所生成的策略授权,都会统一集成App\Policies\Policy基类,这样我们只需要在基类的before()方法里做下角色权限判断即可坐拥到所有的授权类</p>
+</blockquote>
+<pre><code class="language-php">public function before($user, $ability)
+{
+    if($user-&gt;can('manage_contens')){
+        return true;
+    }
+}
+</code></pre>
+<h4 id="gates-说明">Gates 说明</h4>
+<p>授权操作主要有两种方式:gates和策略.</p>
+<p>Gates大部分应用在模型和资源没有关系的地方,比如查看管理员的面板.与之相反, 策略应该在特定的模型或者资源中使用.</p>
+<p>Horizon 访问权限的设置</p>
+<blockquote>
+<p>下面代码只有角色为Founder的才能访问horizon面板</p>
+</blockquote>
+<p>AuthServiceProvider.php</p>
+<pre><code class="language-php">    public function boot()
+    {
+        $this-&gt;registerPolicies();
+        //Horizon 访问权限设置
+        \Horizon::auth(function ($request) {
+            // 是否是站长,这里需要先判断是否登录
+            if(!\Auth::check()) return false;
+            return \Auth::user()-&gt;hasRole('Founder');
+        });
+    }
+</code></pre>
+<h3 id="管理后台包">管理后台包</h3>
+<p><code>summerblue/administrator</code></p>
+<h4 id="laravel58采坑安装">laravel5.8采坑安装</h4>
+<p>https://learnku.com/laravel/t/18675</p>
+<blockquote>
+<p>错误信息: In AdministratorServiceProvider.php line 48:</p>
+<p>Call to undefined method Illuminate\Events\Dispatcher::fire()</p>
+<p>解决方法: 搜索AdministratorServiceProvier.php文件按照下面修改fire()方法为dispatch();</p>
+<p><a href="https://github.com/latifasaee">@latifasaee</a> In short, when you see an error like this with Laravel 5.8, the call</p>
+<pre><code>Call to undefined method Illuminate\Events\Dispatcher::fire() 
+</code></pre>
+<p>needs to be changed to</p>
+<pre><code>Call to undefined method Illuminate\Events\Dispatcher::dispatch() 
+</code></pre>
+<p>In versions prior to Laravel 5.7, this method classname was <code>fire</code> but with Laravel 5.8, it is now <code>dispatch</code></p>
+</blockquote>
+<h3 id="用户切换工具sudo-su">用户切换工具sudo-su</h3>
+<ol>
+<li>
+<p>安装插件</p>
+<p><code>viacreative/sudo-su</code></p>
+</li>
+<li>
+<p>修改配置文件</p>
+<pre><code class="language-php">config/sudosu.php
+    //域名后缀限制
+'allowed_tlds' =&gt; ['dev', 'local','com'],  
+'user_model' =&gt; App\Models\User::class
+</code></pre>
+</li>
+<li>
+<p>模板植入</p>
+<pre><code class="language-php">//resources/views/layouts/app.blade.php
+@if (config('app.debug'))
+    @include('sudosu::user-selector')
+@endif
+</code></pre>
+</li>
+</ol>
+<h3 id="管理后台包-2">管理后台包</h3>
+<p>插件: <code>summerblue/administrator</code></p>
+<p>创建必要的文件夹</p>
+<p>Administrator 会检测<code>model_config_path</code>和 <code>settings_config_path</code>目录是否能正常访问,所以我们需要先新建目录</p>
+<pre><code class="language-php">$ mkdir -p config/administrator/settings
+$ touch config/administrator/settings/.gitkeep
+</code></pre>
+<p>在空文件夹中放置 .gitkeep 保证了 Git 会将此文件夹纳入版本控制器中。</p>
+<p>bug解决</p>
+<p><code>Administrator: 在 administrator.php 的配置中你必须提供一个有效的 'home_page' 参数</code></p>
+<p>解决:</p>
+<p>https://github.com/summerblue/administrator-demo/blob/master/config/administrator/users.php</p>
+<p>将users.php复制到config/administrator/目录下</p>
+<p>修改use App\User 为use App\Models\User;</p>
+<p>配置文章</p>
+<p>https://learnku.com/laravel/t/2407/use-laravel-administrator-to-quickly-generate-data-model-administrator-tutorial</p>
+<h2 id="第九章-杂项">第九章 杂项</h2>
+<h3 id="边栏活跃用户">边栏活跃用户</h3>
+<h4 id="新建artisan-命令">新建artisan 命令</h4>
+<pre><code class="language-php">php artisan make:command CalculateActiveUser --command=larabbs:calculate-active-user
+</code></pre>
+<p>参数<code>--command</code>是指定artisan调用的命令,一般情况下,我们推介为命令加上命名空间,如本项目的<code>larabbs</code></p>
+<h4 id="计划任务">计划任务</h4>
+<blockquote>
+<p>laravel 的计划任务执行思路</p>
+<ol>
+<li>
+<p>在系统的crontab中 先执行schedule:run 命令</p>
+</li>
+<li>
+<p>在app/Console/Kernel.php的schedule方法中定义相关命令</p>
+</li>
+</ol>
+</blockquote>
+<p><strong>1.系统cron定义laravel 计划任务命令</strong></p>
+<p>修改系统的Cron计划任务配置信息,运行以下命令</p>
+<pre><code class="language-php">$ export EDITOR=vi &amp;&amp; crontab -e
+</code></pre>
+<p>复制下面的这一行</p>
+<pre><code class="language-php">* * * * * php /home/vagrant/Code/larabbs/artisan schedule:run &gt;&gt; /dev/null 2&gt;&amp;1
+</code></pre>
+<p>2.在<code>app/Console/Kernel.php</code>文件的<code>schedule</code>方法中定义</p>
+<pre><code class="language-php">protected function schedule(Schedule $schedule)
+ {
+ // 一小时执行一次『活跃用户』数据生成的命令
+ $schedule-&gt;command('larabbs:calculate-active-user')-&gt;hourly();
+ }
+</code></pre>
+<p>系统的Cron已经设定好了,现在Cron软件将会每分钟调用一次laravel命令调度器,当<code>achedule:run</code>命令执行时,laravel会评估你的计划任务并运行预定任务.</p>
+<h3 id="热门文章">热门文章</h3>
+<p><code>Cache::remember()</code></p>
+<pre><code class="language-php">class Link extends Model
+{
+    protected $fillable = ['title', 'link'];
+    public $cache_key = 'larabbs_links';
+    protected $cache_expire_in_minutes = 1440;
+    public function getLinkCache()
+    {
+// 尝试从缓存中取出 cache_key 对应的数据。如果能取到，便直接返回数据。
+// 否则运行匿名函数中的代码来取出活跃用户数据，返回的同时做了缓存。
+        return \Cache::remember($this-&gt;cache_key, $this-&gt;cache_expire_in_minutes, function(){
+            return $this-&gt;all();
+        });
+    }
+}
+</code></pre>
+<p><code>Cache::forget()</code></p>
+<h3 id="避免数据损坏">避免数据损坏</h3>
+<blockquote>
+<p>我们删除了用户,却没有删除用户发布的话题,此部分话题变成了遗留数据. 话题列表中渲染到这些遗留数据时,因为不存在作者,却取作者的avatar头像属性,故报错.</p>
+</blockquote>
+<p>处理办法,实现关联数据的删除.</p>
+<h4 id="两种处理机制">两种处理机制:</h4>
+<ol>
+<li>代码监听器 —— 利用 的 deleted 事件连带删除，好处是灵活、扩展性强，不受底层数据库约束，坏处当删除时不添加监听器，就会出现漏删；</li>
+<li>外键约束 —— 利用 MySQL 自带的外键约束功能，好处是数据一致性强，基本上不会出现漏删，坏处是有些数据库不支持，如 SQLite。</li>
+</ol>
+<h4 id="添加外检约束">添加外检约束</h4>
+<blockquote>
+<p>这里的外键约束，数据库引擎一定要是 InnoDB 类型的。MyISAM 类型不支持外键约束</p>
+</blockquote>
+<p>1.当用户删除时,删除其发布的话题;</p>
+<p>2.当用户删除时,删除其发布的回复;</p>
+<p>3.当话题删除时,删除其所属的回复;</p>
+<blockquote>
+<p>on update和on delete后面可以跟的词语有四个<br>
+no action ， set null ， set default ，cascade<br>
+no action 表示 不做任何操作，<br>
+set null 表示在外键表中将相应字段设置为null<br>
+set default 表示设置为默认值<br>
+cascade 表示级联操作，就是说，如果主键表中被参考字段更新，外键表中也更新，主键表中的记录被删除，外键表中改行也相应删除</p>
+</blockquote>
+<pre><code class="language-php">public function up()
+    {
+
+        Schema::table('topics',function(Blueprint $table){
+            $table-&gt;foreign('user_id')-&gt;references('id')-&gt;on('users')-&gt;onDelete('cascade');
+        });
+
+        Schema::table('replies',function(Blueprint $table){
+            $table-&gt;foreign('user_id')-&gt;references('id')-&gt;on('users')-&gt;onDelete('cascade');
+            $table-&gt;foreign('topic_id')-&gt;references('id')-&gt;on('topics')-&gt;onDelete('cascade');
+        });
+}
+</code></pre>
+<h3 id="用户最后登录时间">用户最后登录时间</h3>
+<p>数据库题外话:</p>
+<blockquote>
+<p>然而，在数据库中操作中，『写入』对数据库造成的压力，要远比『读取』压力高得多。想要准确地跟踪用户的最后活跃时间，就必须在用户每一次请求服务器时都做记录，我们使用的主数据是 MySQL，也就是说每当用户访问一个页面，我们都将 MySQL 数据库里的 users 表写入数据。当我们有很多用户频繁访问站点时，这将会是数据库的一笔巨大开销。<br>
+我们可以使用 Redis 来记录用户的访问时间，Redis 运行在机器的内存上，读写效率都极快。不过为了保证数据的完整性，我们需要定期将 Redis 数据同步到数据库中，否则一旦 Redis 出问题或者执行了 Redis 清理操作，用户的『最后活跃时间』将会丢失</p>
+</blockquote>
+<hr>
+<h4 id="基本思路">基本思路</h4>
+<p><code>基本思路如下</code>：</p>
+<ol>
+<li>记录 - 通过中间件过滤用户所有请求，记录用户访问时间到 Redis 按日期区分的哈希表；</li>
+<li>同步 - 新建命令，计划任务每天运行一次此命令，将昨日哈希表里的数据同步到数据库中，并删除；</li>
+<li>读取 - 优先读取当日哈希表里 Redis 里的数据，无数据则使用数据库中的值。</li>
+</ol>
+<h4 id="前置中间件和后置中间件">前置中间件和后置中间件</h4>
+<blockquote>
+<p>前置中间件是应用初始化完成以后立刻执行，此时控制器路由还未分配、控制器还未执行、视图还未渲染。后置中间件是即将离开应用的响应，此时控制器已将渲染好的视图返回，我们可以在后置中间件里修改响应。</p>
+</blockquote>
+<ol>
+<li>创建中间件</li>
+</ol>
+<pre><code class="language-php">php artisan make:middleware RecordLastActived
+</code></pre>
+<ol start="2">
+<li>
+<p>注册中间件:在app/Http/Kernel.php类中对中间件进行注册</p>
+</li>
+<li>
+<p>书写中间件</p>
+<pre><code class="language-php">class RecordLastActivedTime
+{
+public function handle($request, Closure $next)
+    {
+        //如果是登录用户的话
+        if(\Auth::check()){
+            //    记录最后登录时间
+            \Auth::user()-&gt;recordLastActivedAt();
+        }
+        return $next($request);
+    }
+}
+</code></pre>
+</li>
+</ol>
+<h3 id="总结-缓存操作">总结: 缓存操作</h3>
+<h4 id="常用缓存操作">常用缓存操作</h4>
+<pre><code class="language-php">//取出缓存,如果不存在则执行function闭包函数中的内容
+Cache::remember(key,expired,function(){	
+​	return .....
+})
+//将数据放入缓存中
+Cache::put(key,value,expired);
+//清除缓存值
+Cache::forget(key);
+    
+</code></pre>
+<h4 id="redis-操作">redis 操作</h4>
+<pre><code class="language-第php">//$hash 表名, $filed 字段名,$value 字段值
+Redis::hset($hash,$field,$value);
+</code></pre>
+<h2 id="第十章-附注">第十章 附注</h2>
+<h3 id="删除按钮policy-优化">删除按钮policy 优化</h3>
+<blockquote>
+<p>解决文章评论列表删除按钮显示的policy判断,处理方法,在数据分配的时候讲相关模型懒加载.</p>
+</blockquote>
+<pre><code class="language-php">@include('topics._reply_list',['replies'=&gt;$topic-&gt;reply()-&gt;with('user','topic')-&gt;get()])
+</code></pre>
+<p>模板中代码</p>
+<pre><code class="language-php">@if(count($replies)&gt;0)
+    &lt;ul class=&quot;list-group&quot;&gt;
+    @foreach($replies as $reply)
+    &lt;li class=&quot;list-group-item&quot;&gt;
+    &lt;div&gt;{{$reply-&gt;user-&gt;name}}
+&lt;i class=&quot;far fa-clock&quot;&gt;&lt;/i&gt; {{$reply-&gt;created_at-&gt;diffForHumans()}}
+&lt;/div&gt;
+    &lt;div&gt;{{$reply-&gt;content}}&lt;/div&gt;
+{{--@can('delete',$reply)--}}
+&lt;div class=&quot;text-right&quot;&gt;
+    &lt;form action=&quot;{{route('replies.destroy',$reply-&gt;id)}}&quot; method=&quot;post&quot;&gt;
+    @csrf
+{{method_field('delete')}}
+&lt;button type=&quot;submit&quot; class=&quot;btn btn-outline-secondary&quot;&gt;删除&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;/div&gt;
+{{--@endcan--}}
+&lt;/li&gt;
+    @endforeach
+    &lt;/ul&gt;
+    @endif
+
+</code></pre>
+<h3 id="bootstrap4-flex弹性布局">bootstrap4 flex(弹性)布局</h3>
+<pre><code class="language-php">.ml-md-auto 产生效果右对齐,垂直居中
+</code></pre>
+<h3 id="电子邮箱设置注意">电子邮箱设置注意</h3>
+<blockquote>
+<p>需要配置, 否则可能出错</p>
+<p>MAIL_FROM_ADDRESS=9175020@qq.com<br>
+MAIL_FROM_NAME=larabbs</p>
+</blockquote>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[[转载] Go语言 结构体常见tag]]></title>
         <id>https://bluegrasses.github.io/post/zhuan-zai-go-yu-yan-jie-gou-ti-chang-jian-tag/</id>
@@ -841,290 +3027,6 @@ if os.IsExist(err) {
 <pre><code class="language-go">file, err := os.OpenFile(&quot;file.txt&quot;, os.O_WRONLY, 0644)
 os.IsPermission(err)
 </code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[{go} 标准库之 输入输出和文本]]></title>
-        <id>https://bluegrasses.github.io/post/go-biao-zhun-ku-shu-ru-shu-chu-he-wen-ben/</id>
-        <link href="https://bluegrasses.github.io/post/go-biao-zhun-ku-shu-ru-shu-chu-he-wen-ben/">
-        </link>
-        <updated>2020-05-21T07:37:11.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="第1章-输入和输出">第1章 输入和输出</h1>
-<h2 id="11-io-基本的io接口">1.1 io 基本的io接口</h2>
-<h3 id="111-reader-接口">1.1.1 Reader 接口</h3>
-<p>Reader 接口的定义如下：</p>
-<pre><code class="language-go">type Reader interface {
-Read(p []byte) (n int, err error)
-}
-</code></pre>
-<p>Read 将 len(p) 个字节读取到 p 中。它返回读取的字节数 n<br>
-当 Read 在成功读取 n &gt; 0 个字节后遇到一个错误或 EOF (end-of-file)，它会返回读取的字节数</p>
-<h3 id="112-write-接口">1.1.2 Write 接口</h3>
-<pre><code class="language-go">type Writer interface {
-Write(p []byte) (n int, err error)
-}
-</code></pre>
-<p>Write 将 len(p) 个字节从 p 中写入到基本数据流中。它返回从 p 中被写入的字节数 n（0 &lt;= n &lt;= len(p)）以及任何遇到的引起写入提前停止的错误。</p>
-<p>os.File 同时实现了 io.Reader 和 io.Writer<br>
-strings.Reader 实现了 io.Reader</p>
-<h3 id="113-readerat-和-writerat-接口">1.1.3 ReaderAt 和 WriterAt 接口</h3>
-<p>ReaderAt 接口的定义如下：</p>
-<p>type ReaderAt interface {<br>
-ReadAt(p []byte, off int64) (n int, err error)<br>
-}</p>
-<p>ReadAt 从基本输入源的偏移量 off 处开始，将 len(p) 个字节读取到 p 中。<br>
-若 n = len(p) 个字节从输入源的结尾处由 ReadAt 返回，Read可能返回 err == EOF 或者 err == nil</p>
-<h3 id="114-readerfrom-和-writerto-接口">1.1.4 ReaderFrom 和 WriterTo 接口</h3>
-<p>ReaderFrom 的定义如下：</p>
-<p>type ReaderFrom interface {<br>
-ReadFrom(r Reader) (n int64, err error)<br>
-}</p>
-<p>WriterTo的定义如下：</p>
-<p>type WriterTo interface {<br>
-WriteTo(w Writer) (n int64, err error)<br>
-}</p>
-<h3 id="115-seeker-接口">1.1.5 Seeker 接口</h3>
-<p>接口定义如下：</p>
-<p>type Seeker interface {<br>
-Seek(offset int64, whence int) (ret int64, err error)<br>
-}</p>
-<p>Seek 设置下一次 Read 或 Write 的偏移量为 offset，它的解释取决于 whence： 0 表示相对于文件的起始处，1 表示相对于当前的偏移，而 2 表示相对于其结尾处。<br>
-whence 的值，在 io 包中定义了相应的常量，应该使用这些常量</p>
-<pre><code class="language-go">const (
-  SeekStart   = 0 // seek relative to the origin of the file
-  SeekCurrent = 1 // seek relative to the current offset
-  SeekEnd     = 2 // seek relative to the end
-)
-</code></pre>
-<h3 id="116-close接口">1.1.6 Close接口</h3>
-<p>文件 (os.File)、归档（压缩包）、数据库连接、Socket 等需要手动关闭的资源都实现了 Closer 接口。实际编程中，经常将 Close 方法的调用放在 defer 语句中</p>
-<h3 id="117-copy-和-copyn-函数">1.1.7 Copy 和 CopyN 函数</h3>
-<p>func Copy(dst Writer, src Reader) (written int64, err error)</p>
-<p>Copy 将 src 复制到 dst，直到在 src 上到达 EOF 或发生错误。它返回复制的字节数 成功的 Copy 返回 err == nil，而非 err == EOF。</p>
-<p>io.Copy(os.Stdout, strings.NewReader(&quot;Go语言中文网&quot;))<br>
-输出结果屏幕显示:Go语言中文网</p>
-<pre><code class="language-go">func main() {
-    //标准输入流 ,直接copy到标准输出流
-	io.Copy(os.Stdout, os.Stdin)
-	fmt.Println(&quot;退出程序&quot;)
-}
-</code></pre>
-<p>CopyN 函数的签名：<br>
-func CopyN(dst Writer, src Reader, n int64) (written int64, err error)</p>
-<h3 id="118-writestring-函数">1.1.8 WriteString 函数</h3>
-<p>这是为了方便写入 string 类型提供的函数，函数签名：</p>
-<p>func WriteString(w Writer, s string) (n int, err error)</p>
-<h3 id="119-multireader-和-multiwriter-函数">1.1.9 MultiReader 和 MultiWriter 函数</h3>
-<p>这两个函数的定义分别是：<br>
-func MultiReader(readers ...Reader) Reader<br>
-func MultiWriter(writers ...Writer) Writer<br>
-它们接收多个 Reader 或 Writer，返回一个 Reader 或 Writer。我们可以猜想到这两个函数就是操作多个 Reader 或 Writer 就像操作一个。</p>
-<h2 id="12-ioutil-方便的io操作函数集">1.2 ioutil — 方便的IO操作函数集</h2>
-<h3 id="121-readall-函数">1.2.1 ReadAll 函数</h3>
-<p>很多时候，我们需要一次性读取 io.Reader 中的数据</p>
-<p>func ReadAll(r io.Reader) ([]byte, error)</p>
-<h3 id="122-readdir-函数">1.2.2 ReadDir 函数</h3>
-<p>编写程序输出某目录下的所有文件（包括子目录）</p>
-<p>fileInfos, err := ioutil.ReadDir(path)</p>
-<h3 id="123-readfile-和-writefile-函数">1.2.3 ReadFile 和 WriteFile 函数</h3>
-<p>ReadFile 读取整个文件的内容, ReadFile 函数的签名如下:<br>
-func ReadFile(filename string) ([]byte, error)<br>
-WriteFile 函数的签名如下：<br>
-func WriteFile(filename string, data []byte, perm os.FileMode) error</p>
-<h2 id="13-bufio-缓存io">1.3 bufio — 缓存IO</h2>
-<p>bufio 包提供了两个实例化bufio.Reader对象的函数: NewReader 和 NewReaderSize</p>
-<h3 id="131-reader-类型和方法">1.3.1 Reader 类型和方法</h3>
-<p>bufio.Reader 结构包装了一个 io.Reader 对象，提供缓存功能，同时实现了 io.Reader 接口</p>
-<h3 id="132-writer-类型和方法">1.3.2 Writer 类型和方法</h3>
-<p>bufio.Writer 结构包装了一个 io.Writer 对象，提供缓存功能，同时实现了 io.Writer 接口。</p>
-<h1 id="第2章-文本">第2章 文本</h1>
-<h2 id="21-strings-字符串操作">2.1 strings -- 字符串操作</h2>
-<h3 id="211-contians-count">2.1.1 Contians, count</h3>
-<pre><code>b := strings.Contains(&quot;hello&quot;, &quot;h&quot;)
-count := strings.Count(&quot;hello&quot;, &quot;l&quot;)
-</code></pre>
-<h3 id="212-字符分割-split-splitn-splitafter">2.1.2 字符分割 Split, SplitN, SplitAfter</h3>
-<p>data := strings.SplitN(&quot;中国,日本,韩国&quot;, &quot;,&quot;, 3)<br>
-字符串是否有某个前缀或后缀<br>
-// s 中是否以 prefix 开始<br>
-func HasPrefix(s, prefix string) bool {<br>
-return len(s) &gt;= len(prefix) &amp;&amp; s[0:len(prefix)] == prefix<br>
-}<br>
-// s 中是否以 suffix 结尾<br>
-func HasSuffix(s, suffix string) bool {<br>
-return len(s) &gt;= len(suffix) &amp;&amp; s[len(s)-len(suffix):] == suffix<br>
-}</p>
-<h3 id="213-字符串join操作">2.1.3 字符串join操作</h3>
-<p>fmt.Println(strings.Join([]string{&quot;name=xxx&quot;, &quot;age=xx&quot;}, &quot;&amp;&quot;))</p>
-<h3 id="214-字符串替换-replace">2.1.4 字符串替换 replace</h3>
-<p>fmt.Println(strings.ReplaceAll(&quot;我爱php&quot;, &quot;php&quot;, &quot;golang&quot;))<br>
-fmt.Println(strings.Replace(&quot;我爱php,我爱golang&quot;, &quot;爱&quot;, &quot;恨&quot;, 1))</p>
-<h3 id="215-大小写转换-tolowertoupper">2.1.5 大小写转换 ToLower,ToUpper</h3>
-<p>fmt.Println(strings.ToLower(&quot;I Love China&quot;))<br>
-fmt.Println(strings.ToUpper(&quot;I love China&quot;))</p>
-<h3 id="216-标题处理">2.1.6 标题处理</h3>
-<p>Title<br>
-func Title(s string) string</p>
-<h3 id="217-修剪">2.1.7 修剪</h3>
-<p>// 将 s 左侧和右侧中匹配 cutset 中的任一字符的字符去掉<br>
-func Trim(s string, cutset string) string<br>
-// 将 s 左侧的匹配 cutset 中的任一字符的字符去掉<br>
-func TrimLeft(s string, cutset string) string<br>
-// 将 s 右侧的匹配 cutset 中的任一字符的字符去掉<br>
-func TrimRight(s string, cutset string) string<br>
-// 如果 s 的前缀为 prefix 则返回去掉前缀后的 string , 否则 s 没有变化。<br>
-func TrimPrefix(s, prefix string) string<br>
-// 如果 s 的后缀为 suffix 则返回去掉后缀后的 string , 否则 s 没有变化。<br>
-func TrimSuffix(s, suffix string) string<br>
-// 将 s 左侧和右侧的间隔符去掉。常见间隔符包括：'\t', '\n', '\v', '\f', '\r', ' ', U+0085 (NEL)<br>
-func TrimSpace(s string) string<br>
-// 将 s 左侧和右侧的匹配 f 的字符去掉<br>
-func TrimFunc(s string, f func(rune) bool) string<br>
-// 将 s 左侧的匹配 f 的字符去掉<br>
-func TrimLeftFunc(s string, f func(rune) bool) string<br>
-// 将 s 右侧的匹配 f 的字符去掉<br>
-func TrimRightFunc(s string, f func(rune) bool) string</p>
-<h2 id="22-bytes">2.2 bytes</h2>
-<p>因为字符串可以表示为 []byte，因此，bytes 包定义的函数、方法等和 strings 包很类似</p>
-<h3 id="221-reader类型">2.2.1 reader类型</h3>
-<pre><code class="language-go">type Reader struct {
-s []byte
-i int64 // 当前读取下标
-prevRune int // 前一个字符的下标，也可能 &lt; 0
-}
-</code></pre>
-<p>bytes 包下的 Reader 类型实现了 io 包下的 Reader, ReaderAt, RuneReader, RuneScanner, ByteReader, ByteScanner, ReadSeeker, Seeker, WriterTo 等多个接口。主要用于 Read 数据。<br>
-我们需要在通过 bytes.NewReader 方法来初始化 bytes.Reader 类型的对象。初始化时传入 []byte 类型的数据。</p>
-<p>func NewReader(b []byte) *Reader<br>
-例子<br>
-x := []byte(&quot;您好,世界&quot;)<br>
-r1 := bytes.NewReader(x)<br>
-content2 := make([]byte, len(x))<br>
-nums, _ := r1.ReadAt(content2, 0)</p>
-<h3 id="222-buffer类型">2.2.2 Buffer类型</h3>
-<ul>
-<li>初始化方法</li>
-</ul>
-<pre><code class="language-go">a := bytes.NewBufferString(&quot;Hello World&quot;)
-b := bytes.NewBuffer([]byte(&quot;Hello World&quot;))
-c := bytes.Buffer{}
-</code></pre>
-<p>例子</p>
-<pre><code class="language-go">//新建字节缓存区,定位,r1写入到缓存区
-w1 := &amp;bytes.Buffer{}
-_, _ = r1.Seek(0, 0)
-_, _ = r1.WriteTo(w1)
-fmt.Println(w1.String())
-</code></pre>
-<h2 id="23-strconv-字符串和基本数据类型之间的转换">2.3 strconv 字符串和基本数据类型之间的转换</h2>
-<h2 id="24-regexp-正则表达式">2.4 regexp 正则表达式</h2>
-<h2 id="25-unicode-编码">2.5 unicode 编码</h2>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[{go} 标准库之  数据、时间、数学函数]]></title>
-        <id>https://bluegrasses.github.io/post/go-biao-zhun-ku-shu-ju-shi-jian-shu-xue-han-shu-冲突-漫步的猪_Win10/</id>
-        <link href="https://bluegrasses.github.io/post/go-biao-zhun-ku-shu-ju-shi-jian-shu-xue-han-shu-冲突-漫步的猪_Win10/">
-        </link>
-        <updated>2020-05-17T02:20:42.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="sort-排序算法">sort 排序算法</h2>
-<h3 id="sort方法">sort()方法</h3>
-<blockquote>
-<p>前面已经提到过,对数据集合(包括定义的数据类型的集合)排序需要实现sort.Interface接口的三个方法,集合实现了这三个方法后,即可调用该2包的sort()方法进行排序.</p>
-</blockquote>
-<pre><code class="language-go">type Interface interface {
-		// 获取数据集合元素个数
-		Len() int
-		// 如果 i 索引的数据小于 j 索引的数据，返回 true，且不会调用下面的 Swap()，即数据升序排序。
-		Less(i, j int) bool
-		// 交换 i 和 j 索引的两个元素的位置
-        Swap(i, j int)
-}
-</code></pre>
-<p>该包还提供了一个方法可以判断数据集合是否已经排好顺序，该方法的内部实现依赖于我们自己实现的 Len() 和 Less() 方法</p>
-<ul>
-<li>例子</li>
-</ul>
-<pre><code class="language-go">// 学生成绩结构体
-type StuScore struct {
-    name  string    // 姓名
-    score int   // 成绩
-}
-
-type StuScores []StuScore
-
-//Len()
-func (s StuScores) Len() int {
-	return len(s)
-}
-
-//Less(): 成绩将有低到高排序
-func (s StuScores) Less(i, j int) bool {
-	return s[i].score &lt; s[j].score
-}
-
-//Swap()
-func (s StuScores) Swap(i, j int) {
-	s[i], s[j] = s[j], s[i]
-}
-
-func main() {
-    stus := StuScores{
-                {&quot;alan&quot;, 95},
-                {&quot;hikerell&quot;, 91},
-                {&quot;acmfly&quot;, 96},
-                {&quot;leao&quot;, 90},
-			}		
-    //StuScores 已经实现了 sort.Interface 接口 , 所以可以调用 Sort 函数进行排序
-	sort.Sort(stus)
-	// 判断是否已经排好顺序，将会打印 true
-}
-</code></pre>
-<h3 id="sortissorted-是否排序过">sort.IsSorted()  是否排序过</h3>
-<h3 id="reverse-反向排序方法">Reverse() 反向排序方法</h3>
-<h3 id="sort包已经支持的内部数据类型排序">sort包已经支持的内部数据类型排序</h3>
-<blockquote>
-<p>sort包原生支持[]int、[]float64 和[]string 三种内建数据类型切片的排序操作，即不必我们自己实现相关的 Len()、Less() 和 Swap() 方法。</p>
-</blockquote>
-<h3 id="interface-排序和查找">[]interface 排序和查找</h3>
-<h4 id="基本函数">基本函数</h4>
-<p>sort 包提供了以下函数：</p>
-<p>func Slice(slice interface{}, less func(i, j int) bool)<br>
-func SliceStable(slice interface{}, less func(i, j int) bool)<br>
-func SliceIsSorted(slice interface{}, less func(i, j int) bool) bool<br>
-func Search(n int, f func(int) bool) int</p>
-<ul>
-<li>slice使用案例</li>
-</ul>
-<pre><code class="language-go">people := []struct {
-	Name string
-	Age  int
-}{
-	{&quot;Gopher&quot;, 7},
-	{&quot;Alice&quot;, 55},
-	{&quot;Vera&quot;, 24},
-	{&quot;Bob&quot;, 75},
-}
-//排序
-//j参数其实相当于i+1=j
-sort.Slice(people, func(i, j int) bool { return people[i].Age &lt; people[j].Age }) // 按年龄升序排序
-fmt.Println(&quot;Sort by age:&quot;, people)
-//判断是否按照某种规则排过序
-fmt.Println(&quot;sorted:&quot;, sort.SliceIsSorted(people, func(i, j int) bool {
-    return people[i].Age &gt; people[j].Age
-}))
-</code></pre>
-<ul>
-<li>sort.Search使用<pre><code class="language-go">	a := []int{2, 3, 4, 200, 100, 21, 234, 56}
-  x := 21
-  sort.Slice(a, func(i, j int) bool {
-  	return a[i] &lt; a[i]
-  })
-  index := sort.Search(len(a), func(i int) bool { return a[i] &gt;= x })
-  fmt.Println(index)
-</code></pre>
-</li>
-</ul>
 ]]></content>
     </entry>
 </feed>
