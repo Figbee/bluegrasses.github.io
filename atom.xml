@@ -2,14 +2,55 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2020-11-02T03:09:54.668Z</updated>
+    <updated>2021-03-02T02:07:49.021Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
     <subtitle>人生不是一个结果, 是一段路, 连接此岸和彼岸</subtitle>
     <logo>https://bluegrasses.github.io/images/avatar.png</logo>
     <icon>https://bluegrasses.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2020, 罗亭的技术博客</rights>
+    <rights>All rights reserved 2021, 罗亭的技术博客</rights>
+    <entry>
+        <title type="html"><![CDATA[win10 laradock 配置]]></title>
+        <id>https://bluegrasses.github.io/post/win10-laradock-pei-zhi/</id>
+        <link href="https://bluegrasses.github.io/post/win10-laradock-pei-zhi/">
+        </link>
+        <updated>2021-03-02T01:45:23.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="快速上手">快速上手</h2>
+<ol>
+<li>将laradock项目代码克隆到本地:</li>
+</ol>
+<pre><code>git clone https://github.com/Laradock/laradock.git
+</code></pre>
+<ol start="2">
+<li>进入laradock目录 将env-example 重命名为 .env:</li>
+</ol>
+<pre><code>cp env-example .env
+</code></pre>
+<ol start="3">
+<li>.env 配置修改</li>
+</ol>
+<pre><code>//解决国内访问网络超时的问题
+CHANGE_SOURCE=true
+//设置composer的阿里云镜像
+WORKSPACE_COMPOSER_REPO_PACKAGIST= https://mirrors.aliyun.com/composer/
+//配置mysql的属性
+</code></pre>
+<ol start="4">
+<li>配置nginx站点<br>
+<code>laradock\nginx\sites</code><br>
+将laravel.conf.example 复制一份,重命名为shop.conf</li>
+</ol>
+<pre><code>//配置shop.conf配置路径
+ root E:/codes/php/larademo/public;
+</code></pre>
+<ol start="5">
+<li>安装</li>
+</ol>
+<pre><code>docker-compose up -d nginx mysql redis
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[larachina03学习笔记]]></title>
         <id>https://bluegrasses.github.io/post/larachina03-xue-xi-bi-ji/</id>
@@ -2931,99 +2972,6 @@ func walkfn(path string, fileInfo os.FileInfo, _ error) error {
 	fmt.Println(&quot;string:&quot;, path, &quot;info:&quot;, fileInfo.Name())
 	return nil
 }
-</code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[{go} 标准库之 os详解]]></title>
-        <id>https://bluegrasses.github.io/post/gobiao-zhun-ku-os-xiang-jie/</id>
-        <link href="https://bluegrasses.github.io/post/gobiao-zhun-ku-os-xiang-jie/">
-        </link>
-        <updated>2020-05-24T00:27:52.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="文件文件夹相关操作">文件(文件夹)相关操作</h2>
-<h3 id="文件文件夹常用操作">文件(文件夹)常用操作</h3>
-<p>Create 新建文件<br>
-Remove 删除<br>
-RemoveAll 删除<br>
-Mkdir 创建文件夹<br>
-Mkdir 创建文件夹可以递归<br>
-Rename 改名字<br>
-Open 打开<br>
-OpenFile 打开文件<br>
-<code>OpenFile的使用</code></p>
-<pre><code class="language-go">//创建并打开
-os.OpenFile(&quot;file.txt&quot;, os.O_CREATE|os.O_RDWR, 0755)
-//追加并打开
-os.OpenFile(&quot;file.txt&quot;, os.O_APPEND|os.O_RDWR, 0777)
-</code></pre>
-<p>Stat 返回FileInfo对象</p>
-<pre><code>os.Stat(&quot;file&quot;)
-</code></pre>
-<h3 id="file-文件操作">file 文件操作</h3>
-<p>Read 读取文件内容<br>
-ReadAt 读取指定偏移的文件内容<br>
-ReadDir 好像只能读取一层</p>
-<pre><code class="language-go">//返回一个文件类型切片
-fi, err := f.Readdir(0)
-</code></pre>
-<p>Seek 跳转文件指针</p>
-<pre><code class="language-go">//第一个参数为偏移量,可以为正负数, 第二个参数为偏移基准. 0位从开始,1表示从当前位置,2表示从末尾
-file.Seek(7,1)
-</code></pre>
-<p>Trucate 文件截取<br>
-Sync 内容从内存中提交到硬盘<br>
-Write 文件写入<br>
-WriteString 文件以字符串形式写入<br>
-Stat 返回FileInfo对象</p>
-<pre><code class="language-go">file.Stat()
-</code></pre>
-<h3 id="fileinfo">fileInfo</h3>
-<p>Name 文件名<br>
-Size 文件大小</p>
-<ul>
-<li>FileMode struct<br>
-<code>fileInfo.Mode().IsDir()</code></li>
-</ul>
-<h2 id="环境相关">环境相关</h2>
-<h3 id="env-检测">env 检测</h3>
-<ul>
-<li>Environ</li>
-</ul>
-<pre><code class="language-go">	vars := os.Environ()
-	for _, env := range vars {
-		fmt.Println(env)
-	}
-</code></pre>
-<pre><code class="language-go">path, err := os.LookupEnv(&quot;PATH&quot;)
-</code></pre>
-<ul>
-<li>Expand</li>
-</ul>
-<pre><code class="language-go">path1 := os.Expand(&quot;$PATH&quot;, os.Getenv)
-</code></pre>
-<ul>
-<li>Hostname<pre><code class="language-go"></code></pre>
-</li>
-</ul>
-<p>os.Hostname()</p>
-<pre><code>设置env
-```go
-err := os.Setenv(&quot;TMPENV&quot;, &quot;values for testenv&quot;)
-</code></pre>
-<h3 id="判断">判断</h3>
-<ul>
-<li>判断错误的IsExist 和isNotExist</li>
-</ul>
-<pre><code class="language-go">err := os.Mkdir(&quot;tmp&quot;, os.ModePerm)
-if os.IsExist(err) {
-    ....
-}
-</code></pre>
-<ul>
-<li>IsPermission 是否有权限</li>
-</ul>
-<pre><code class="language-go">file, err := os.OpenFile(&quot;file.txt&quot;, os.O_WRONLY, 0644)
-os.IsPermission(err)
 </code></pre>
 ]]></content>
     </entry>
