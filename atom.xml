@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2021-03-02T02:07:49.021Z</updated>
+    <updated>2021-04-26T09:15:35.905Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -37,7 +37,7 @@ WORKSPACE_COMPOSER_REPO_PACKAGIST= https://mirrors.aliyun.com/composer/
 //配置mysql的属性
 </code></pre>
 <ol start="4">
-<li>配置nginx站点<br>
+<li>配置nginx站点 (可选)<br>
 <code>laradock\nginx\sites</code><br>
 将laravel.conf.example 复制一份,重命名为shop.conf</li>
 </ol>
