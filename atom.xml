@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2021-06-16T14:33:31.624Z</updated>
+    <updated>2021-07-22T12:53:17.595Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -10,6 +10,15 @@
     <logo>https://bluegrasses.github.io/images/avatar.png</logo>
     <icon>https://bluegrasses.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 罗亭的技术博客</rights>
+    <entry>
+        <title type="html"><![CDATA[江湖再见，山高水远]]></title>
+        <id>https://bluegrasses.github.io/post/jiang-hu-zai-jian-shan-gao-shui-yuan/</id>
+        <link href="https://bluegrasses.github.io/post/jiang-hu-zai-jian-shan-gao-shui-yuan/">
+        </link>
+        <updated>2021-07-22T12:32:30.000Z</updated>
+        <content type="html"><![CDATA[<p>明天，儿子幼儿园要毕业了。5年的技术狂奔，在人生中最艰难的岁月，从php、tp、laravel、bootstrap、layui、jquery、vue、uniapp到一年来的golang 学习，自己变成了一个极度沉默而单一的人，在那样一段岁月中本身无可厚非。技术的追求没有止境，吾生而有涯、而知也无涯，以有涯随无涯殆矣！人生本就是多样的，没有什么比生命本身更重要，技术只是一个微小的一环，一个自我实现的工具。家人、朋友、运动、旅行、读书、佛学、诗和远方。纯粹的以技术为追求，在我这样的年纪，和自己实际的资质，是不合时宜的。从极度的技术追求到以应用为主，从极度的贪时间到高效而有序的利用，这将是未来的一个改变。是时候给这一切画上一个转折了，江湖再见，山高水远。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Golang 资源大全]]></title>
         <id>https://bluegrasses.github.io/post/golang-zi-yuan-da-quan/</id>
@@ -5521,79 +5530,6 @@ launch.json</p>
 退出 Shift+F11<br>
 重新开始 unassigned<br>
 停止调试 Shift+F5</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[{go} 标准库之 http]]></title>
-        <id>https://bluegrasses.github.io/post/go-biao-zhun-ku-http/</id>
-        <link href="https://bluegrasses.github.io/post/go-biao-zhun-ku-http/">
-        </link>
-        <updated>2020-05-27T02:09:00.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="一-http">一.  http</h2>
-<h3 id="do">do</h3>
-<pre><code class="language-go">client := &amp;http.Client{}
-request, err := http.NewRequest(&quot;GET&quot;, &quot;http://www.hoopchina.com&quot;, nil)
-resp, err := client.Do(request)
-body, err := ioutil.ReadAll(resp.Body)
-if err := resp.Body.Close(); err != nil {
-    log.Fatalln(err)
-}
-fmt.Println(string(body))
-</code></pre>
-<h3 id="get">get</h3>
-<pre><code class="language-go">client := http.Client{}
-resp, err := client.Get(&quot;http://www.baidu.com&quot;)
-body, err := ioutil.ReadAll(resp.Body)
-if err := resp.Body.Close(); err != nil {
-    log.Fatalln(err)
-}
-fmt.Println(string(body))
-</code></pre>
-<h3 id="post">post</h3>
-<pre><code class="language-go">client := &amp;http.Client{}
-resp, err := client.Post(&quot;http://www.baidu.com&quot;, &quot;text/html&quot;, nil)
-body, err := ioutil.ReadAll(resp.Body)
-if err := resp.Body.Close(); err != nil {
-    log.Fatalln(err)
-}
-fmt.Println(string(body))
-</code></pre>
-<h3 id="postform">postForm</h3>
-<pre><code class="language-go">client := &amp;http.Client{}
-data := url.Values{}
-data.Add(&quot;name&quot;, &quot;beijing&quot;)
-resp, err := client.PostForm(&quot;http://www.baidu.com&quot;, data)
-body, err := ioutil.ReadAll(resp.Body)
-if err := resp.Body.Close(); err != nil {
-    log.Fatalln(err)
-}
-fmt.Println(string(body))
-</code></pre>
-<h3 id="server">server</h3>
-<pre><code class="language-go">// ` 代表不转义
-const html = `&lt;form method=&quot;POST&quot;&gt;
-&lt;input type=&quot;text&quot; name=&quot;name&quot;&gt;
-&lt;input type=&quot;submit&quot; value=&quot;send&quot;&gt;
-&lt;/form&gt;`
-//启动http 活动
-func server() {
-	http.HandleFunc(&quot;/&quot;, GetFormHandler)
-	log.Fatal(http.ListenAndServe(&quot;:9000&quot;, nil))
-}
-
-//GetFormHandler 函数
-func GetFormHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set(&quot;Content-Type&quot;, &quot;text/html&quot;)
-	if r.Method == &quot;POST&quot; {
-		name := r.FormValue(&quot;name&quot;)
-		if name != &quot;&quot; {
-			fmt.Fprintln(w, &quot;REcevied&quot;, name)
-			return
-		}
-	}
-	fmt.Fprintln(w, html)
-}
-</code></pre>
 ]]></content>
     </entry>
 </feed>
