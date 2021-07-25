@@ -60,6 +60,33 @@
     
     <div class="flex-1 order-2 md:order-1">
       <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://bluegrasses.github.io/post/go-go-cheng-de-san-chong-chu-li-fang-shi/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          {go} go程的三种处理方式
+        </a>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2021-07-25</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        1.waitgroup
+
+多个goroutine执行同一件事,多个go程统一完成后执行
+
+func main() {
+	var wg sync.WaitGroup
+	wg.Add(2)
+	go func() {
+		time.Sleep(2...
+      </div>
+      <a href="https://bluegrasses.github.io/post/go-go-cheng-de-san-chong-chu-li-fang-shi/" class="btn">
+        Read more
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
         <a href="https://bluegrasses.github.io/post/zhuan-zai-go-yu-yan-jie-gou-ti-chang-jian-tag/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
           [转载] Go语言 结构体常见tag
         </a>
@@ -279,29 +306,6 @@ type Inter...
 %t		单词 true 或 ...
       </div>
       <a href="https://bluegrasses.github.io/post/go-fmt-ge-shi-hua-冲突-漫步的猪_Win10/" class="btn">
-        Read more
-      </a>
-    </div>
-    
-  </div>
-
-  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
-    
-    <div class="flex-1 order-2 md:order-1">
-      <h2 class="text-2xl font-semibold mb-4">
-        <a href="https://bluegrasses.github.io/post/golang-web-bian-cheng/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
-          {go} web编程
-        </a>
-      </h2>
-      <div class="mb-4 text-xs text-gray-500">2020-04-19</div>
-      <div class="mb-4 text-gray-500 dark:text-gray-300">
-        1.表单处理
-数据获取
-func root(w http.ResponseWriter, r *http.Request) {
-    //1. 使用r.ParseForm()获取数据之后,get post 所有的数据都到了r.Form中
-...
-      </div>
-      <a href="https://bluegrasses.github.io/post/golang-web-bian-cheng/" class="btn">
         Read more
       </a>
     </div>
