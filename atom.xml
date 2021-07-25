@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2021-07-22T12:55:49.098Z</updated>
+    <updated>2021-07-25T00:40:57.051Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -11,12 +11,105 @@
     <icon>https://bluegrasses.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 罗亭的技术博客</rights>
     <entry>
-        <title type="html"><![CDATA[江湖再见，山高水远]]></title>
-        <id>https://bluegrasses.github.io/post/jiang-hu-zai-jian-shan-gao-shui-yuan/</id>
-        <link href="https://bluegrasses.github.io/post/jiang-hu-zai-jian-shan-gao-shui-yuan/">
+        <title type="html"><![CDATA[{go} go程的三种处理方式]]></title>
+        <id>https://bluegrasses.github.io/post/go-go-cheng-de-san-chong-chu-li-fang-shi/</id>
+        <link href="https://bluegrasses.github.io/post/go-go-cheng-de-san-chong-chu-li-fang-shi/">
         </link>
-        <updated>2021-07-22T12:32:30.000Z</updated>
-        <content type="html"><![CDATA[<p>明天，儿子幼儿园要毕业了。5年的技术狂奔，在人生中最艰难的岁月，从php、tp、laravel、bootstrap、layui、jquery、vue、uniapp到一年来的golang 学习，自己变成了一个极度沉默而单一的人，在那样一段岁月中本身无可厚非。技术的追求没有止境，吾生而有涯、而知也无涯，以有涯随无涯殆矣！人生本就是多样的，没有什么比生命本身更重要，技术只是一个微小的一环，一个自我实现的工具。家人、朋友、运动、旅行、读书、佛学、诗和远方。纯粹的以技术为追求，在我这样的年纪，和自己实际的资质，是不合时宜的。从极度的技术追求到以应用为主，从极度的贪时间到高效而有序的利用，这将是未来的一个改变。是时候给这一切画上一个转折了，江湖再见，山高水远。</p>
+        <updated>2021-07-24T23:58:20.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="1waitgroup">1.waitgroup</h2>
+<blockquote>
+<p>多个goroutine执行同一件事,多个go程统一完成后执行</p>
+</blockquote>
+<pre><code class="language-go">func main() {
+	var wg sync.WaitGroup
+	wg.Add(2)
+	go func() {
+		time.Sleep(2 * time.Second)
+		fmt.Println(&quot;job 1 done.&quot;)
+		wg.Done()
+	}()
+	go func() {
+		time.Sleep(1 * time.Second)
+		fmt.Println(&quot;job 2 done.&quot;)
+		wg.Done()
+	}()
+	wg.Wait()
+	fmt.Println(&quot;all done&quot;)
+}
+</code></pre>
+<p>执行结果:<br>
+job 2 done.<br>
+job 1 done.<br>
+all done</p>
+<h2 id="2channelselect">2.channel+select</h2>
+<blockquote>
+<p>主动执行停止</p>
+</blockquote>
+<pre><code class="language-go">	stop := make(chan bool)
+	go func() {
+		for {
+			select {
+			case &lt;-stop:
+				fmt.Println(&quot;got the stop channel&quot;)
+				return
+			default:
+				fmt.Println(&quot;still working&quot;)
+				time.Sleep(1 * time.Second)
+			}
+		}
+	}()
+	time.Sleep(5 * time.Second)
+	fmt.Println(&quot;stop the gorutine&quot;)
+	stop &lt;- true
+	time.Sleep(5 * time.Second)
+</code></pre>
+<p>执行结果:<br>
+still working<br>
+still working<br>
+still working<br>
+still working<br>
+still working<br>
+stop the gorutine<br>
+got the stop channel</p>
+<h2 id="context">context</h2>
+<blockquote>
+<p>处理复杂的gorutine使用context而不是channel</p>
+</blockquote>
+<pre><code class="language-go">func main() {
+	ctx, cancel := context.WithCancel(context.Background())
+	go work(ctx, &quot;node1&quot;)
+	go work(ctx, &quot;node2&quot;)
+	go work(ctx, &quot;node3&quot;)
+	time.Sleep(5 * time.Second)
+	fmt.Println(&quot;stop the gorutine&quot;)
+	cancel()
+	time.Sleep(5 * time.Second)
+}
+
+func work(ctx context.Context, name string) {
+	go func() {
+		for {
+			select {
+			case &lt;-ctx.Done():
+				fmt.Println(name, &quot;got the stop channel&quot;)
+				return
+			default:
+				fmt.Println(name, &quot;still working&quot;)
+				time.Sleep(1 * time.Second)
+			}
+		}
+	}()
+}
+</code></pre>
+<p>执行结果:<br>
+node2 still working<br>
+node3 still working<br>
+node1 still working<br>
+node2 still working<br>
+stop the gorutine<br>
+node1 got the stop channel<br>
+node2 got the stop channel<br>
+node3 got the stop channel</p>
 ]]></content>
     </entry>
     <entry>
