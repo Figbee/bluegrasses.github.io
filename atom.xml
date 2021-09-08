@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2021-07-25T11:24:45.921Z</updated>
+    <updated>2021-09-08T14:18:11.053Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -10,6 +10,66 @@
     <logo>https://bluegrasses.github.io/images/avatar.png</logo>
     <icon>https://bluegrasses.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 罗亭的技术博客</rights>
+    <entry>
+        <title type="html"><![CDATA[{go} 协程处理指定信号]]></title>
+        <id>https://bluegrasses.github.io/post/go-xie-cheng-chu-li-zhi-ding-xin-hao/</id>
+        <link href="https://bluegrasses.github.io/post/go-xie-cheng-chu-li-zhi-ding-xin-hao/">
+        </link>
+        <updated>2021-09-08T14:05:51.000Z</updated>
+        <content type="html"><![CDATA[<blockquote>
+<p>题外话 : 来新单位已经4个月了, 非常艰难的开始 ,各种各样的不适应。其实在这样的行政体系中，别人喜欢你也罢，排挤你也罢，受重用也罢，受冷落也罢，都没有那么的重要。走好自己的路比扯其它的更有意义。共勉！</p>
+</blockquote>
+<h2 id="go-通过协程处理指定的信号">go 通过协程处理指定的信号</h2>
+<pre><code class="language-go">ch := make(chan os.Signal, 1)
+//通道接收的系统信号
+signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
+	for {
+		s := &lt;-ch
+		switch s {
+		case syscall.SIGINT:
+			fmt.Println(&quot;sigint&quot;)
+			return
+		case syscall.SIGTERM:
+			fmt.Println(&quot;sigterm&quot;)
+			return
+        default:
+			fmt.Println(&quot;default...&quot;)
+			return
+        }
+    }
+</code></pre>
+<h2 id="go-优雅的启动关闭服务器">go 优雅的启动关闭服务器</h2>
+<pre><code class="language-go">	//优雅的启动服务器
+	host := &quot;127.0.0.1&quot;
+	port := conf.ConfStruct.System.Port
+	srv := http.Server{
+		Addr:    fmt.Sprintf(&quot;%s:%d&quot;, host, port),
+		Handler: r,
+	}
+	//在goroutine 中初始化服务器,以便它不会阻止下面的优雅关闭处理
+	go func() {
+		if err := srv.ListenAndServe(); err != nil &amp;&amp; err != http.ErrServerClosed {
+			global.Log.Error(&quot;listen error :&quot;, err)
+		}
+	}()
+	//等待中断信号来优雅的关闭服务器,为关闭服务器操作设置一个5秒的超时
+	//首先定义一个chan传递信号量,
+	//然后说明哪些信号量是需要被捕获的(不填的话就默认捕获任何信号量)
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	&lt;-quit //阻塞在此,当接收到上述两种信号时才会往下执行
+	global.Log.Info(&quot;shutting down server....&quot;)
+	//创建一个5秒超时的context
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	//go 1.8版本后,http.server内置的shutdown()方法就支持优雅的关机
+	if err := srv.Shutdown(ctx); err != nil {
+		global.Log.Fatal(&quot;server shutdown:&quot;, err)
+	}
+	global.Log.Info(&quot;server exiting&quot;)
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[{go} go程的三种处理方式]]></title>
         <id>https://bluegrasses.github.io/post/go-go-cheng-de-san-chong-chu-li-fang-shi/</id>
@@ -5574,55 +5634,6 @@ go test -v -test.run TestAdd<br>
 //或者<br>
 go test -v -run TestAdd</li>
 </ol>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[{go} 使用vscode进行断点调试]]></title>
-        <id>https://bluegrasses.github.io/post/go-shi-yong-vscode-jin-xing-duan-dian-diao-shi/</id>
-        <link href="https://bluegrasses.github.io/post/go-shi-yong-vscode-jin-xing-duan-dian-diao-shi/">
-        </link>
-        <updated>2020-06-07T03:42:52.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="一-环境部署">一 . 环境部署</h2>
-<h3 id="安装delv">安装delv</h3>
-<p><code>go get -u github.com/go-delve/delve/cmd/dlv</code></p>
-<h3 id="安装-debugger-for-chrome">安装 debugger for chrome</h3>
-<blockquote>
-<p>可选 为了调试http请求</p>
-</blockquote>
-<h3 id="设置参数">设置参数</h3>
-<p><code>vscode-&gt;运行-&gt;打开配置</code><br>
-launch.json</p>
-<pre><code class="language-json">{
-    // 使用 IntelliSense 了解相关属性。 
-    // 悬停以查看现有属性的描述。
-    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
-    &quot;version&quot;: &quot;0.2.0&quot;,
-    &quot;configurations&quot;: [
- 
-        {
-            &quot;name&quot;: &quot;Launch&quot;,
-            &quot;type&quot;: &quot;go&quot;,
-            &quot;request&quot;: &quot;launch&quot;,
-            &quot;mode&quot;: &quot;debug&quot;,
-            &quot;host&quot;: &quot;127.0.0.1&quot;,
-            &quot;port&quot;: 2345,
-            &quot;program&quot;: &quot;${fileDirname}&quot;,
-            &quot;env&quot;: {},
-            &quot;args&quot;: [],
-            &quot;showLog&quot;: true
-        }
-    ]
-}
-</code></pre>
-<h2 id="二-使用">二 . 使用</h2>
-<figure data-type="image" tabindex="1"><img src="https://bluegrasses.github.io/post-images/1591501640237.png" alt="" loading="lazy"></figure>
-<h3 id="常用调试快捷键">常用调试快捷键</h3>
-<p>继续 / 暂停 F5<br>
-跳过 F10<br>
-进入 F11<br>
-退出 Shift+F11<br>
-重新开始 unassigned<br>
-停止调试 Shift+F5</p>
 ]]></content>
     </entry>
 </feed>
