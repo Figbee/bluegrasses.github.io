@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2021-11-29T01:10:25.568Z</updated>
+    <updated>2021-11-29T07:05:19.479Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
@@ -10,6 +10,48 @@
     <logo>https://bluegrasses.github.io/images/avatar.png</logo>
     <icon>https://bluegrasses.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 罗亭的技术博客</rights>
+    <entry>
+        <title type="html"><![CDATA[appleboy/gin-jwt 执行顺序]]></title>
+        <id>https://bluegrasses.github.io/post/appleboygin-jwt-zhi-xing-shun-xu/</id>
+        <link href="https://bluegrasses.github.io/post/appleboygin-jwt-zhi-xing-shun-xu/">
+        </link>
+        <updated>2021-11-29T07:03:39.000Z</updated>
+        <content type="html"><![CDATA[<p>这个还是比较正规的，</p>
+<p>但看代码时，需要了解函数的执行顺序。</p>
+<p>token生成：</p>
+<p>Authenticator-》PayloadFunc</p>
+<p>token验证：</p>
+<p>IdentityHandler-》Authorizator</p>
+<p>Login request flow (using the LoginHandler)<br>
+PROVIDED: LoginHandler</p>
+<p>This is a provided function to be called on any login endpoint, which will trigger the flow described below.</p>
+<p>REQUIRED: Authenticator This function should verify the user credentials given the gin context (i.e. password matches hashed password for a given user email, and any other authentication logic). Then the authenticator should return a struct or map that contains the user data that will be embedded in the jwt token. This might be something like an account id, role, is_verified, etc. After having successfully authenticated, the data returned from the authenticator is passed in as a parameter into the PayloadFunc, which is used to embed the user identifiers mentioned above into the jwt token. If an error is returned, the Unauthorized function is used (explained below).</p>
+<p>OPTIONAL: PayloadFunc</p>
+<p>This function is called after having successfully authenticated (logged in). It should take whatever was returned from Authenticator and convert it into MapClaims (i.e. map[string]interface{}). A typical use case of this function is for when Authenticator returns a struct which holds the user identifiers, and that struct needs to be converted into a map. MapClaimsshould include one element that is [IdentityKey (default is &quot;identity&quot;): some_user_identity]. The elements of MapClaimsreturned in PayloadFunc will be embedded within the jwt token (as token claims). When users pass in their token on subsequent requests, you can get these claims back by using ExtractClaims.</p>
+<p>OPTIONAL: LoginResponse</p>
+<p>After having successfully authenticated with Authenticator, created the jwt token using the identifiers from map returned from PayloadFunc, and set it as a cookie if SendCookie is enabled, this function is called. It is used to handle any post-login logic. This might look something like using the gin context to return a JSON of the token back to the user.</p>
+<p>Subsequent requests on endpoints requiring jwt token (using MiddlewareFunc).<br>
+PROVIDED: MiddlewareFunc</p>
+<p>This is gin middleware that should be used within any endpoints that require the jwt token to be present. This middleware will parse the request headers for the token if it exists, and check that the jwt token is valid (not expired, correct signature). Then it will call IdentityHandler followed by Authorizator. If Authorizator passes and all of the previous token validity checks passed, the middleware will continue the request. If any of these checks fail, the Unauthorized function is used (explained below).</p>
+<p>OPTIONAL: IdentityHandler</p>
+<p>The default of this function is likely sufficient for your needs. The purpose of this function is to fetch the user identity from claims embedded within the jwt token, and pass this identity value to Authorizator. This function assummes [IdentityKey: some_user_identity] is one of the attributes embedded within the claims of the jwt token (determined by PayloadFunc).</p>
+<p>OPTIONAL: Authorizator</p>
+<p>Given the user identity value (data parameter) and the gin context, this function should check if the user is authorized to be reaching this endpoint (on the endpoints where the MiddlewareFunc applies). This function should likely use ExtractClaimsto check if the user has the sufficient permissions to reach this endpoint, as opposed to hitting the database on every request. This function should return true if the user is authorized to continue through with the request, or false if they are not authorized (where Unauthorized will be called).</p>
+<p>Logout Request flow (using LogoutHandler)<br>
+PROVIDED: LogoutHandler</p>
+<p>This is a provided function to be called on any logout endpoint, which will clear any cookies if SendCookie is set, and then call LogoutResponse.</p>
+<p>OPTIONAL: LogoutResposne</p>
+<p>This should likely just return back to the user the http status code, if logout was successful or not.</p>
+<p>Refresh Request flow (using RefreshHandler)<br>
+PROVIDED: RefreshHandler:</p>
+<p>This is a provided function to be called on any refresh token endpoint. If the token passed in is was issued within the MaxRefreshTime time frame, then this handler will create/set a new token similar to the LoginHandler, and pass this token into RefreshResponse</p>
+<p>OPTIONAL: RefreshResposne:</p>
+<p>This should likely return a JSON of the token back to the user, similar to LoginResponse</p>
+<p>Faliures with logging in, bad tokens, or lacking privileges<br>
+OPTIONAL Unauthorized:</p>
+<p>On any error logging in, authorizing the user, or when there was no token or a invalid token passed in with the request, the following will happen. The gin context will be aborted depending on DisabledAbort, then HTTPStatusMessageFunc is called which by default converts the error into a string. Finally the Unauthorized function will be called. This function should likely return a JSON containing the http error code and error message to the user.</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[服务器部署软件合集]]></title>
         <id>https://bluegrasses.github.io/post/fu-wu-qi-bu-shu-ruan-jian-he-ji/</id>
@@ -5489,129 +5531,6 @@ fmt.Println(string(v)) // []byte转string, json
 <p>作者： ChnMig</p>
 <p>出处：https://www.cnblogs.com/chnmig/p/1132390.html</p>
 <p>版权：本作品采用「<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a>」许可协议进行许可。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[go | cobra ]]></title>
-        <id>https://bluegrasses.github.io/post/cobra/</id>
-        <link href="https://bluegrasses.github.io/post/cobra/">
-        </link>
-        <updated>2020-10-10T10:19:55.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="部署和安装">部署和安装</h2>
-<h3 id="安装与导入">安装与导入</h3>
-<ul>
-<li>安装</li>
-</ul>
-<pre><code class="language-go">go get -u github.com/spf13/cobra
-</code></pre>
-<ul>
-<li>导入</li>
-</ul>
-<pre><code class="language-go">import &quot;github.com/spf13/cobra&quot;
-</code></pre>
-<h4 id="使用cobra生成器">使用cobra生成器</h4>
-<p>windows系统下使用：</p>
-<pre><code class="language-go">go get github.com/spf13/cobra/cobra
-</code></pre>
-<p>或者在文件夹<code>github.com/spf13/cobra/cobra</code>下使用<code>go install</code>在<code>$GOPATH/bin</code>路径下生成<code>cobra.exe</code>可执行命令。</p>
-<blockquote>
-<p>windows 需要把bin目录加入到环境变量中, 重启生效</p>
-</blockquote>
-<h3 id="使用入门">使用入门</h3>
-<h4 id="脚手架方式初始化">脚手架方式初始化</h4>
-<pre><code class="language-go">//cli 为gomodule的包名
-cobra init  --pkg-name=cli
-</code></pre>
-<h4 id="添加子命令">添加子命令</h4>
-<ul>
-<li>脚手架添加子命令</li>
-</ul>
-<pre><code>cobra add version
-</code></pre>
-<ul>
-<li>代码实现</li>
-</ul>
-<pre><code class="language-go">//version.go
-func init(){
-    //rootCmd为根节点
-	rootCmd.AddCommand(versionCmd)
-}
-
-&gt; go run main.go version
-</code></pre>
-<h4 id="添加二级子命令">添加二级子命令</h4>
-<pre><code class="language-go">//help.go help 为version 的二级命令
-var helpCmd=&amp;cobra.Comand{}
-func init(){
-	versionCmd.AddCommand(helpCmd)
-}
-
-&gt; go run main.go version help
-</code></pre>
-<h4 id="使用flags参数">使用Flags(参数)</h4>
-<p><code>Flags提供了修饰符来控制动作命令的操作</code></p>
-<ul>
-<li>
-<p>Persistent Flags：全局性flag, 可用于它所分配的命令以及该命令下的每个命令。在根上分配标志作为全局flag。</p>
-</li>
-<li>
-<p>Local Flags：局部性flag,在本args分配一个标志，该标志仅适用于该特定命令。</p>
-</li>
-<li>
-<p>Required flags：必选flag，flag默认是可选的。如果希望命令在未设置flag时报告错误，请将其标记为required。</p>
-</li>
-</ul>
-<pre><code class="language-go">//version.go
-var versionCmd = &amp;cobra.Command{
-	Use:   &quot;version&quot;,
-	Short: &quot;A brief description of your command&quot;,
-	Long: `A longer description`,
-	Run: func(cmd *cobra.Command, args []string) {
-        //获取参数值
-		str, _ := cmd.Flags().GetString(&quot;gfoo&quot;)
-		fmt.Printf(&quot;the param vale is %s\n&quot;, str)
-		fmt.Println(&quot;version  1.0.0 for cli&quot;)
-	},
-}
-func init() {
-	rootCmd.AddCommand(versionCmd)
-	//定义Flags 提供了修饰符来控制动作命令的操作,StringP支持简写
-	versionCmd.PersistentFlags().String(&quot;gfoo&quot;, &quot;gfoo&quot;, &quot;A help for global_foo&quot;)
-	versionCmd.Flags().StringP(&quot;lfoo&quot;, &quot;f&quot;, &quot;&quot;, &quot;a help for local_foo&quot;)
-    
-}
-</code></pre>
-<h5 id="获取参数值的其他方法">获取参数值的其他方法</h5>
-<pre><code class="language-go">var str string
-var wordCmd = &amp;cobra.Command{
-	Use:   &quot;version&quot;,
-	Short: &quot;A brief description of your command&quot;,
-	Long: `A longer description`,
-	Run: func(cmd *cobra.Command, args []string) {
-		//业务逻辑
-	},
-}
-func init() {
-	rootCmd.AddCommand(versionCmd)
-	//直接将参数值读取到一个提前申明的变量中
-	wordCmd.Flags().StringVarP(&amp;str, &quot;str&quot;, &quot;s&quot;, &quot;&quot;, &quot;请输入单词内容&quot;)
-    
-}
-</code></pre>
-<h4 id="args参数约束和检查">Args参数约束和检查</h4>
-<pre><code class="language-go">//version.go Run:下面
-	Args: func(cmd *cobra.Command, args []string) error {
-		if len(args) &lt; 1 {
-			return errors.New(&quot;requires at least one arg&quot;)
-		}
-		return nil
-	},
-//上面代码可以简写为
-	Args: cobra.MinimumNArgs(1),
-//version 命令不加参数会报错
-&gt; go run main.go version 
-</code></pre>
-<h4 id="help">help</h4>
 ]]></content>
     </entry>
 </feed>

@@ -1,0 +1,319 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>appleboy/gin-jwt 执行顺序 - 罗亭的技术博客</title>
+<link rel="shortcut icon" href="https://bluegrasses.github.io/favicon.ico">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css">
+<link rel="stylesheet" href="https://bluegrasses.github.io/media/css/tailwind.css">
+<link rel="stylesheet" href="https://bluegrasses.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="appleboy/gin-jwt 执行顺序 - 罗亭的技术博客 - Atom Feed" href="https://bluegrasses.github.io/atom.xml">
+
+    
+
+  <meta name="description" content="这个还是比较正规的，
+但看代码时，需要了解函数的执行顺序。
+token生成：
+Authenticator-》PayloadFunc
+token验证：
+IdentityHandler-》Authorizator
+Login request f..." />
+  <meta property="og:title" content="appleboy/gin-jwt 执行顺序 - 罗亭的技术博客">
+  <meta property="og:description" content="这个还是比较正规的，
+但看代码时，需要了解函数的执行顺序。
+token生成：
+Authenticator-》PayloadFunc
+token验证：
+IdentityHandler-》Authorizator
+Login request f..." />
+  <meta property="og:type" content="articles">
+  <meta property="og:url" content="https://bluegrasses.github.io/post/appleboygin-jwt-zhi-xing-shun-xu/" />
+  <meta property="og:image" content="https://bluegrasses.github.io/images/avatar.png">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:width" content="1200">
+  <meta name="twitter:title" content="appleboy/gin-jwt 执行顺序 - 罗亭的技术博客">
+  <meta name="twitter:description" content="这个还是比较正规的，
+但看代码时，需要了解函数的执行顺序。
+token生成：
+Authenticator-》PayloadFunc
+token验证：
+IdentityHandler-》Authorizator
+Login request f...">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://bluegrasses.github.io/post/appleboygin-jwt-zhi-xing-shun-xu/">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css">
+ 
+  
+    <link rel="stylesheet" href="https://bluegrasses.github.io/media/css/prism-synthwave84.css">
+  
+
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+  
+</head>
+
+<body>
+  <div class="antialiased flex flex-col min-h-screen" id="app">
+    <a href="https://bluegrasses.github.io" class="fixed top-0 left-0 mt-4 bg-black text-white dark:text-gray-700 dark:bg-yellow-50 dark:hover:bg-black dark:hover:text-white inline-flex p-2 pl-8 hover:text-gray-700 hover:bg-yellow-50 font-bold z-10 transition-fast animated fadeInLeft">
+      罗亭的技术博客
+    </a>
+    <div class="max-w-4xl w-full mx-auto">
+      <div class="shadow-box bg-white dark:bg-gray-600 rounded-lg pt-32 md:pt-64 px-4 md:px-8 pb-8 animated fadeIn mb-8">
+        <h1 class="text-5xl font-semibold leading-normal pb-8 mb-8 border-b-8 border-gray-700">
+          appleboy/gin-jwt 执行顺序
+        </h1>
+        
+        <div class="mb-8 flex flex-wrap">
+          <div class="text-gray-400 text-sm mr-4">2021-11-29 · 5 min read</div>
+          
+            <a href="https://bluegrasses.github.io/tag/MGq5D4kTr/" class="text-gray-700 text-sm border-b-2 border-dotted border-gray-200 hover:border-gray-600 transition-all duration-100 inline-flex mr-2">
+              <i class="ri-hashtag"></i>
+              golang
+            </a>
+          
+        </div>
+        <div class="markdown mb-8" v-pre>
+          <p>这个还是比较正规的，</p>
+<p>但看代码时，需要了解函数的执行顺序。</p>
+<p>token生成：</p>
+<p>Authenticator-》PayloadFunc</p>
+<p>token验证：</p>
+<p>IdentityHandler-》Authorizator</p>
+<p>Login request flow (using the LoginHandler)<br>
+PROVIDED: LoginHandler</p>
+<p>This is a provided function to be called on any login endpoint, which will trigger the flow described below.</p>
+<p>REQUIRED: Authenticator This function should verify the user credentials given the gin context (i.e. password matches hashed password for a given user email, and any other authentication logic). Then the authenticator should return a struct or map that contains the user data that will be embedded in the jwt token. This might be something like an account id, role, is_verified, etc. After having successfully authenticated, the data returned from the authenticator is passed in as a parameter into the PayloadFunc, which is used to embed the user identifiers mentioned above into the jwt token. If an error is returned, the Unauthorized function is used (explained below).</p>
+<p>OPTIONAL: PayloadFunc</p>
+<p>This function is called after having successfully authenticated (logged in). It should take whatever was returned from Authenticator and convert it into MapClaims (i.e. map[string]interface{}). A typical use case of this function is for when Authenticator returns a struct which holds the user identifiers, and that struct needs to be converted into a map. MapClaimsshould include one element that is [IdentityKey (default is &quot;identity&quot;): some_user_identity]. The elements of MapClaimsreturned in PayloadFunc will be embedded within the jwt token (as token claims). When users pass in their token on subsequent requests, you can get these claims back by using ExtractClaims.</p>
+<p>OPTIONAL: LoginResponse</p>
+<p>After having successfully authenticated with Authenticator, created the jwt token using the identifiers from map returned from PayloadFunc, and set it as a cookie if SendCookie is enabled, this function is called. It is used to handle any post-login logic. This might look something like using the gin context to return a JSON of the token back to the user.</p>
+<p>Subsequent requests on endpoints requiring jwt token (using MiddlewareFunc).<br>
+PROVIDED: MiddlewareFunc</p>
+<p>This is gin middleware that should be used within any endpoints that require the jwt token to be present. This middleware will parse the request headers for the token if it exists, and check that the jwt token is valid (not expired, correct signature). Then it will call IdentityHandler followed by Authorizator. If Authorizator passes and all of the previous token validity checks passed, the middleware will continue the request. If any of these checks fail, the Unauthorized function is used (explained below).</p>
+<p>OPTIONAL: IdentityHandler</p>
+<p>The default of this function is likely sufficient for your needs. The purpose of this function is to fetch the user identity from claims embedded within the jwt token, and pass this identity value to Authorizator. This function assummes [IdentityKey: some_user_identity] is one of the attributes embedded within the claims of the jwt token (determined by PayloadFunc).</p>
+<p>OPTIONAL: Authorizator</p>
+<p>Given the user identity value (data parameter) and the gin context, this function should check if the user is authorized to be reaching this endpoint (on the endpoints where the MiddlewareFunc applies). This function should likely use ExtractClaimsto check if the user has the sufficient permissions to reach this endpoint, as opposed to hitting the database on every request. This function should return true if the user is authorized to continue through with the request, or false if they are not authorized (where Unauthorized will be called).</p>
+<p>Logout Request flow (using LogoutHandler)<br>
+PROVIDED: LogoutHandler</p>
+<p>This is a provided function to be called on any logout endpoint, which will clear any cookies if SendCookie is set, and then call LogoutResponse.</p>
+<p>OPTIONAL: LogoutResposne</p>
+<p>This should likely just return back to the user the http status code, if logout was successful or not.</p>
+<p>Refresh Request flow (using RefreshHandler)<br>
+PROVIDED: RefreshHandler:</p>
+<p>This is a provided function to be called on any refresh token endpoint. If the token passed in is was issued within the MaxRefreshTime time frame, then this handler will create/set a new token similar to the LoginHandler, and pass this token into RefreshResponse</p>
+<p>OPTIONAL: RefreshResposne:</p>
+<p>This should likely return a JSON of the token back to the user, similar to LoginResponse</p>
+<p>Faliures with logging in, bad tokens, or lacking privileges<br>
+OPTIONAL Unauthorized:</p>
+<p>On any error logging in, authorizing the user, or when there was no token or a invalid token passed in with the request, the following will happen. The gin context will be aborted depending on DisabledAbort, then HTTPStatusMessageFunc is called which by default converts the error into a string. Finally the Unauthorized function will be called. This function should likely return a JSON containing the http error code and error message to the user.</p>
+
+        </div>
+        <!-- Share to Twitter, Weibo, Telegram -->
+        <div class="flex items-center">
+          <div class="mr-4 flex items-center">
+            <i class="ri-share-forward-line text-gray-500"></i>
+          </div>
+          <div class="px-4 cursor-pointer text-blue-500 hover:bg-blue-100 dark:hover:bg-gray-600 inline-flex" @click="shareToTwitter">
+            <i class="ri-twitter-line"></i>
+          </div>
+          <div class="px-4 cursor-pointer text-red-500 hover:bg-red-100 dark:hover:bg-gray-600 inline-flex" @click="shareToWeibo">
+            <i class="ri-weibo-line"></i>
+          </div>
+          <div class="px-4 cursor-pointer text-indigo-500 hover:bg-indigo-100 dark:hover:bg-gray-600 inline-flex" @click="shareToTelegram">
+            <i class="ri-telegram-line"></i>
+          </div>
+        </div>
+      </div>
+
+      
+
+      
+
+      <footer class="py-12 text-center px-4 md:px-0" v-pre>
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+</footer>
+    </div>
+
+    <!-- TOC Container -->
+    <div class="fixed right-0 bottom-0 mb-16 mr-4 shadow w-8 h-8 rounded-full flex justify-center items-center z-10 cursor-pointer bg-white dark:bg-gray-500 dark:text-gray-200 hover:shadow-lg transition-all animated fadeInRight" @click="showToc = true">
+      <i class="ri-file-list-line"></i>
+    </div>
+
+    <div class="fixed right-0 top-0 bottom-0 overflow-y-auto w-64 bg-white dark:bg-gray-800 p-4 border-l border-gray-100 dark:border-gray-600 z-10 transition-fast" :class="{ '-mr-64': !showToc }">
+      <div class="flex mb-4 justify-end">
+        <div class="w-8 h-8 inline-flex justify-center items-center rounded-full cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition-fast" @click="showToc = false">
+          <i class="ri-close-line text-lg"></i>
+        </div>
+      </div>
+      <div class="post-toc-container">
+        
+      </div>
+    </div>
+
+    <!-- Back to top -->
+    <div class="fixed right-0 bottom-0 mb-4 mr-4 shadow w-8 h-8 rounded-full flex justify-center items-center z-10 cursor-pointer bg-white hover:shadow-lg transition-all dark:bg-gray-500 dark:text-gray-200" @click="backToUp" v-show="scrolled">
+      <i class="ri-arrow-up-line"></i>
+    </div>
+  </div>
+
+  <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+  <!-- Background of PhotoSwipe. 
+        It's a separate element as animating opacity is faster than rgba(). -->
+  <div class="pswp__bg">
+  </div>
+  <!-- Slides wrapper with overflow:hidden. -->
+  <div class="pswp__scroll-wrap">
+    <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+    <div class="pswp__container">
+      <div class="pswp__item">
+      </div>
+      <div class="pswp__item">
+      </div>
+      <div class="pswp__item">
+      </div>
+    </div>
+    <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+    <div class="pswp__ui pswp__ui--hidden">
+      <div class="pswp__top-bar">
+        <!--  Controls are self-explanatory. Order can be changed. -->
+        <div class="pswp__counter">
+        </div>
+        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+        <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+        <!-- element will get class pswp__preloader--active when preloader is running -->
+        <div class="pswp__preloader">
+          <div class="pswp__preloader__icn">
+            <div class="pswp__preloader__cut">
+              <div class="pswp__preloader__donut">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+        <div class="pswp__share-tooltip">
+        </div>
+      </div>
+      <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+      </button>
+      <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+      </button>
+      <div class="pswp__caption">
+        <div class="pswp__caption__center">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://bluegrasses.github.io/media/scripts/main.js"></script>
+  
+  <!-- Code Highlight -->
+  
+    <script src="https://bluegrasses.github.io/media/prism.js"></script>
+    <script>
+      Prism.highlightAll()
+    </script>
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+  <script>
+    //拿到预览框架，也就是上面的html代码
+    var pswpElement = document.querySelectorAll('.pswp')[0];
+    //定义图片数组变量
+    var imgitems;
+    /**
+    * 用于显示预览界面
+    * @param index 图片数组下标
+    */
+    function viewImg(index) {
+      //其它选项这里不做过多阐述，详情见官网
+      var pswpoptions = {
+        index: parseInt(index, 10), // 开始幻灯片索引。0是第一张幻灯片。必须是整数，而不是字符串。
+        bgOpacity: 0.7, // 背景透明度，0-1
+        maxSpreadZoom: 3, // 缩放级别，不要太大
+      };
+      //初始化并打开PhotoSwipe，pswpElement对应上面预览框架，PhotoSwipeUI_Default为皮肤，imgitems为图片数组，pswpoptions为选项
+      var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, imgitems, pswpoptions);
+      gallery.init()
+    }
+    /**
+    * 用于添加图片点击事件
+    * @param img 图片元素
+    * @param index 所属下标（在imgitems中的位置）
+    */
+    function addImgClick(img, index) {
+      img.onclick = function() {
+        viewImg(index)
+      }
+    }
+    /**
+    * 轮询所有图片，获取src、width、height等数据，加入imgitems，并给图片元素添加事件
+    * 最好在onload中执行该方法，本站因放在最底部，所以直接初始化
+    * 异步加载图片可在图片元素创建完成后调用此方法
+    */
+    function initImg() {
+      //重置图片数组
+      imgitems = [];
+      //查找class:markdown 下的所有img元素并遍历
+      var imgs = document.querySelectorAll('.markdown img');
+      for (var i = 0; i < imgs.length; i++) {
+        var img = imgs[i];
+        //本站相册初始为loading图片，真实图片放在data-src
+        var ds = img.getAttribute("data-src");
+        //创建image对象，用于获取图片宽高
+        var imgtemp = new Image();
+        //判断是否存在data-src
+        if (ds != null && ds.length > 0) {
+          imgtemp.src = ds
+        } else {
+          imgtemp.src = img.src
+        }
+        //判断是否存在缓存
+        if (imgtemp.complete) {
+          var imgobj = {
+            "src": imgtemp.src,
+            "w": imgtemp.width,
+            "h": imgtemp.height,
+          };
+          imgitems[i] = imgobj;
+          addImgClick(img, i);
+        } else {
+          console.log('进来了2')
+          imgtemp.index = i;
+          imgtemp.img = img;
+          imgtemp.onload = function() {
+            var imgobj = {
+              "src": this.src,
+              "w": this.width,
+              "h": this.height,
+            };
+            //不要使用push，因为onload前后顺序会不同
+            imgitems[this.index] = imgobj
+            //添加点击事件
+            addImgClick(this.img, this.index);
+          }
+        }
+      }
+    }
+    //初始化
+    initImg();
+  </script>
+  
+  
+</body>
+
+</html>
