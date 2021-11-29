@@ -14,34 +14,34 @@
 
     
 
-  <meta name="description" content="这个还是比较正规的，
+  <meta name="description" content="appleboy/gin-jwt 执行顺序
 但看代码时，需要了解函数的执行顺序。
 token生成：
 Authenticator-》PayloadFunc
 token验证：
 IdentityHandler-》Authorizator
-Login request f..." />
+Logi..." />
   <meta property="og:title" content="appleboy/gin-jwt 执行顺序 - 罗亭的技术博客">
-  <meta property="og:description" content="这个还是比较正规的，
+  <meta property="og:description" content="appleboy/gin-jwt 执行顺序
 但看代码时，需要了解函数的执行顺序。
 token生成：
 Authenticator-》PayloadFunc
 token验证：
 IdentityHandler-》Authorizator
-Login request f..." />
+Logi..." />
   <meta property="og:type" content="articles">
   <meta property="og:url" content="https://bluegrasses.github.io/post/appleboygin-jwt-zhi-xing-shun-xu/" />
   <meta property="og:image" content="https://bluegrasses.github.io/images/avatar.png">
   <meta property="og:image:height" content="630">
   <meta property="og:image:width" content="1200">
   <meta name="twitter:title" content="appleboy/gin-jwt 执行顺序 - 罗亭的技术博客">
-  <meta name="twitter:description" content="这个还是比较正规的，
+  <meta name="twitter:description" content="appleboy/gin-jwt 执行顺序
 但看代码时，需要了解函数的执行顺序。
 token生成：
 Authenticator-》PayloadFunc
 token验证：
 IdentityHandler-》Authorizator
-Login request f...">
+Logi...">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="https://bluegrasses.github.io/post/appleboygin-jwt-zhi-xing-shun-xu/">
 
@@ -78,40 +78,74 @@ Login request f...">
           
         </div>
         <div class="markdown mb-8" v-pre>
-          <p>这个还是比较正规的，</p>
+          <h2 id="appleboygin-jwt-执行顺序">appleboy/gin-jwt 执行顺序</h2>
 <p>但看代码时，需要了解函数的执行顺序。</p>
 <p>token生成：</p>
 <p>Authenticator-》PayloadFunc</p>
 <p>token验证：</p>
 <p>IdentityHandler-》Authorizator</p>
-<p>Login request flow (using the LoginHandler)<br>
-PROVIDED: LoginHandler</p>
+<h3 id="login-request-flow-using-the-loginhandler">Login request flow (using the LoginHandler)</h3>
+<ol>
+<li>
+<p>PROVIDED: <code>LoginHandler</code></p>
 <p>This is a provided function to be called on any login endpoint, which will trigger the flow described below.</p>
-<p>REQUIRED: Authenticator This function should verify the user credentials given the gin context (i.e. password matches hashed password for a given user email, and any other authentication logic). Then the authenticator should return a struct or map that contains the user data that will be embedded in the jwt token. This might be something like an account id, role, is_verified, etc. After having successfully authenticated, the data returned from the authenticator is passed in as a parameter into the PayloadFunc, which is used to embed the user identifiers mentioned above into the jwt token. If an error is returned, the Unauthorized function is used (explained below).</p>
-<p>OPTIONAL: PayloadFunc</p>
-<p>This function is called after having successfully authenticated (logged in). It should take whatever was returned from Authenticator and convert it into MapClaims (i.e. map[string]interface{}). A typical use case of this function is for when Authenticator returns a struct which holds the user identifiers, and that struct needs to be converted into a map. MapClaimsshould include one element that is [IdentityKey (default is &quot;identity&quot;): some_user_identity]. The elements of MapClaimsreturned in PayloadFunc will be embedded within the jwt token (as token claims). When users pass in their token on subsequent requests, you can get these claims back by using ExtractClaims.</p>
-<p>OPTIONAL: LoginResponse</p>
-<p>After having successfully authenticated with Authenticator, created the jwt token using the identifiers from map returned from PayloadFunc, and set it as a cookie if SendCookie is enabled, this function is called. It is used to handle any post-login logic. This might look something like using the gin context to return a JSON of the token back to the user.</p>
-<p>Subsequent requests on endpoints requiring jwt token (using MiddlewareFunc).<br>
-PROVIDED: MiddlewareFunc</p>
-<p>This is gin middleware that should be used within any endpoints that require the jwt token to be present. This middleware will parse the request headers for the token if it exists, and check that the jwt token is valid (not expired, correct signature). Then it will call IdentityHandler followed by Authorizator. If Authorizator passes and all of the previous token validity checks passed, the middleware will continue the request. If any of these checks fail, the Unauthorized function is used (explained below).</p>
-<p>OPTIONAL: IdentityHandler</p>
-<p>The default of this function is likely sufficient for your needs. The purpose of this function is to fetch the user identity from claims embedded within the jwt token, and pass this identity value to Authorizator. This function assummes [IdentityKey: some_user_identity] is one of the attributes embedded within the claims of the jwt token (determined by PayloadFunc).</p>
-<p>OPTIONAL: Authorizator</p>
-<p>Given the user identity value (data parameter) and the gin context, this function should check if the user is authorized to be reaching this endpoint (on the endpoints where the MiddlewareFunc applies). This function should likely use ExtractClaimsto check if the user has the sufficient permissions to reach this endpoint, as opposed to hitting the database on every request. This function should return true if the user is authorized to continue through with the request, or false if they are not authorized (where Unauthorized will be called).</p>
-<p>Logout Request flow (using LogoutHandler)<br>
-PROVIDED: LogoutHandler</p>
-<p>This is a provided function to be called on any logout endpoint, which will clear any cookies if SendCookie is set, and then call LogoutResponse.</p>
-<p>OPTIONAL: LogoutResposne</p>
+</li>
+<li>
+<p>REQUIRED: <code>Authenticator</code> This function should verify the user credentials given the gin context (i.e. password matches hashed password for a given user email, and any other authentication logic). Then the authenticator should return a struct or map that contains the user data that will be embedded in the jwt token. This might be something like an account id, role, is_verified, etc. After having successfully authenticated, the data returned from the authenticator is passed in as a parameter into the <code>PayloadFunc</code>, which is used to embed the user identifiers mentioned above into the jwt token. If an error is returned, the <code>Unauthorized</code> function is used (explained below).</p>
+</li>
+<li>
+<p>OPTIONAL: <code>PayloadFunc</code></p>
+<p>This function is called after having successfully authenticated (logged in). It should take whatever was returned from <code>Authenticator</code> and convert it into <code>MapClaims</code> (i.e. map[string]interface{}). A typical use case of this function is for when <code>Authenticator</code> returns a struct which holds the user identifiers, and that struct needs to be converted into a map. <code>MapClaims</code>should include one element that is [<code>IdentityKey</code> (default is &quot;identity&quot;): some_user_identity]. The elements of <code>MapClaims</code>returned in <code>PayloadFunc</code> will be embedded within the jwt token (as token claims). When users pass in their token on subsequent requests, you can get these claims back by using <code>ExtractClaims</code>.</p>
+</li>
+<li>
+<p>OPTIONAL: <code>LoginResponse</code></p>
+<p>After having successfully authenticated with <code>Authenticator</code>, created the jwt token using the identifiers from map returned from <code>PayloadFunc</code>, and set it as a cookie if <code>SendCookie</code> is enabled, this function is called. It is used to handle any post-login logic. This might look something like using the gin context to return a JSON of the token back to the user.</p>
+</li>
+</ol>
+<h3 id="subsequent-requests-on-endpoints-requiring-jwt-token-using-middlewarefunc">Subsequent requests on endpoints requiring jwt token (using MiddlewareFunc).</h3>
+<ol>
+<li>
+<p>PROVIDED: <code>MiddlewareFunc</code></p>
+<p>This is gin middleware that should be used within any endpoints that require the jwt token to be present. This middleware will parse the request headers for the token if it exists, and check that the jwt token is valid (not expired, correct signature). Then it will call <code>IdentityHandler</code> followed by <code>Authorizator</code>. If <code>Authorizator</code> passes and all of the previous token validity checks passed, the middleware will continue the request. If any of these checks fail, the <code>Unauthorized</code> function is used (explained below).</p>
+</li>
+<li>
+<p>OPTIONAL: <code>IdentityHandler</code></p>
+<p>The default of this function is likely sufficient for your needs. The purpose of this function is to fetch the user identity from claims embedded within the jwt token, and pass this identity value to <code>Authorizator</code>. This function assummes [<code>IdentityKey</code>: some_user_identity] is one of the attributes embedded within the claims of the jwt token (determined by <code>PayloadFunc</code>).</p>
+</li>
+<li>
+<p>OPTIONAL: <code>Authorizator</code></p>
+<p>Given the user identity value (<code>data</code> parameter) and the gin context, this function should check if the user is authorized to be reaching this endpoint (on the endpoints where the <code>MiddlewareFunc</code> applies). This function should likely use <code>ExtractClaims</code>to check if the user has the sufficient permissions to reach this endpoint, as opposed to hitting the database on every request. This function should return true if the user is authorized to continue through with the request, or false if they are not authorized (where <code>Unauthorized</code> will be called).</p>
+</li>
+</ol>
+<h3 id="logout-request-flow-using-logouthandler">Logout Request flow (using LogoutHandler)</h3>
+<ol>
+<li>
+<p>PROVIDED: <code>LogoutHandler</code></p>
+<p>This is a provided function to be called on any logout endpoint, which will clear any cookies if <code>SendCookie</code> is set, and then call <code>LogoutResponse</code>.</p>
+</li>
+<li>
+<p>OPTIONAL: <code>LogoutResposne</code></p>
 <p>This should likely just return back to the user the http status code, if logout was successful or not.</p>
-<p>Refresh Request flow (using RefreshHandler)<br>
-PROVIDED: RefreshHandler:</p>
-<p>This is a provided function to be called on any refresh token endpoint. If the token passed in is was issued within the MaxRefreshTime time frame, then this handler will create/set a new token similar to the LoginHandler, and pass this token into RefreshResponse</p>
-<p>OPTIONAL: RefreshResposne:</p>
-<p>This should likely return a JSON of the token back to the user, similar to LoginResponse</p>
-<p>Faliures with logging in, bad tokens, or lacking privileges<br>
-OPTIONAL Unauthorized:</p>
-<p>On any error logging in, authorizing the user, or when there was no token or a invalid token passed in with the request, the following will happen. The gin context will be aborted depending on DisabledAbort, then HTTPStatusMessageFunc is called which by default converts the error into a string. Finally the Unauthorized function will be called. This function should likely return a JSON containing the http error code and error message to the user.</p>
+</li>
+</ol>
+<h3 id="refresh-request-flow-using-refreshhandler">Refresh Request flow (using RefreshHandler)</h3>
+<ol>
+<li>
+<p>PROVIDED: <code>RefreshHandler</code>:</p>
+<p>This is a provided function to be called on any refresh token endpoint. If the token passed in is was issued within the <code>MaxRefreshTime</code> time frame, then this handler will create/set a new token similar to the <code>LoginHandler</code>, and pass this token into <code>RefreshResponse</code></p>
+</li>
+<li>
+<p>OPTIONAL: <code>RefreshResposne</code>:</p>
+<p>This should likely return a JSON of the token back to the user, similar to <code>LoginResponse</code></p>
+</li>
+</ol>
+<h3 id="faliures-with-logging-in-bad-tokens-or-lacking-privileges">Faliures with logging in, bad tokens, or lacking privileges</h3>
+<ol>
+<li>
+<p>OPTIONAL <code>Unauthorized</code>:</p>
+<p>On any error logging in, authorizing the user, or when there was no token or a invalid token passed in with the request, the following will happen. The gin context will be aborted depending on <code>DisabledAbort</code>, then <code>HTTPStatusMessageFunc</code> is called which by default converts the error into a string. Finally the <code>Unauthorized</code> function will be called. This function should likely return a JSON containing the http error code and error message to the user.</p>
+</li>
+</ol>
 
         </div>
         <!-- Share to Twitter, Weibo, Telegram -->
@@ -152,7 +186,22 @@ OPTIONAL Unauthorized:</p>
         </div>
       </div>
       <div class="post-toc-container">
-        
+        <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#appleboygin-jwt-%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F">appleboy/gin-jwt 执行顺序</a>
+<ul>
+<li><a href="#login-request-flow-using-the-loginhandler">Login request flow (using the LoginHandler)</a></li>
+<li><a href="#subsequent-requests-on-endpoints-requiring-jwt-token-using-middlewarefunc">Subsequent requests on endpoints requiring jwt token (using MiddlewareFunc).</a></li>
+<li><a href="#logout-request-flow-using-logouthandler">Logout Request flow (using LogoutHandler)</a></li>
+<li><a href="#refresh-request-flow-using-refreshhandler">Refresh Request flow (using RefreshHandler)</a></li>
+<li><a href="#faliures-with-logging-in-bad-tokens-or-lacking-privileges">Faliures with logging in, bad tokens, or lacking privileges</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
       </div>
     </div>
 
