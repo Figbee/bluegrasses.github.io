@@ -2,14 +2,96 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bluegrasses.github.io</id>
     <title>罗亭的技术博客</title>
-    <updated>2021-11-29T07:26:43.281Z</updated>
+    <updated>2022-02-21T09:06:05.336Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bluegrasses.github.io"/>
     <link rel="self" href="https://bluegrasses.github.io/atom.xml"/>
     <subtitle>自律即自由</subtitle>
     <logo>https://bluegrasses.github.io/images/avatar.png</logo>
     <icon>https://bluegrasses.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2021, 罗亭的技术博客</rights>
+    <rights>All rights reserved 2022, 罗亭的技术博客</rights>
+    <entry>
+        <title type="html"><![CDATA[go | Rsa 非对称加密]]></title>
+        <id>https://bluegrasses.github.io/post/go-or-rsa-fei-dui-cheng-jia-mi/</id>
+        <link href="https://bluegrasses.github.io/post/go-or-rsa-fei-dui-cheng-jia-mi/">
+        </link>
+        <updated>2022-02-21T08:55:28.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="go-rsa-非对称加密">go | Rsa 非对称加密</h1>
+<h2 id="一-创建密匙">一、创建密匙</h2>
+<p>非对称加密算法，一般通过公钥加密，私钥解密。</p>
+<h3 id="1创建私钥">1.创建私钥</h3>
+<pre><code class="language-shell">openssl genrsa -out private.pem 1024 //密钥长度，1024觉得不够安全的话可以用2048，但是代价也相应增大
+</code></pre>
+<h3 id="2创建公钥">2.创建公钥</h3>
+<pre><code class="language-shell">openssl rsa -in private.pem -pubout -out public.pem
+</code></pre>
+<h2 id="二-rsa加密解密">二、RSA加密解密</h2>
+<pre><code class="language-go">// 读取密码文件内容
+func RSAReadKeyFromFile(filename string)[]byte{
+	// ① 打开文件
+	f,err:=os.Open(filename)
+	var b []byte
+	if err!=nil{
+		return b
+	}
+	defer f.Close()
+	// ② 获取文件信息
+	fileInfo,_:=f.Stat()
+	b=make([]byte,fileInfo.Size())
+	// ③ 读取文件内容到byte
+	f.Read(b)
+	return b
+}
+
+//数据加密（公钥加密），origData为需要加密的字符串
+func RsaEncrypt(origData []byte) ([]byte, error) {
+	publicKey:=RSAReadKeyFromFile(&quot;public.pem&quot;)
+	block,_:=pem.Decode(publicKey)
+	if block == nil {
+		return nil, errors.New(&quot;public key error&quot;)
+	}
+	pubInterface, err := x509.ParsePKIXPublicKey(block.Bytes)
+	if err != nil {
+	return nil, err
+	}
+	pub:=pubInterface.(*rsa.PublicKey)
+	return rsa.EncryptPKCS1v15(rand.Reader, pub,origData)
+}   
+
+//数据解密（私钥解密） chipertext为加密后的byte
+func RsaDecrypt(ciphertext []byte)([]byte,error){
+	privateKey:=RSAReadKeyFromFile(&quot;private.pem&quot;)
+    	block,_:=pem.Decode(privateKey)
+	if block==nil{
+		return nil,errors.New(&quot;private key error!&quot;)
+	}
+	priv,err:=x509.ParsePKCS1PrivateKey(block.Bytes)
+	if err != nil {
+		return nil, err
+	}
+	return rsa.DecryptPKCS1v15(rand.Reader, priv,ciphertext)
+}
+
+//使用过程 
+func main() {
+	data,err:=utils.RsaEncrypt([]byte(&quot;welcome&quot;))
+	if err!=nil{
+		panic(err)
+	}
+	fmt.Println(&quot;数据加密:&quot;,data)
+
+	origData,err:=utils.RsaDecrypt(data)
+	if err!=nil{
+		panic(err)
+	}
+	fmt.Println(&quot;数据解密:&quot;,string(origData))
+}
+输出结果：
+&gt; xxxxxxxx.....
+&gt; welcome
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[appleboy/gin-jwt 执行顺序]]></title>
         <id>https://bluegrasses.github.io/post/appleboygin-jwt-zhi-xing-shun-xu/</id>
@@ -5502,69 +5584,6 @@ Redis::hset($hash,$field,$value);
 <p>MAIL_FROM_ADDRESS=9175020@qq.com<br>
 MAIL_FROM_NAME=larabbs</p>
 </blockquote>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[[转载] Go语言 结构体常见tag]]></title>
-        <id>https://bluegrasses.github.io/post/zhuan-zai-go-yu-yan-jie-gou-ti-chang-jian-tag/</id>
-        <link href="https://bluegrasses.github.io/post/zhuan-zai-go-yu-yan-jie-gou-ti-chang-jian-tag/">
-        </link>
-        <updated>2020-11-01T22:07:52.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="什么是tag">什么是tag</h2>
-<p>Tag是结构体中某个字段别名, 可以定义多个, 空格分隔</p>
-<pre><code class="language-go">type Student struct {
-    Name string `ak:&quot;av&quot; bk:&quot;bv&quot; ck:&quot;cv&quot;`
-}
-</code></pre>
-<p>使用空格来区分多个tag,所以格式要尤为注意</p>
-<h2 id="tag的作用">tag的作用</h2>
-<p>tag相当于该字段的一个属性标签, 在Go语言中, 一些包通过tag来做相应的判断</p>
-<p>举个例子, 比如我们有一个结构体</p>
-<pre><code class="language-go">type Student struct {
-    Name string
-}
-</code></pre>
-<p>然后我们将一个该结构体实例化一个 s1</p>
-<pre><code class="language-go">s1 := Student{
-        Name: &quot;s1&quot;,
-    }
-</code></pre>
-<p>再将 s1 序列化</p>
-<pre><code class="language-go">v, err := json.Marshal(s1) // json.Marshal方法,json序列化,返回值和报错信息
-if err != nil { // 不为nil代表报错
-    fmt.Println(err)
-}
-fmt.Println(string(v)) // []byte转string, json
-</code></pre>
-<p>此时 string(v) 为</p>
-<pre><code class="language-go">{
-  &quot;Name&quot;: &quot;s1&quot;  
-}
-</code></pre>
-<p>因为在 Go 语言中, 结构体字段要想为外部所用就必须首字母大写, 但是如果这个 s1 是返回给前端的, 那每个字段都首字母大写就很怪, 此时我们可以给 Student 加tag解决</p>
-<p>结构体修改为</p>
-<pre><code class="language-go">type Student struct {
-    Name string`json:&quot;name&quot;`
-}
-</code></pre>
-<p>序列化时, 会自己找到名为 json 的tag, 根据值来进行json后的赋值</p>
-<p>因此 string(v) 为</p>
-<pre><code class="language-go">{
-  &quot;name&quot;: &quot;s1&quot;  
-}
-</code></pre>
-<h2 id="常用tag记录">常用tag记录</h2>
-<h3 id="json">json</h3>
-<p>json序列化或反序列化时字段的名称</p>
-<h3 id="db">db</h3>
-<p>sqlx模块中对应的数据库字段名</p>
-<h3 id="form">form</h3>
-<p>gin框架中对应的前端的数据字段名</p>
-<h3 id="binding">binding</h3>
-<p>搭配 form 使用, 默认如果没查找到结构体中的某个字段则不报错值为空, binding为 required 代表没找到返回错误给前端</p>
-<p>作者： ChnMig</p>
-<p>出处：https://www.cnblogs.com/chnmig/p/1132390.html</p>
-<p>版权：本作品采用「<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a>」许可协议进行许可。</p>
 ]]></content>
     </entry>
 </feed>
